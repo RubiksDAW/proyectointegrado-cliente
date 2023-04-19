@@ -1,0 +1,50 @@
+.container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.img-container {
+    width: 60%;
+}
+
+.img-container img{
+    width: 100%;
+    height: 125px;
+}
+
+.info-container{
+    width: 40%;
+    // border: 1px solid red;
+    padding-left: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.info-container h2{
+    font-size: small;
+}
+
+.info-container h4{
+    font-size: small;
+}
+
+.button-container {
+    background-color:white ;
+    width: 80%;
+    // border: 1px solid red;
+  }
+
+  .button-container button{
+    
+    color:red;
+    background-color: white;
+  }
+
+  .center{
+    text-align: center;
+    font-size:x-large;
+    border: 1px solid red;
+  }

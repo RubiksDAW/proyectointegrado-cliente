@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      bikeBros
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="auth-form">
+  <div class="container">
+    <div style="width: 100%;"><ion-grid>
+        <ion-row>
+          <ion-col align-self-center>
+            <ion-button [routerLink]="['/register']" expand="block" color="primary">Registrarse</ion-button>
+            <span class="divider line one-line">o</span>
+            <span class="already">¿Ya estás registrado?</span>
+            <ion-button [routerLink]="['/login']" expand="block" color="danger">Iniciar sesión</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid></div>
+  </div>
+</ion-content>

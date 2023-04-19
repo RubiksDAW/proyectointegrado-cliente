@@ -1,0 +1,19 @@
+#map{
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 150 ms ease-in;
+    z-index: 99;
+    display: block;
+    &.show-map{
+        opacity:1
+    }
+}
+#indicators {
+    z-index: 99;
+    padding: 16px;
+    height: 40%;
+    width: 100%;
+    overflow-y: auto;
+    display: block;
+  }

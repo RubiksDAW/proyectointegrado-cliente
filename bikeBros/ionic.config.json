@@ -1,0 +1,7 @@
+{
+  "name": "bikeBros",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

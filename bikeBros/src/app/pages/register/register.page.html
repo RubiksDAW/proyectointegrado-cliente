@@ -1,0 +1,73 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Register</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <form [formGroup]="registerForm">
+    <ion-item lines="full">
+      <ion-label position="floating">Nick</ion-label>
+      <ion-input type="text" formControlName="nick" required></ion-input>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Email</ion-label>
+      <ion-input type="text" formControlName="email" required></ion-input>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Contraseña</ion-label>
+      <ion-input
+        type="password"
+        formControlName="password"
+        required
+      ></ion-input>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Repetir contraseña</ion-label>
+      <ion-input
+        type="password"
+        formControlName="rpassword"
+        required
+      ></ion-input>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Edad</ion-label>
+      <ion-input type="number" formControlName="age" required></ion-input>
+      <div
+        *ngIf="registerForm.get('age')?.value > 100 && registerForm.get('age')?.touched"
+        class="alert alert-danger"
+        style="color: red"
+      >
+        Demasiado mayor
+      </div>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Breve descripción</ion-label>
+      <ion-input type="text" formControlName="description"></ion-input>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating">URL de tu imagen de perfil</ion-label>
+      <ion-input type="text" formControlName="imageURL"></ion-input>
+    </ion-item>
+
+    <ion-row>
+      <ion-col>
+        <ion-button
+          type="submit"
+          color="danger"
+          expand="block"
+          (click)="register()"
+          >Registrarse</ion-button
+        >
+      </ion-col>
+    </ion-row>
+  </form>
+</ion-content>

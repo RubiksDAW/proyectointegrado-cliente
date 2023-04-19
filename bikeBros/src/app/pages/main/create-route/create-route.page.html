@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-segment [(ngModel)]="selectedPage">
+      <ion-segment-button value="rutas"> Rutas </ion-segment-button>
+      <ion-segment-button value="eventos"> Eventos </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-content>
+    <div *ngIf="selectedPage === 'rutas'">
+      <!-- Contenido de la página de rutas -->
+      <ion-button (click)="showRouteRegisterModal()">Crear Ruta</ion-button>
+      <app-route-list></app-route-list>
+    </div>
+    <div *ngIf="selectedPage === 'eventos'">
+      <!-- Contenido de la página de eventos -->
+      <app-event-list></app-event-list>
+    </div>
+  </ion-content>
+</ion-content>

@@ -1,0 +1,22 @@
+
+<ion-header *ngIf="profileUser">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="medium" (click)="cancel()">Cancel</ion-button>
+    </ion-buttons>
+    <ion-title>Welcome</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="deleteProfile(profileUser.id)">Confirm</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <ion-item>
+    <p>¿Estás seguro de borrar tu perfil?</p>
+  </ion-item>
+</ion-content>
+
+
+
+
+

@@ -1,0 +1,48 @@
+
+
+<!-- <ion-content>
+  <ion-card>
+    <ion-item>
+      <ion-button expand="full" (click)="editProfile()">Editar perfil</ion-button>
+    <ion-button (click)="confirmDelete()" color="danger" expand="full">Borrar perfil</ion-button>
+    </ion-item>
+  </ion-card>
+</ion-content> -->
+
+
+
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <!-- //Aqui al pulsar deberia redirigirnos a Inicio, no a inicio de registro -->
+      <ion-back-button defaultHref="main/profile" text="Atrás"></ion-back-button>
+    </ion-buttons>
+    <!-- <ion-title color="primary">Mi perfil</ion-title> -->
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+<div class="card" *ngIf="profileUser">
+  <div class="header">
+    <div class="avatar">
+      <img *ngIf="profileUser.imageURL; else defaultImage" src="{{profileUser.imageURL}}">
+
+        <ng-template #defaultImage>
+          <img src="../../../assets/icon/user (1).png">
+        </ng-template>
+    </div>
+  </div>
+</div>
+
+<div class="card-body" *ngIf="profileUser">
+  <div class="user-meta ion-text-center">
+    <h3 class="playername">{{profileUser.nick}}</h3>
+    <h5 class="country">{{profileUser.email}}</h5>
+    <h6 class="ranking">{{profileUser.age}}<ion-chip>
+      <ion-label>2</ion-label>
+      </ion-chip>
+    </h6>
+  </div>
+  <ion-button expand="full" color="primary" (click)="editProfile()">Editar perfiles</ion-button>
+  <ion-button expand="full" color="danger" (click)="confirmDelete()">Eliminar cuenta</ion-button>
+</div>
+</ion-content>

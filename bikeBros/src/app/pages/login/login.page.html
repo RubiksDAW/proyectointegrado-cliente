@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Iniciar sesión</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="loginForm">
+    <ion-item lines="full">
+      <ion-label position="floating">Nick</ion-label>
+      <ion-input formControlName="nick" type="text" required></ion-input>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Contraseña</ion-label>
+      <ion-input formControlName="password" type="password" required></ion-input>
+    </ion-item>
+
+    <ion-row>
+      <ion-col>
+        <!-- // Con Disabled controlamos si el login ha sido rellenado de forma valida -->
+        <ion-button type="submit" color="success" expand="block" [disabled]="!loginForm.valid"  (click)="login()">Iniciar sesión</ion-button>
+        <div class="container">  <a class="small-text" [routerLink]="['/forgot-pass']">¿Has olvidado la contraseña?</a></div>
+      
+      </ion-col>
+    </ion-row>
+  </form>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar color="danger">
+    <!-- <ion-title>Inicio de sesión</ion-title> -->
+    <ion-label class="ion-padding">¿No estás registrado?</ion-label>
+    <ion-buttons slot="end">
+      
+      <ion-button [routerLink]="['/register']">Registrate</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

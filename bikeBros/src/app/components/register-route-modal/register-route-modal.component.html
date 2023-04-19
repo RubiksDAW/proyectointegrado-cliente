@@ -1,0 +1,157 @@
+<!-- <ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Nueva Ruta</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <form [formGroup]="routeForm" (ngSubmit)="submitForm()">
+    <ion-item>
+      <ion-label position="stacked">Nombre</ion-label>
+      <ion-input type="text" formControlName="name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Nivel de dificultad</ion-label>
+      <ion-select formControlName="difficulty_level">
+        <ion-select-option value="Bajo">Bajo</ion-select-option>
+        <ion-select-option value="Intermedio">Intermedio</ion-select-option>
+        <ion-select-option value="Alto">Alto</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Distancia</ion-label>
+      <ion-input type="number" formControlName="distance"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Ubicación</ion-label>
+      <ion-input type="text" formControlName="location"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Descripción</ion-label>
+      <ion-textarea formControlName="description"></ion-textarea>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Origen</ion-label>
+      <ion-input type="text" formControlName="origin"></ion-input>
+      <ion-label position="stacked">Origen</ion-label>
+      <ion-searchbar
+        [(ngModel)]="query"
+        (ionInput)="onSearchInput()"
+        placeholder="Ingrese su dirección"
+      ></ion-searchbar>
+      <ion-list>
+        <ion-item *ngFor="let place of places" (click)="onPlaceSelected(place)">
+          {{ place }}
+        </ion-item>
+      </ion-list>
+      <ion-input type="text" formControlName="origin"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Destino</ion-label>
+      <ion-input type="text" formControlName="destination"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">URL de imagen</ion-label>
+      <ion-input type="text" formControlName="imageURL"></ion-input>
+    </ion-item>
+    <ion-button class="ion-padding" type="submit" [disabled]="!routeForm.valid"
+      >Registrar</ion-button
+    >
+  </form>
+</ion-content>
+
+<ion-button (click)="lanzar()">Lanzar servicio</ion-button> -->
+<ion-header>
+  <ion-toolbar>
+    <ion-title> Registro de ruta </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="routeForm" (ngSubmit)="submitForm()">
+    <ion-item>
+      <ion-label position="floating">Nombre de la ruta</ion-label>
+      <ion-input formControlName="name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Nivel de dificultad</ion-label>
+      <ion-select formControlName="difficulty_level">
+        <ion-select-option value="Bajo">Bajo</ion-select-option>
+        <ion-select-option value="Intermedio">Intermedio</ion-select-option>
+        <ion-select-option value="Alto">Alto</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Distancia</ion-label>
+      <ion-input type="number" formControlName="distance"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Localidad</ion-label>
+      <ion-input type="string" formControlName="location"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Descripción</ion-label>
+      <ion-textarea formControlName="description"></ion-textarea>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Origen</ion-label>
+      <ion-input
+        [(ngModel)]="origin"
+        (ionInput)="onSearchInput()"
+        [ngModelOptions]="{ standalone: true }"
+      ></ion-input>
+      <ion-list *ngIf="this.originPlaces">
+        <ion-item
+          *ngFor="let origin of origins"
+          (click)="onPlaceSelect(origin)"
+        >
+          {{ origin.description }}
+        </ion-item>
+      </ion-list>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Destino</ion-label>
+      <ion-input
+        [(ngModel)]="destination"
+        (ionInput)="onSearchDestination()"
+        [ngModelOptions]="{ standalone: true }"
+      ></ion-input>
+      <ion-list *ngIf="this.destinationPlaces">
+        <ion-item
+          *ngFor="let destination of destinations"
+          (click)="onDestinationSelect(destination)"
+        >
+          {{ destination.description }}
+        </ion-item>
+      </ion-list>
+    </ion-item>
+    <!-- <ion-item>
+      <ion-label position="floating">Destino</ion-label>
+      <ion-searchbar
+        [(ngModel)]="query"
+        (ionChange)="onSearchInput()"
+        [ngModelOptions]="{ standalone: true }"
+        [placeholder]="selectedPlace ? selectedPlace : 'Destino'"
+      ></ion-searchbar>
+      <ion-list *ngIf="places.length > 0">
+        <ion-item *ngFor="let place of places" (click)="onPlaceSelect(place)">
+          {{ place.description }}
+        </ion-item>
+      </ion-list>
+    </ion-item> -->
+    <ion-item>
+      <ion-label position="floating">URL de la imagen</ion-label>
+      <ion-input formControlName="imageURL"></ion-input>
+    </ion-item>
+    <ion-button type="submit" expand="block">Registrar ruta</ion-button>
+  </form>
+</ion-content>

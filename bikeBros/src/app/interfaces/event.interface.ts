@@ -34,7 +34,7 @@
 export interface EventResponse {
   _id: string;
   ruta: Ruta | null;
-  fecha: Date;
+  fecha: Date | null;
   participantes: User[];
   maxParticipantes: number;
   __v: number;
@@ -54,7 +54,7 @@ export interface User {
 
 export interface Ruta {
   _id: string;
-  name: string;
+  name: string | null;
   difficulty_level: string;
   distance: number;
   location: string;

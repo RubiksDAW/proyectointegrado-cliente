@@ -22,6 +22,7 @@ log.txt
 /www
 /platforms
 /plugins
+/android
 
 # Compiled output
 /dist
@@ -30,6 +31,8 @@ log.txt
 /bazel-out
 
 # Node
+android/
+/android
 /node_modules
 npm-debug.log
 yarn-error.log

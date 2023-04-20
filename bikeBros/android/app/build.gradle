@@ -1,9 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
+
+    namespace 'com.bikebros.app'
     compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "io.ionic.starter"
+        applicationId "com.bikebros.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

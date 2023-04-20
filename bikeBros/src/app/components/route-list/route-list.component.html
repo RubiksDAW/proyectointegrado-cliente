@@ -34,7 +34,7 @@
   </ion-card>
 </div> -->
 <!-- De esta forma evitamos las suscripciones, en caso de que solo vaya a pintar la información y no vaya a utilizar logica con ella -->
-<p class="center">Rutas favoritas</p>
+<p class="center">Rutas disponibles</p>
 
 <ion-card *ngFor="let ruta of routes$ | async">
   <img *ngIf="ruta.imageURL; else defaultImage" src="{{ ruta.imageURL }}" />

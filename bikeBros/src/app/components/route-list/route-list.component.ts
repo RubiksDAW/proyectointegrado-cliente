@@ -37,15 +37,22 @@ export class RouteListComponent implements OnInit {
         console.log(err);
       },
     });
-    // this.routesSer.getAllRoutes().subscribe((routes)=>{
 
-    //   this.routes = routes;
-    //   console.log(routes)
-    // })
     this.routes$ = this.routesSer.getAllRoutes().pipe(
       map((res) => {
         // Aqui podemos aplicar logica para modificar el array de objetos que nos llega
-        res[0].name = 'Prueba';
+
+        // Aqui debemos seguir devolviendo un array de rutas, ya que el observable es lo que espera
+        return res;
+      })
+    );
+  }
+
+  ionViewDidEnter() {
+    this.routes$ = this.routesSer.getAllRoutes().pipe(
+      map((res) => {
+        // Aqui podemos aplicar logica para modificar el array de objetos que nos llega
+
         // Aqui debemos seguir devolviendo un array de rutas, ya que el observable es lo que espera
         return res;
       })
@@ -66,9 +73,8 @@ export class RouteListComponent implements OnInit {
   // en caso de ser admin puede borrar una ruta, sino no es posible borrarlas.
   async deleteRoute(id: string) {
     if (this.profileUser.roles.includes('ROLE_ADMIN')) {
-      console.log(id);
       this.routesSer.deleteRouteById(id);
-      console.log('hi');
+      this.ionViewDidEnter();
     } else {
       const alert = await this.alertController.create({
         header: 'Permiso denegado',

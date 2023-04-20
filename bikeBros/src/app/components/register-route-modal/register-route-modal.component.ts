@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { ModalController } from '@ionic/angular';
 import { RoutesService } from 'src/app/services/routes.service';
@@ -39,7 +40,8 @@ export class RegisterRouteModalComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private routeService: RoutesService,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -107,6 +109,7 @@ export class RegisterRouteModalComponent implements OnInit {
 
     // Aquí puedes enviar el nuevo registro al servidor
     await this.modalController.dismiss();
+    this.router.navigate([`/main/create-route`]);
   }
 
   async closeModal() {

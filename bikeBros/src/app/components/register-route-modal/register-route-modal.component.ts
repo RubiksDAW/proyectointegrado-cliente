@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { ModalController } from '@ionic/angular';
+import { AuthService } from 'src/app/services/auth.service';
 import { RoutesService } from 'src/app/services/routes.service';
 
 // Declaramos una variable global para hacer uso de los servicios de Google
@@ -37,11 +38,14 @@ export class RegisterRouteModalComponent implements OnInit {
 
   selectedDestination: any;
 
+  author: string;
+
   constructor(
     private formBuilder: FormBuilder,
     private routeService: RoutesService,
     private modalController: ModalController,
-    private router: Router
+    private router: Router,
+    private auth: AuthService
   ) {}
 
   ngOnInit() {
@@ -81,6 +85,7 @@ export class RegisterRouteModalComponent implements OnInit {
 
     const originForm = this.origin;
     const destinationForm = this.destination;
+    const author = this.auth.getProfileId();
     console.log(`Origen: ${originForm}, destino: ${destinationForm}`);
 
     this.routeService
@@ -92,7 +97,8 @@ export class RegisterRouteModalComponent implements OnInit {
         description,
         originForm,
         destinationForm,
-        imageURL
+        imageURL,
+        await author
       )
       .subscribe({
         next: (res) => {

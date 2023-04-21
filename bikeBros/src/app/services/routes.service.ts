@@ -9,7 +9,8 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class RoutesService {
-  private url = 'https://bikebrosv2.herokuapp.com';
+  // private url = 'https://bikebrosv2.herokuapp.com';
+  private url = 'http://localhost:3300';
 
   constructor(
     private http: HttpClient,
@@ -38,7 +39,8 @@ export class RoutesService {
     description: string,
     origin: string,
     destination: string,
-    imageURL: string
+    imageURL: string,
+    author: string
   ) {
     const url = `${this.url}/api/route/register`;
 
@@ -51,6 +53,7 @@ export class RoutesService {
       origin: origin,
       destination: destination,
       imageURL: imageURL,
+      author: author,
     });
   }
 
@@ -69,5 +72,20 @@ export class RoutesService {
         console.log(error);
       }
     );
+  }
+
+  async getRouteAuthorId(id: string) {
+    const url = `${this.url}/route/id/${id}`;
+
+    try {
+      const response = await fetch(url);
+
+      const data = await response.json();
+      const routeAuthorId = data.author;
+      console.log('Id del creador ' + routeAuthorId);
+      return routeAuthorId;
+    } catch (error) {
+      console.error(error);
+    }
   }
 }

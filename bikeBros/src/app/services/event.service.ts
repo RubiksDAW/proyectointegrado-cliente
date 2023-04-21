@@ -8,7 +8,9 @@ import { EventResponse } from '../interfaces/event.interface';
   providedIn: 'root',
 })
 export class EventService {
-  private url = 'https://bikebrosv2.herokuapp.com';
+  // private url = 'https://bikebrosv2.herokuapp.com';
+  private url = 'http://localhost:3300';
+
   constructor(private http: HttpClient, private router: Router) {}
 
   getAllEvents(): Observable<EventResponse[]> {
@@ -16,8 +18,26 @@ export class EventService {
   }
 
   // Los metodos que vienen a continuación no han sido probados
-  createEvent(event: EventResponse): Observable<EventResponse> {
-    return this.http.post<EventResponse>(`${this.url}/api/createEvent`, event);
+  // createEvent(event: EventResponse): Observable<EventResponse> {
+  //   return this.http.post<EventResponse>(`${this.url}/api/createEvent`, event);
+  // }
+
+  register(
+    rutaId: string,
+    fecha: Date,
+    participantes: string[],
+    maxParticipantes: number,
+    creador: string
+  ) {
+    const url = `${this.url}/api/createEvent`;
+
+    return this.http.post(url, {
+      ruta: rutaId,
+      fecha: fecha,
+      participantes: participantes,
+      maxParticipantes: maxParticipantes,
+      creador: creador,
+    });
   }
 
   updateEvent(event: EventResponse): Observable<EventResponse> {
@@ -32,7 +52,30 @@ export class EventService {
 
     return this.http.get<EventResponse>(url);
   }
-  deleteEvent(id: number): Observable<any> {
-    return this.http.delete<any>(`${this.url}/api/deleteEvent/${id}`);
+  deleteEvent(id: string) {
+    this.http.delete(`${this.url}/api/deleteEvent/${id}`).subscribe(
+      (response) => {
+        console.log(response);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+
+  async getEventAuthorId(id: string) {
+    const url = `${this.url}/api/events/id/${id}`;
+
+    try {
+      const response = await fetch(url);
+
+      const data = await response.json();
+      console.log(data);
+      const eventAuthorId = data.creador;
+      console.log('Id del creador ' + eventAuthorId);
+      return eventAuthorId;
+    } catch (error) {
+      console.error(error);
+    }
   }
 }

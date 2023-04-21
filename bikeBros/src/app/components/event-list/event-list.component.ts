@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { EventResponse } from 'src/app/interfaces/event.interface';
 import { AuthService } from 'src/app/services/auth.service';
@@ -18,7 +19,8 @@ export class EventListComponent implements OnInit {
     private eventService: EventService,
     private router: Router,
     private auth: AuthService,
-    private http: HttpClient
+    private http: HttpClient,
+    private alertController: AlertController
   ) {}
 
   ngOnInit() {
@@ -34,10 +36,18 @@ export class EventListComponent implements OnInit {
     });
 
     this.events$ = this.http.get<EventResponse[]>(
-      'https://bikebrosv2.herokuapp.com/api/getAllEvents'
+      'http://localhost:3300/api/getAllEvents'
+      // 'https://bikebrosv2.herokuapp.com/api/getAllEvents'
     );
 
     console.log(this.events$);
+  }
+
+  ionViewDidEnter() {
+    this.events$ = this.http.get<EventResponse[]>(
+      'http://localhost:3300/api/getAllEvents'
+      // 'https://bikebrosv2.herokuapp.com/api/getAllEvents'
+    );
   }
   // Habiendo guardado el usuario actual en el current user podemos obtener la id para pasarla como parametro
   // al metodo que crearemos para apuntar usuarios a un evento, al igual que al de desapuntarlos.
@@ -57,7 +67,29 @@ export class EventListComponent implements OnInit {
     // implementa la lógica para editar un evento
   }
 
-  deleteEvent(event: Event) {
-    // implementa la lógica para eliminar un evento
+  async deleteEvent(id: string) {
+    const authorEventId = await this.eventService.getEventAuthorId(id);
+    // Controlamos que solo pueda borrar la ruta el usuario creador o un administrador
+    if (
+      this.currentUser.roles.includes('ROLE_ADMIN') ||
+      this.currentUser.id == authorEventId
+    ) {
+      this.eventService.deleteEvent(id);
+      this.ionViewDidEnter();
+    } else {
+      const alert = await this.alertController.create({
+        header: 'Permiso denegado',
+        message: 'Solo el creador o un Administrador pueden borrar el evento',
+        buttons: [
+          {
+            text: 'Aceptar',
+            role: 'cancel',
+            cssClass: 'secondary',
+          },
+        ],
+      });
+
+      await alert.present();
+    }
   }
 }

@@ -72,13 +72,18 @@ export class RouteListComponent implements OnInit {
   // En este metodo hacemos la comprobación previa de los roles que tiene el usuario actual,
   // en caso de ser admin puede borrar una ruta, sino no es posible borrarlas.
   async deleteRoute(id: string) {
-    if (this.profileUser.roles.includes('ROLE_ADMIN')) {
+    const authorRouteId = await this.routesSer.getRouteAuthorId(id);
+    // Controlamos que solo pueda borrar la ruta el usuario creador o un administrador
+    if (
+      this.profileUser.roles.includes('ROLE_ADMIN') ||
+      this.profileUser.id == authorRouteId
+    ) {
       this.routesSer.deleteRouteById(id);
       this.ionViewDidEnter();
     } else {
       const alert = await this.alertController.create({
         header: 'Permiso denegado',
-        message: 'Inicia sesión como Administrador para borrar una ruta',
+        message: 'Solo el creador o un Administrador pueden borrar la ruta',
         buttons: [
           {
             text: 'Aceptar',
@@ -90,6 +95,9 @@ export class RouteListComponent implements OnInit {
 
       await alert.present();
     }
-    this.routesSer.deleteRouteById(id);
+  }
+
+  showId() {
+    this.auth.getProfileId();
   }
 }

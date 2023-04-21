@@ -35,7 +35,7 @@ export interface EventResponse {
   _id: string;
   ruta: Ruta | null;
   fecha: Date | null;
-  participantes: User[];
+  participantes: User[] | null;
   maxParticipantes: number;
   __v: number;
 }

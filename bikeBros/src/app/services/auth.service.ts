@@ -9,7 +9,8 @@ import { Observable } from 'rxjs';
 export class AuthService {
   constructor(private http: HttpClient, private router: Router) {}
 
-  private url = 'https://bikebrosv2.herokuapp.com';
+  // private url = 'https://bikebrosv2.herokuapp.com';
+  private url = 'http://localhost:3300';
   headers = new HttpHeaders().set('Content-Type', 'application/json');
   currentUser = {};
 
@@ -163,5 +164,31 @@ export class AuthService {
     localStorage.removeItem('token');
     localStorage.removeItem('nick');
     localStorage.removeItem('password');
+  }
+
+  // Este metodo lo utilizaremos para conocer la id del usuario que se encuentra actualmente logeado
+  // y poder comprobar si es el autor tanto del evento como de la ruta para que pueda o no borrarlos. Así
+  // como añadir esta id a la hora de crear eventos y rutas.
+  async getProfileId() {
+    console.log('me llaman');
+    const nick = localStorage.getItem('nick');
+    const url = `${this.url}/api/auth/verify/${nick}`;
+
+    try {
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        throw new Error('Error al obtener la respuesta de la solicitud');
+      } else {
+      }
+
+      const data = await response.json();
+      console.log(data._id);
+      const profileId = data._id;
+
+      return profileId;
+    } catch (error) {
+      console.error(error);
+    }
   }
 }

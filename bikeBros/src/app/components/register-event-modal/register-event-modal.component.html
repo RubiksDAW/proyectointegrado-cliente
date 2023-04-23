@@ -25,7 +25,14 @@
 
     <ion-item>
       <ion-label position="floating">Fecha</ion-label>
-      <ion-input formControlName="fecha" type="date" required></ion-input>
+      <ion-datetime
+        formControlName="fecha"
+        display-format="DD/MM/YYYY"
+        picker-format="DD/MM/YYYY"
+        locale="es"
+        required
+      >
+      </ion-datetime>
     </ion-item>
 
     <ion-item>

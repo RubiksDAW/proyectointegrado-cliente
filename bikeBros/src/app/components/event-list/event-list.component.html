@@ -11,19 +11,18 @@
     </ion-card-title>
   </ion-card-header>
   <ion-card-content>
-    <ion-card-subtitle>Fecha del evento: {{ event.fecha }}</ion-card-subtitle>
     <ion-card-subtitle
-      >Numero de participantes: {{ event.participantes?.length }}/{{
-        event.maxParticipantes
+      >Fecha del evento:{{
+        event.fecha | date : " dd/MM/yyyy"
       }}</ion-card-subtitle
     >
+
     <ion-card-subtitle *ngIf="event.ruta">{{
       event.ruta.description
     }}</ion-card-subtitle>
     <ion-button (click)="setIdEvent(event._id)" (click)="checkEvent(event._id)"
       >Ver evento</ion-button
     >
-    <ion-button (click)="printId()">Inscribirme</ion-button>
     <ion-button (click)="deleteEvent(event._id)">Borrar</ion-button>
   </ion-card-content>
 </ion-card>

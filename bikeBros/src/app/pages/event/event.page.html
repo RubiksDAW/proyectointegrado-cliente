@@ -15,11 +15,15 @@
       <ion-card-subtitle>
         {{ currentEvent?.ruta?.location }}
       </ion-card-subtitle>
+      <ion-card-subtitle
+        >Numero de participantes: {{ currentEvent?.participantes?.length }}/{{
+        currentEvent?.maxParticipantes }}</ion-card-subtitle
+      >
     </ion-card-header>
 
     <ion-card-content>
       <p>Descripción ruta: {{ currentEvent?.ruta?.description }}</p>
-      <p>Fecha: {{ currentEvent?.fecha | date }}</p>
+      <p>Fecha: {{ currentEvent?.fecha | date:'dd/MM/yyyy HH:mm' }}</p>
       <p>Participantes:</p>
       <ion-list>
         <ion-item *ngFor="let participante of currentEvent?.participantes">
@@ -27,5 +31,13 @@
         </ion-item>
       </ion-list>
     </ion-card-content>
+
+    <!-- <ion-button (click)="joinEvent()">Inscribirme</ion-button> -->
+    <ion-button *ngIf="!assist" (click)="joinEvent()" color="success"
+      >Apuntarse al evento</ion-button
+    >
+    <ion-button *ngIf="assist" (click)="leftEvent()" color="danger">
+      Desapuntarse del evento
+    </ion-button>
   </ion-card>
 </ion-content>

@@ -78,4 +78,43 @@ export class EventService {
       console.error(error);
     }
   }
+
+  registerUser(eventId: string, userId: string) {
+    this.http
+      .post(`${this.url}/api/events/register`, { eventId, userId })
+      .subscribe(
+        (response) => {
+          console.log(response);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  }
+
+  unregisterUser(eventId: string, userId: string) {
+    this.http
+      .post(`${this.url}/api/events/unregister`, { eventId, userId })
+      .subscribe(
+        (response) => {
+          console.log(response);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  }
+
+  checkUserParticipation(eventId: string, userId: string) {
+    this.http
+      .get(`${this.url}/${eventId}/checkParticipation/${userId}`)
+      .subscribe(
+        (response) => {
+          console.log(response);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  }
 }

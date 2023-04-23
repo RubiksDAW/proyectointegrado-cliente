@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { Observable, map } from 'rxjs';
 import { Route } from 'src/app/interfaces/route.interface';
 import { AuthService } from 'src/app/services/auth.service';
@@ -20,7 +20,8 @@ export class RegisterEventModalComponent implements OnInit {
     private routes: RoutesService,
     private modalController: ModalController,
     private auth: AuthService,
-    private events: EventService
+    private events: EventService,
+    private alertController: AlertController
   ) {}
 
   ngOnInit() {
@@ -40,10 +41,32 @@ export class RegisterEventModalComponent implements OnInit {
     });
   }
 
+  // async onSubmit() {
+  //   const { rutaId, fecha, maxParticipantes } = this.eventForm.value;
+
+  //   const creador = await this.auth.getProfileId();
+
+  //   this.events
+  //     .register(rutaId, fecha, [], maxParticipantes, creador)
+  //     .subscribe({
+  //       next: (res) => {
+  //         console.log(res);
+  //       },
+  //       error: (err) => {
+  //         console.log(err);
+  //       },
+  //     });
+
+  //   this.closeModal();
+  // }
   async onSubmit() {
     const { rutaId, fecha, maxParticipantes } = this.eventForm.value;
-
     const creador = await this.auth.getProfileId();
+
+    const fechaValida = await this.fechaValida();
+    if (fechaValida?.fechaInvalida) {
+      return;
+    }
 
     this.events
       .register(rutaId, fecha, [], maxParticipantes, creador)
@@ -55,9 +78,37 @@ export class RegisterEventModalComponent implements OnInit {
           console.log(err);
         },
       });
+
+    this.closeModal();
   }
 
   async closeModal() {
     await this.modalController.dismiss();
+  }
+
+  // Con este metodo controlamos que el usuario no establezca una fecha para el evento
+  // anterior a la fecha actual.
+  async fechaValida() {
+    const fechaActual = new Date();
+    const fechaSeleccionada = new Date(this.eventForm.controls['fecha'].value);
+
+    if (fechaSeleccionada < fechaActual) {
+      const alert = await this.alertController.create({
+        header: 'Fecha incorrecta',
+        message: 'No puedes establecer una fecha anterior al día de hoy',
+        buttons: [
+          {
+            text: 'Aceptar',
+            role: 'cancel',
+            cssClass: 'secondary',
+          },
+        ],
+      });
+
+      await alert.present();
+      return { fechaInvalida: true };
+    }
+
+    return null;
   }
 }

@@ -12,5 +12,6 @@ export interface Route {
   origin: string;
   destination: string;
   imageURL: string;
+  author: string;
   __v: number;
 }

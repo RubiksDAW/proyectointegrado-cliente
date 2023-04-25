@@ -17,6 +17,7 @@ import { AuthGuard } from './guards/auth.guard';
     AppRoutingModule,
     HttpClientModule,
   ],
+
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     AuthGuard,

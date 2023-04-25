@@ -36,8 +36,8 @@ export class EventListComponent implements OnInit {
     });
 
     this.events$ = this.http.get<EventResponse[]>(
-      'http://localhost:3300/api/getAllEvents'
-      // 'https://bikebrosv2.herokuapp.com/api/getAllEvents'
+      // 'http://localhost:3300/api/getAllEvents'
+      'https://bikebrosv2.herokuapp.com/api/getAllEvents'
     );
 
     console.log(this.events$);

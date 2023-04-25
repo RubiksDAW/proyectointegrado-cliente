@@ -9,8 +9,8 @@ import { Observable } from 'rxjs';
 export class AuthService {
   constructor(private http: HttpClient, private router: Router) {}
 
-  // private url = 'https://bikebrosv2.herokuapp.com';
-  private url = 'http://localhost:3300';
+  private url = 'https://bikebrosv2.herokuapp.com';
+  // private url = 'http://localhost:3300';
   headers = new HttpHeaders().set('Content-Type', 'application/json');
   currentUser = {};
 
@@ -179,7 +179,6 @@ export class AuthService {
 
       if (!response.ok) {
         throw new Error('Error al obtener la respuesta de la solicitud');
-      } else {
       }
 
       const data = await response.json();

@@ -17,6 +17,7 @@ export class RouteListComponent implements OnInit {
   //Esto es un observable, cuando lleva un dollar
   routes$: Observable<Route[]>;
   profileUser: any;
+  roles: string[];
   constructor(
     private routesSer: RoutesService,
     private router: Router,
@@ -30,8 +31,9 @@ export class RouteListComponent implements OnInit {
         console.log(response);
         // guardo el objeto entero en profileUser para poder mostrarlo en la vista
         this.profileUser = response;
-
+        this.roles = this.profileUser.roles;
         console.log(this.profileUser.roles);
+        console.log(this.roles);
       },
       error: (err) => {
         console.log(err);

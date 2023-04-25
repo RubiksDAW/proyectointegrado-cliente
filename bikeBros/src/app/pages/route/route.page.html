@@ -7,7 +7,12 @@
   </ion-toolbar>
 </ion-header>
 
+<ion-content>
+  <!-- Recuerda: has tenido que añadir CUSTOM_SCHEMAS al app.module y a route.module para poder cargar el componente-->
+  <input-comment-component></input-comment-component>
+</ion-content>
 <div id="map"></div>
+
 <ion-button type="button" (click)="toggleIndicators()"
   >Mostrar / ocultar indicaciones</ion-button
 >

@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { ConfirmDeleteAccountComponent } from './confirm-delete-account/confirm-delete-account.component';
 import { EventListComponent } from './event-list/event-list.component';
+import { InputCommentComponent } from './input-comment/input-comment.component';
 import { RegisterEventModalComponent } from './register-event-modal/register-event-modal.component';
 import { RegisterRouteModalComponent } from './register-route-modal/register-route-modal.component';
 import { RouteListComponent } from './route-list/route-list.component';
@@ -17,6 +18,7 @@ import { RouteMapComponent } from './route-map/route-map.component';
     RouteMapComponent,
     EventListComponent,
     RegisterEventModalComponent,
+    InputCommentComponent,
   ],
   imports: [CommonModule, ReactiveFormsModule, IonicModule, FormsModule],
   exports: [
@@ -25,6 +27,8 @@ import { RouteMapComponent } from './route-map/route-map.component';
     RouteListComponent,
     RouteMapComponent,
     EventListComponent,
+    RegisterEventModalComponent,
+    InputCommentComponent,
   ],
 })
 export class ComponentsModule {}

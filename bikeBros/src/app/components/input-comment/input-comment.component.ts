@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth.service';
+import { CommentsService } from 'src/app/services/comments.service';
 
 @Component({
   selector: 'app-input-comment',
@@ -7,16 +9,30 @@ import { FormGroup } from '@angular/forms';
   styleUrls: ['./input-comment.component.scss'],
 })
 export class InputCommentComponent implements OnInit {
+  @Input() routeId: string;
   commentForm: FormGroup;
-  constructor() {}
+
+  constructor(
+    private comment: CommentsService,
+    private formBuilder: FormBuilder,
+    private auth: AuthService
+  ) {}
 
   ngOnInit() {
+    this.commentForm = this.formBuilder.group({
+      comment: [''],
+    });
+
     console.log(
       'El componente InputCommentComponent se ha renderizado correctamente.'
     );
   }
 
-  addComment() {
-    console.log('Comentario añadido');
+  async onSubmit() {
+    const { comment } = this.commentForm.value;
+    const authorId = await this.auth.getProfileId();
+    const authorNick = await this.auth.getUserById(authorId);
+    this.comment.addComment(this.routeId, comment, authorId, authorNick);
+    this.commentForm.reset();
   }
 }

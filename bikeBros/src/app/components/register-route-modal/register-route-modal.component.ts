@@ -62,16 +62,7 @@ export class RegisterRouteModalComponent implements OnInit {
   }
 
   async submitForm() {
-    // const name = this.routeForm.get('name')?.value;
-    // const difficulty_level = this.routeForm.get('difficulty_level')?.value;
-    // const distance = this.routeForm.get('distance')?.value;
-    // const location = this.routeForm.get('location')?.value;
-    // const description = this.routeForm.get('description')?.value;
-    // const origin = this.routeForm.get('origin')?.value;
-    // const destination = this.routeForm.get('destination')?.value;
-    // const imageURL = this.routeForm.get('imageURL')?.value;
-
-    // Desestructurar los valores para
+    // Desestructuraramos los valores que nos llevan a través del formulario
     const {
       name,
       difficulty_level,

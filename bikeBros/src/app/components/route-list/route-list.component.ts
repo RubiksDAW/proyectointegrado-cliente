@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { Observable, map } from 'rxjs';
+import { Comment } from 'src/app/interfaces/comment.interface';
 import { AuthService } from 'src/app/services/auth.service';
+import { CommentsService } from 'src/app/services/comments.service';
 import { RoutesService } from 'src/app/services/routes.service';
 import { Route } from '../../interfaces/route.interface';
 
@@ -16,13 +18,18 @@ export class RouteListComponent implements OnInit {
 
   //Esto es un observable, cuando lleva un dollar
   routes$: Observable<Route[]>;
+  comments: Comment[];
   profileUser: any;
   roles: string[];
+  showComment: boolean;
+  commentStatus: { [routeId: string]: boolean } = {};
+
   constructor(
     private routesSer: RoutesService,
     private router: Router,
     private auth: AuthService,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private comment: CommentsService
   ) {}
 
   ngOnInit() {
@@ -101,5 +108,9 @@ export class RouteListComponent implements OnInit {
 
   showId() {
     this.auth.getProfileId();
+  }
+
+  toggleComment(routeId: string) {
+    this.commentStatus[routeId] = !this.commentStatus[routeId];
   }
 }

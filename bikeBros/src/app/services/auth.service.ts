@@ -190,4 +190,24 @@ export class AuthService {
       console.error(error);
     }
   }
+
+  async getUserById(userId: string) {
+    const url = `${this.url}/user/${userId}`;
+
+    try {
+      const user = await fetch(url);
+
+      if (!user.ok) {
+        throw new Error('Error al obtener la respuesta de la solicitud');
+      }
+
+      const data = await user.json();
+      console.log(data.nick);
+      const userNick = data.nick;
+
+      return userNick;
+    } catch (error) {
+      console.error(error);
+    }
+  }
 }

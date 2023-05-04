@@ -1,0 +1,17 @@
+<ion-card>
+  <ion-card-header>
+    <ion-card-title>Comentarios</ion-card-title>
+  </ion-card-header>
+
+  <ion-list *ngIf="comments">
+    <ion-item *ngFor="let comment of comments">
+      <ion-label text-wrap>
+        <p>{{ comment.authorNick }}</p>
+        <h2>{{ comment.content }}</h2>
+        <p>ID: {{ comment._id }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-text *ngIf="comments.length === 0">No hay comentarios.</ion-text>
+</ion-card>

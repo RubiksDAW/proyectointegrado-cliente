@@ -13,5 +13,6 @@ export interface Route {
   destination: string;
   imageURL: string;
   author: string;
+  comments: Comment[] | null;
   __v: number;
 }

@@ -24,8 +24,12 @@
       (click)="deleteRoute(ruta._id)"
       >Delete route</ion-button
     >
-    <ion-button (click)="showId()">Show id</ion-button>
+    <ion-button (click)="toggleComment(ruta._id)">
+      {{ commentStatus[ruta._id] ? "Ocultar" : "Comentar" }}
+    </ion-button>
+    <div id="comment" [hidden]="!commentStatus[ruta._id]">
+      <app-input-comment [routeId]="ruta._id"></app-input-comment>
+      <app-box-comments [routeId]="ruta._id"></app-box-comments>
+    </div>
   </ion-card-content>
 </ion-card>
-
-<div></div>

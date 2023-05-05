@@ -1,56 +1,36 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-
-import { HttpClient } from '@angular/common/http'; // Importa HttpClient para realizar la solicitud de carga de archivos
 import { ModalController } from '@ionic/angular';
-import { AuthService } from 'src/app/services/auth.service';
 import { RoutesService } from 'src/app/services/routes.service';
 
-// Declaramos una variable global para hacer uso de los servicios de Google
 declare let google: any;
 
 @Component({
-  selector: 'app-register-route-modal',
-  templateUrl: './register-route-modal.component.html',
-  styleUrls: ['./register-route-modal.component.scss'],
+  selector: 'app-edit-route-modal',
+  templateUrl: './edit-route-modal.component.html',
+  styleUrls: ['./edit-route-modal.component.scss'],
 })
-export class RegisterRouteModalComponent implements OnInit {
-  // Nuestro formulario de registro
+export class EditRouteModalComponent implements OnInit {
   routeForm: FormGroup;
-  // Consulta del Origen
   queryOrigin: string;
-
   queryDestination: string;
-
   destinationPlaces: boolean = false;
-
   originPlaces: boolean = false;
-
   origins: any = [];
-
   destinations: any = [];
-
   destination: string;
-
   origin: string;
-
   selectedOrigin: any;
-
   selectedDestination: any;
-
   author: string;
-
-  // Variable para almacenar las imágenes seleccionadas
   images: File[] = [];
+
+  routeId: string; // Nuevo campo para almacenar el ID de la ruta
 
   constructor(
     private formBuilder: FormBuilder,
     private routeService: RoutesService,
-    private modalController: ModalController,
-    private router: Router,
-    private auth: AuthService,
-    private http: HttpClient
+    private modalController: ModalController
   ) {}
 
   ngOnInit() {
@@ -64,29 +44,44 @@ export class RegisterRouteModalComponent implements OnInit {
       destination: ['', Validators.required],
       images: [null],
     });
+
+    const id = localStorage.getItem('id');
+    if (id !== null) {
+      this.routeId = id;
+    } else {
+      // Manejar el caso en el que el valor sea nulo
+    }
+    // Obtener el ID de la ruta de la URL
+
+    // Cargar los datos de la ruta existente
+    this.routeService.getRouteById(this.routeId).subscribe((route) => {
+      console.log(route);
+      this.routeForm.patchValue({
+        name: route.name,
+        difficulty_level: route.difficulty_level,
+        distance: route.distance,
+        location: route.location,
+        description: route.description,
+        origin: route.origin,
+        destination: route.destination,
+        images: route.images,
+      });
+    });
   }
 
-  async submitForm() {
-    // Desestructuraramos los valores que nos llevan a través del formulario
-    const {
-      name,
-      difficulty_level,
-      distance,
-      location,
-      description,
-      origin,
-      destination,
-      imageURL,
-    } = this.routeForm.value;
+  submitForm() {
+    const id = this.routeId;
+    const name = this.routeForm.controls['name'].value;
+    const difficulty_level = this.routeForm.get('difficulty_level')?.value;
+    const distance = this.routeForm.get('distance')?.value;
+    const location = this.routeForm.get('location')?.value;
+    const description = this.routeForm.get('description')?.value;
+    const originForm = this.routeForm.get('origin')?.value;
+    const destinationForm = this.routeForm.get('destination')?.value;
 
-    const originForm = this.origin;
-    const destinationForm = this.destination;
-    const author = this.auth.getProfileId();
-
-    // Probando a implementar Multer
     const formData = new FormData();
 
-    // Agrega los demás campos al objeto FormData
+    formData.append('_id', id);
     formData.append('name', name);
     formData.append('difficulty_level', difficulty_level);
     formData.append('distance', distance);
@@ -95,58 +90,22 @@ export class RegisterRouteModalComponent implements OnInit {
     formData.append('origin', originForm);
     formData.append('destination', destinationForm);
 
-    // Agrega las imágenes al objeto FormData
+    // Agrega las imágenes al objeto FormData solo si se han seleccionado
     for (let i = 0; i < this.images.length; i++) {
       formData.append('images', this.images[i]);
     }
 
-    formData.append('author', await author);
-    console.log(`Origen: ${originForm}, destino: ${destinationForm}`);
-
-    this.routeService.register(formData).subscribe({
-      next: (res) => {
+    this.routeService.editRoute(formData, id).subscribe(
+      (res) => {
         console.log(res);
+        // Realiza las acciones necesarias después de editar la ruta exitosamente
+        this.closeModal();
       },
-      error: (err) => {
-        console.log(err);
-      },
-    });
-
-    await this.modalController.dismiss();
-    this.router.navigate(['/main/create-route']);
-  }
-  // Codigo original antes de Multer
-  // this.routeService
-  //   .register(
-  //     name,
-  //     difficulty_level,
-  //     distance,
-  //     location,
-  //     description,
-  //     originForm,
-  //     destinationForm,
-  //     imageURL,
-  //     await author
-  //   )
-  //   .subscribe({
-  //     next: (res) => {
-  //       console.log(res);
-  //     },
-  //     error: (err) => {
-  //       console.log(err);
-  //     },
-  //   });
-  // OBLIGATORIO HACER LA LLAMADA A SUSCRIBE
-
-  // this.routeService.register2()
-  // this.modalController.dismiss()
-
-  // Aquí puedes enviar el nuevo registro al servidor
-  // await this.modalController.dismiss();
-  // this.router.navigate([`/main/create-route`]);
-
-  async closeModal() {
-    await this.modalController.dismiss();
+      (err) => {
+        console.error(err);
+        // Realiza las acciones necesarias en caso de error
+      }
+    );
   }
 
   //Busqueda con Places
@@ -217,5 +176,9 @@ export class RegisterRouteModalComponent implements OnInit {
     for (let i = 0; i < files.length; i++) {
       this.images.push(files[i]);
     }
+  }
+
+  async closeModal() {
+    await this.modalController.dismiss();
   }
 }

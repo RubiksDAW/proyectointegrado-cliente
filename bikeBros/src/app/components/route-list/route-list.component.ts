@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { Observable, map } from 'rxjs';
 import { Comment } from 'src/app/interfaces/comment.interface';
 import { AuthService } from 'src/app/services/auth.service';
 import { CommentsService } from 'src/app/services/comments.service';
 import { RoutesService } from 'src/app/services/routes.service';
 import { Route } from '../../interfaces/route.interface';
+import { EditRouteModalComponent } from '../edit-route-modal/edit-route-modal.component';
 
 @Component({
   selector: 'app-route-list',
@@ -18,7 +19,7 @@ export class RouteListComponent implements OnInit {
 
   //Esto es un observable, cuando lleva un dollar
   routes$: Observable<Route[]>;
-  comments: Comment[];
+  comments: Comment[] = [];
   profileUser: any;
   roles: string[];
   showComment: boolean;
@@ -29,7 +30,8 @@ export class RouteListComponent implements OnInit {
     private router: Router,
     private auth: AuthService,
     private alertController: AlertController,
-    private comment: CommentsService
+    private comment: CommentsService,
+    private modal: ModalController
   ) {}
 
   ngOnInit() {
@@ -38,6 +40,7 @@ export class RouteListComponent implements OnInit {
         console.log(response);
         // guardo el objeto entero en profileUser para poder mostrarlo en la vista
         this.profileUser = response;
+        // console.log(response);
         this.roles = this.profileUser.roles;
         console.log(this.profileUser.roles);
         console.log(this.roles);
@@ -50,7 +53,7 @@ export class RouteListComponent implements OnInit {
     this.routes$ = this.routesSer.getAllRoutes().pipe(
       map((res) => {
         // Aqui podemos aplicar logica para modificar el array de objetos que nos llega
-
+        console.log(res);
         // Aqui debemos seguir devolviendo un array de rutas, ya que el observable es lo que espera
         return res;
       })
@@ -112,5 +115,12 @@ export class RouteListComponent implements OnInit {
 
   toggleComment(routeId: string) {
     this.commentStatus[routeId] = !this.commentStatus[routeId];
+  }
+
+  async showRouteEditModal() {
+    const modal = await this.modal.create({
+      component: EditRouteModalComponent,
+    });
+    return await modal.present();
   }
 }

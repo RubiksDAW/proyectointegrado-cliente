@@ -22,10 +22,6 @@ export class InputCommentComponent implements OnInit {
     this.commentForm = this.formBuilder.group({
       comment: [''],
     });
-
-    console.log(
-      'El componente InputCommentComponent se ha renderizado correctamente.'
-    );
   }
 
   async onSubmit() {
@@ -34,5 +30,6 @@ export class InputCommentComponent implements OnInit {
     const authorNick = await this.auth.getUserById(authorId);
     this.comment.addComment(this.routeId, comment, authorId, authorNick);
     this.commentForm.reset();
+    this.ngOnInit();
   }
 }

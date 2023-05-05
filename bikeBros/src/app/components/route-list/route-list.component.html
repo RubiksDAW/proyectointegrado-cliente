@@ -1,10 +1,14 @@
-<p class="center">Rutas disponibles</p>
-
 <ion-card *ngFor="let ruta of routes$ | async">
-  <img *ngIf="ruta.imageURL; else defaultImage" src="{{ ruta.imageURL }}" />
-  <ng-template #defaultImage>
-    <img src="https://ionicframework.com/docs/img/demos/card-media.png" />
-  </ng-template>
+  <ion-slides>
+    <ion-slide *ngFor="let imageURL of ruta.images">
+      <div class="image-container">
+        <img
+          class="img"
+          src="{{ 'http://localhost:3300/uploads/' + imageURL }}"
+        />
+      </div>
+    </ion-slide>
+  </ion-slides>
 
   <ion-card-header>
     <ion-card-title>{{ ruta.name }}</ion-card-title>
@@ -20,9 +24,15 @@
     >
 
     <ion-button
-      *ngIf="ruta.author == profileUser.id || roles.includes('ROLE_ADMIN')"
+      *ngIf="ruta.author == profileUser?.id || roles?.includes('ROLE_ADMIN')"
       (click)="deleteRoute(ruta._id)"
       >Delete route</ion-button
+    >
+    <ion-button
+      *ngIf="ruta.author == profileUser?.id || roles?.includes('ROLE_ADMIN')"
+      (click)="showRouteEditModal()"
+      (click)="setIdRoute(ruta._id)"
+      >Editar route</ion-button
     >
     <ion-button (click)="toggleComment(ruta._id)">
       {{ commentStatus[ruta._id] ? "Ocultar" : "Comentar" }}

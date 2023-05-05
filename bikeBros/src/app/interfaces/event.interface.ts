@@ -37,6 +37,7 @@ export interface EventResponse {
   fecha: Date | null;
   participantes: User[] | null;
   maxParticipantes: number;
+  creator: string;
   __v: number;
 }
 
@@ -61,6 +62,6 @@ export interface Ruta {
   description: string;
   origin: string;
   destination: string;
-  imageURL: string;
+  images: string;
   __v: number;
 }

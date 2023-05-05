@@ -9,7 +9,17 @@
 
 <ion-content>
   <ion-card>
-    <img [src]="currentEvent?.ruta?.imageURL" alt="Imagen de la ruta" />
+    <ion-slides>
+      <ion-slide *ngFor="let imageURL of currentEvent?.ruta?.images">
+        <div class="image-container">
+          <img
+            class="img"
+            [src]="'http://localhost:3300/uploads/' + imageURL"
+            alt="Imagen de la ruta"
+          />
+        </div>
+      </ion-slide>
+    </ion-slides>
     <ion-card-header>
       <ion-card-title> {{ currentEvent?.ruta?.name }} </ion-card-title>
       <ion-card-subtitle>
@@ -19,7 +29,6 @@
         >Numero de participantes: {{ currentEvent?.participantes?.length }}/{{
         currentEvent?.maxParticipantes }}</ion-card-subtitle
       >
-      
     </ion-card-header>
 
     <ion-card-content>

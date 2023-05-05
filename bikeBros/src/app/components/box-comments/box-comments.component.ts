@@ -24,9 +24,9 @@ export class BoxCommentsComponent implements OnInit {
     this.comment
       .getRouteComments(this.routeId)
       .then(async (res) => {
-        console.log(res);
+        // console.log(res);
         this.comments = res;
-        console.log(this.comments);
+        // console.log(this.comments);
       })
       .catch((err) => {
         console.log(err);

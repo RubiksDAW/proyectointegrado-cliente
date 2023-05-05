@@ -9,8 +9,8 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class RoutesService {
-  private url = 'https://bikebrosv2.herokuapp.com';
-  // private url = 'http://localhost:3300';
+  // private url = 'https://bikebrosv2.herokuapp.com';
+  private url = 'http://localhost:3300';
 
   constructor(
     private http: HttpClient,
@@ -31,30 +31,36 @@ export class RoutesService {
     return this.http.get<Route>(url);
   }
 
-  register(
-    name: string,
-    difficulty_level: string,
-    distance: number,
-    location: string,
-    description: string,
-    origin: string,
-    destination: string,
-    imageURL: string,
-    author: string
-  ) {
-    const url = `${this.url}/api/route/register`;
+  // Antes de implementar multer
+  // register(
+  //   name: string,
+  //   difficulty_level: string,
+  //   distance: number,
+  //   location: string,
+  //   description: string,
+  //   origin: string,
+  //   destination: string,
+  //   imageURL: string,
+  //   author: string
+  // ) {
+  //   const url = `${this.url}/api/route/register`;
 
-    return this.http.post(url, {
-      name: name,
-      difficulty_level: difficulty_level,
-      distance: distance,
-      location: location,
-      description: description,
-      origin: origin,
-      destination: destination,
-      imageURL: imageURL,
-      author: author,
-    });
+  //   return this.http.post(url, {
+  //     name: name,
+  //     difficulty_level: difficulty_level,
+  //     distance: distance,
+  //     location: location,
+  //     description: description,
+  //     origin: origin,
+  //     destination: destination,
+  //     imageURL: imageURL,
+  //     author: author,
+  //   });
+  // }
+
+  register(formData: FormData) {
+    const url = `${this.url}/api/route/register`;
+    return this.http.post(url, formData);
   }
 
   getIdRoute() {
@@ -87,5 +93,11 @@ export class RoutesService {
     } catch (error) {
       console.error(error);
     }
+  }
+
+  editRoute(formData: FormData, id: string) {
+    const url = `${this.url}/route/${id}/modify`;
+
+    return this.http.put(url, formData);
   }
 }

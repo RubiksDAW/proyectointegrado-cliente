@@ -10,12 +10,16 @@
   <ion-content>
     <div *ngIf="selectedPage === 'rutas'">
       <!-- Contenido de la página de rutas -->
-      <ion-button (click)="showRouteRegisterModal()">Crear Ruta</ion-button>
+      <ion-button class="create" (click)="showRouteRegisterModal()"
+        >Crear Ruta</ion-button
+      >
       <app-route-list></app-route-list>
     </div>
     <div *ngIf="selectedPage === 'eventos'">
       <!-- Contenido de la página de eventos -->
-      <ion-button (click)="showEventRegisterModal()">Crear Evento</ion-button>
+      <ion-button class="create" (click)="showEventRegisterModal()"
+        >Crear Evento</ion-button
+      >
       <app-event-list></app-event-list>
     </div>
   </ion-content>

@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title> Registro de ruta </ion-title>
+    <ion-title> Modificar datos de la ruta </ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="closeModal()">
         <ion-icon slot="icon-only" name="close"></ion-icon>
@@ -37,12 +37,20 @@
       <ion-label position="floating">Descripción</ion-label>
       <ion-textarea formControlName="description"></ion-textarea>
     </ion-item>
+    <!-- <ion-item>
+      <ion-label position="floating">Origen</ion-label>
+      <ion-textarea formControlName="origin"></ion-textarea>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Destino</ion-label>
+      <ion-textarea formControlName="destination"></ion-textarea>
+    </ion-item> -->
     <ion-item>
       <ion-label position="floating">Origen</ion-label>
       <ion-input
         [(ngModel)]="origin"
         (ionInput)="onSearchInput()"
-        [ngModelOptions]="{ standalone: true }"
+        formControlName="origin"
       ></ion-input>
       <ion-list *ngIf="this.originPlaces">
         <ion-item
@@ -58,7 +66,7 @@
       <ion-input
         [(ngModel)]="destination"
         (ionInput)="onSearchDestination()"
-        [ngModelOptions]="{ standalone: true }"
+        formControlName="destination"
       ></ion-input>
       <ion-list *ngIf="this.destinationPlaces">
         <ion-item
@@ -78,6 +86,8 @@
         accept="image/*"
       />
     </ion-item>
-    <ion-button type="submit" expand="block">Registrar ruta</ion-button>
+    <ion-button type="submit" expand="block"
+      >Guardar ruta modififcada</ion-button
+    >
   </form>
 </ion-content>

@@ -11,7 +11,7 @@ export interface Route {
   description: string;
   origin: string;
   destination: string;
-  imageURL: string;
+  images: string[];
   author: string;
   comments: Comment[] | null;
   __v: number;

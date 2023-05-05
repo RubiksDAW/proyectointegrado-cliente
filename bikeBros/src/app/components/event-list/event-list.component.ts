@@ -15,6 +15,7 @@ import { EventService } from 'src/app/services/event.service';
 export class EventListComponent implements OnInit {
   events$: Observable<EventResponse[]>;
   currentUser: any;
+  roles: string[];
   constructor(
     private eventService: EventService,
     private router: Router,
@@ -29,6 +30,7 @@ export class EventListComponent implements OnInit {
         console.log(response);
         // guardo el objeto entero en profileUser para poder mostrarlo en la vista
         this.currentUser = response;
+        this.roles = this.currentUser.roles;
       },
       error: (err) => {
         console.log(err);
@@ -36,8 +38,8 @@ export class EventListComponent implements OnInit {
     });
 
     this.events$ = this.http.get<EventResponse[]>(
-      // 'http://localhost:3300/api/getAllEvents'
-      'https://bikebrosv2.herokuapp.com/api/getAllEvents'
+      'http://localhost:3300/api/getAllEvents'
+      // 'https://bikebrosv2.herokuapp.com/api/getAllEvents'
     );
 
     console.log(this.events$);

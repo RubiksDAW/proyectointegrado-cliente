@@ -7,8 +7,8 @@ import { Comment } from '../interfaces/comment.interface';
   providedIn: 'root',
 })
 export class CommentsService {
-  private url = 'https://bikebrosv2.herokuapp.com';
-  // private url = 'http://localhost:3300';
+  // private url = 'https://bikebrosv2.herokuapp.com';
+  private url = 'http://localhost:3300';
 
   constructor(private http: HttpClient) {}
 

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { EventResponse } from '../interfaces/event.interface';
 
 @Injectable({
@@ -13,8 +13,22 @@ export class EventService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  getAllEvents(): Observable<EventResponse[]> {
-    return this.http.get<EventResponse[]>(`${this.url}/api/getAllEvents`);
+  // getAllEvents(): Observable<EventResponse[]> {
+  //   return this.http.get<EventResponse[]>(`${this.url}/api/getAllEvents`);
+  // }
+  getAllEvents(searchTerm?: string): Observable<any[]> {
+    let query = {};
+    if (searchTerm) {
+      // Si se proporciona un término de búsqueda, filtrar las rutas por nombre o nivel de dificultad
+      query = {
+        searchTerm: searchTerm,
+      };
+    } else {
+      query = {};
+    }
+    return this.http
+      .get(`${this.url}/api/getAllEvents`, { params: query })
+      .pipe(map((resp: any) => resp));
   }
 
   // Los metodos que vienen a continuación no han sido probados
@@ -26,6 +40,7 @@ export class EventService {
     rutaId: string,
     fecha: Date,
     participantes: string[],
+    ubicacion: string,
     maxParticipantes: number,
     creador: string
   ) {
@@ -35,6 +50,7 @@ export class EventService {
       ruta: rutaId,
       fecha: fecha,
       participantes: participantes,
+      ubicacion: ubicacion,
       maxParticipantes: maxParticipantes,
       creador: creador,
     });

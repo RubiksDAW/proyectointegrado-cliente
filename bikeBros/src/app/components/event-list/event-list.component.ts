@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { EventResponse } from 'src/app/interfaces/event.interface';
 import { AuthService } from 'src/app/services/auth.service';
 import { EventService } from 'src/app/services/event.service';
@@ -16,6 +16,9 @@ export class EventListComponent implements OnInit {
   events$: Observable<EventResponse[]>;
   currentUser: any;
   roles: string[];
+
+  searchTerm: string;
+
   constructor(
     private eventService: EventService,
     private router: Router,
@@ -93,5 +96,18 @@ export class EventListComponent implements OnInit {
 
       await alert.present();
     }
+  }
+
+  searchEvents() {
+    this.events$ = this.eventService.getAllEvents(this.searchTerm).pipe(
+      map((res) => {
+        // Aquí podemos aplicar lógica para modificar el array de objetos que nos llega
+        console.log(res);
+        // Aquí debemos seguir devolviendo un array de rutas, ya que el observable es lo que espera
+        return res;
+      })
+    );
+
+    console.log(this.events$);
   }
 }

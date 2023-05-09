@@ -1,4 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
 import { RoutesService } from 'src/app/services/routes.service';
 
 declare let google: any;
@@ -22,17 +24,34 @@ export class RoutePage implements OnInit {
   destination: string;
   // destination = { lat: 36.431397497274155, lng: -5.122749984343144 };
   route: any;
+
   id: any;
 
-  constructor(private routeService: RoutesService) {}
+  userId: any;
+
+  isFav: boolean;
+
+  favRoutes: string[];
+
+  constructor(
+    private routeService: RoutesService,
+    private http: HttpClient,
+    private auth: AuthService
+  ) {}
 
   async ngOnInit() {
     this.id = localStorage.getItem('id');
+    this.userId = await this.auth.getProfileId();
     const data = await this.routeService.getRouteById(this.id).toPromise();
     this.route = data;
-    console.log(data);
-
     this.initMap();
+
+    this.favRoutes = await this.routeService.getUserFavoriteRouteIds(
+      this.userId
+    );
+
+    console.log(this.favRoutes);
+    this.checkFavs();
   }
 
   ngOnChanges() {}
@@ -87,5 +106,42 @@ export class RoutePage implements OnInit {
         indicators.style.display === 'none' ? 'block' : 'none');
     const map: HTMLElement | null = document.getElementById('map');
     map && (map.style.height = map.style.height === '100%' ? '50%' : '100%');
+  }
+
+  async addFavorite(id: string) {
+    (await this.routeService.addFavoriteRoute(id)).subscribe(
+      (response) => {
+        console.log('Respuesta del servidor:', response);
+        // Manejar la respuesta del servidor aquí
+      },
+      (error) => {
+        console.log('Error:', error);
+        // Manejar el error aquí
+      }
+    );
+    this.isFav = true;
+  }
+
+  async removeFavorite(id: string) {
+    (await this.routeService.removeFavoriteRoute(id)).subscribe(
+      (response) => {
+        console.log('Respuesta del servidor:', response);
+        // Manejar la respuesta del servidor aquí
+      },
+      (error) => {
+        console.log('Error:', error);
+        // Manejar el error aquí
+      }
+    );
+    this.isFav = false;
+  }
+  share() {}
+
+  checkFavs() {
+    if (this.favRoutes.includes(this.id)) {
+      this.isFav = true;
+    } else {
+      this.isFav = false;
+    }
   }
 }

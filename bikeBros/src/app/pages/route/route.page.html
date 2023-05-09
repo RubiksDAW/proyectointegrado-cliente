@@ -4,6 +4,16 @@
       <ion-back-button></ion-back-button>
     </ion-buttons>
     <ion-title>Ruta</ion-title>
+    <ion-buttons slot="end">
+      <ion-button
+        (click)="isFav ? removeFavorite(route._id) : addFavorite(route._id)"
+      >
+        <ion-icon [name]="isFav ? 'heart' : 'heart-outline'"></ion-icon>
+      </ion-button>
+      <ion-button (click)="share()">
+        <ion-icon name="share"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 

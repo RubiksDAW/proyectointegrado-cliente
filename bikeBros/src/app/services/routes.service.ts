@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, map } from 'rxjs';
+import { Observable, firstValueFrom, map } from 'rxjs';
 import { Route, RoutesResponse } from '../interfaces/route.interface';
 import { AuthService } from './auth.service';
 
@@ -19,10 +19,36 @@ export class RoutesService {
   ) {}
   //Cuando la respuesta llega, se utiliza el operador map para transformar la respuesta en un objeto de tipo RoutesResponse
   // y se selecciona el campo routes de este objeto. Finalmente, se devuelve un Observable que emite la matriz de objetos de tipo Route.
-  getAllRoutes(): Observable<Route[]> {
-    const url = `${this.url}/api/route/getAll`;
+  // getAllRoutes(): Observable<Route[]> {
+  //   const url = `${this.url}/api/route/getAll`;
 
-    return this.http.get<RoutesResponse>(url).pipe(map((resp) => resp.routes));
+  //   return this.http.get<RoutesResponse>(url).pipe(map((resp) => resp.routes));
+  // }
+
+  getAllRoutes(
+    searchTerm?: string,
+    selectedDifficulty?: string
+  ): Observable<any> {
+    let query: any = {};
+    if (searchTerm) {
+      // Si se proporciona un término de búsqueda, filtrar las rutas por nombre o nivel de dificultad
+      query = {
+        searchTerm: searchTerm,
+      };
+    } else {
+      query = {};
+    }
+
+    if (selectedDifficulty) {
+      // Si se proporciona un nivel de dificultad seleccionado, filtrar las rutas por ese nivel
+      query.difficulty_level = selectedDifficulty;
+    }
+
+    return this.http
+      .get<RoutesResponse>(`${this.url}/api/route/getAll`, {
+        params: query,
+      })
+      .pipe(map((resp) => resp.routes));
   }
 
   getRouteById(id: string) {
@@ -99,5 +125,60 @@ export class RoutesService {
     const url = `${this.url}/route/${id}/modify`;
 
     return this.http.put(url, formData);
+  }
+
+  async addFavoriteRoute(routeId: string) {
+    const userId = await this.auth.getProfileId();
+    const body = {
+      userId: userId,
+    };
+    const url = `${this.url}/favs/routes/addFavRoute/${routeId}`;
+
+    return this.http.post(url, body);
+  }
+
+  async removeFavoriteRoute(routeId: string) {
+    const userId = await this.auth.getProfileId();
+    const body = {
+      userId: userId,
+    };
+
+    const url = `${this.url}/favs/routes/removeFavRoute/${routeId}`;
+
+    return this.http.post(url, body);
+  }
+
+  async getUserFavoriteRouteIds(userId: string): Promise<string[]> {
+    console.log('id' + userId);
+    try {
+      const res: any = await firstValueFrom(
+        this.http.get(`${this.url}/favs/${userId}`)
+      );
+      const favoriteRoutes = res as Route[];
+      const routeIds = favoriteRoutes.map((route) => route._id.toString());
+      return routeIds;
+    } catch (error) {
+      console.error(error);
+      return [];
+    }
+  }
+
+  // getFavoriteRoutes(userId: string): Observable<any> {
+  //   const url = `${this.url}/favs/routes/${userId}`;
+  //   return this.http.get(url);
+  // }
+
+  async getFavoriteRoutes(userId: string): Promise<Route[]> {
+    console.log('id: ' + userId);
+    try {
+      const res = await firstValueFrom(
+        this.http.get<Route[]>(`${this.url}/favs/${userId}`)
+      );
+      console.log(res);
+      return Promise.resolve(res);
+    } catch (error) {
+      console.error(error);
+      return Promise.resolve([]);
+    }
   }
 }

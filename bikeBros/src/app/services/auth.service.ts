@@ -9,8 +9,8 @@ import { Observable } from 'rxjs';
 export class AuthService {
   constructor(private http: HttpClient, private router: Router) {}
 
-  // private url = 'https://bikebrosv2.herokuapp.com';
-  private url = 'http://localhost:3300';
+  private url = 'https://bikebrosv2.herokuapp.com';
+  // private url = 'http://localhost:3300';
   headers = new HttpHeaders().set('Content-Type', 'application/json');
   currentUser = {};
 
@@ -31,7 +31,7 @@ export class AuthService {
     description: string,
     imageURL: string
   ) {
-    console.log('nick', nick, 'Contraseña', password);
+    // console.log('nick', nick, 'Contraseña', password);
     const url = `${this.url}/api/auth/registro`;
 
     return this.http.post(url, {
@@ -170,7 +170,7 @@ export class AuthService {
   // y poder comprobar si es el autor tanto del evento como de la ruta para que pueda o no borrarlos. Así
   // como añadir esta id a la hora de crear eventos y rutas.
   async getProfileId() {
-    console.log('me llaman');
+    // console.log('me llaman');
     const nick = localStorage.getItem('nick');
     const url = `${this.url}/api/auth/verify/${nick}`;
 

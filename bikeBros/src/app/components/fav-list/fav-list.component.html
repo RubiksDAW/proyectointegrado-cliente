@@ -1,28 +1,11 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-searchbar
-      placeholder="Buscar rutas..."
-      [(ngModel)]="searchTerm"
-    ></ion-searchbar>
-    <ion-select placeholder="Dificultad" [(ngModel)]="selectedDifficulty">
-      <ion-select-option value="">Todas</ion-select-option>
-      <ion-select-option value="Bajo">Bajo</ion-select-option>
-      <ion-select-option value="Intermedio">Intermedio</ion-select-option>
-      <ion-select-option value="Alto">Alto</ion-select-option>
-    </ion-select>
-    <ion-buttons slot="end">
-      <ion-button (click)="searchRoutes()">
-        <ion-icon name="search"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-
 <ion-card *ngFor="let ruta of routes$ | async">
   <ion-slides>
     <ion-slide *ngFor="let imageURL of ruta.images">
       <div class="image-container">
-        <img class="img" src="{{ imageURL }}" />
+        <img
+          class="img"
+          src="{{ 'http://localhost:3300/uploads/' + imageURL }}"
+        />
       </div>
     </ion-slide>
   </ion-slides>

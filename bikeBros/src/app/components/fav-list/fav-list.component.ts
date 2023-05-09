@@ -1,33 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, ModalController } from '@ionic/angular';
-import { Observable, map } from 'rxjs';
-import { Comment } from 'src/app/interfaces/comment.interface';
+import { Route } from 'src/app/interfaces/route.interface';
 import { AuthService } from 'src/app/services/auth.service';
 import { CommentsService } from 'src/app/services/comments.service';
 import { RoutesService } from 'src/app/services/routes.service';
-import { Route } from '../../interfaces/route.interface';
 import { EditRouteModalComponent } from '../edit-route-modal/edit-route-modal.component';
-
 @Component({
-  selector: 'app-route-list',
-  templateUrl: './route-list.component.html',
-  styleUrls: ['./route-list.component.scss'],
+  selector: 'app-fav-list',
+  templateUrl: './fav-list.component.html',
+  styleUrls: ['./fav-list.component.scss'],
 })
-export class RouteListComponent implements OnInit {
-  // routes: Route[] = [];
-
-  //Esto es un observable, cuando lleva un dollar
-  routes$: Observable<Route[]>;
+export class FavListComponent implements OnInit {
+  routes$: Promise<Route[]>;
   comments: Comment[] = [];
   profileUser: any;
   roles: string[];
   showComment: boolean;
   commentStatus: { [routeId: string]: boolean } = {};
-
-  searchTerm: string;
-  selectedDifficulty: string;
-
+  userId: string;
   constructor(
     private routesSer: RoutesService,
     private router: Router,
@@ -37,42 +28,19 @@ export class RouteListComponent implements OnInit {
     private modal: ModalController
   ) {}
 
-  ngOnInit() {
-    this.auth.getProfile().subscribe({
-      next: (response) => {
-        console.log(response);
-        // guardo el objeto entero en profileUser para poder mostrarlo en la vista
-        this.profileUser = response;
-        // console.log(response);
-        this.roles = this.profileUser.roles;
-        console.log(this.profileUser.roles);
-        console.log(this.roles);
-      },
-      error: (err) => {
-        console.log(err);
-      },
-    });
-
-    this.routes$ = this.routesSer.getAllRoutes().pipe(
-      map((res) => {
-        // Aqui podemos aplicar logica para modificar el array de objetos que nos llega
-        console.log(res);
-        // Aqui debemos seguir devolviendo un array de rutas, ya que el observable es lo que espera
-        return res;
-      })
+  async ngOnInit() {
+    this.userId = await this.auth.getProfileId();
+    this.routes$ = Promise.resolve(
+      await this.routesSer.getFavoriteRoutes(this.userId)
     );
   }
 
-  ionViewDidEnter() {
-    this.routes$ = this.routesSer.getAllRoutes().pipe(
-      map((res) => {
-        // Aqui podemos aplicar logica para modificar el array de objetos que nos llega
-
-        // Aqui debemos seguir devolviendo un array de rutas, ya que el observable es lo que espera
-        return res;
-      })
+  async ionViewDidEnter() {
+    this.routes$ = Promise.resolve(
+      await this.routesSer.getFavoriteRoutes(this.userId)
     );
   }
+
   // Almacena en localstorage la id de la ruta seleccionada.
   setIdRoute(id: string) {
     localStorage.setItem('id', id);
@@ -94,7 +62,6 @@ export class RouteListComponent implements OnInit {
       this.profileUser.id == authorRouteId
     ) {
       this.routesSer.deleteRouteById(id);
-      this.ionViewDidEnter();
     } else {
       const alert = await this.alertController.create({
         header: 'Permiso denegado',
@@ -127,19 +94,5 @@ export class RouteListComponent implements OnInit {
     return await modal.present();
   }
 
-  searchRoutes() {
-    console.log(this.searchTerm);
-    this.routes$ = this.routesSer
-      .getAllRoutes(this.searchTerm, this.selectedDifficulty)
-      .pipe(
-        map((res) => {
-          // Aquí podemos aplicar lógica para modificar el array de objetos que nos llega
-          console.log(res);
-          // Aquí debemos seguir devolviendo un array de rutas, ya que el observable es lo que espera
-          return res;
-        })
-      );
-
-    console.log(this.routes$);
-  }
+  searchRoutes() {}
 }

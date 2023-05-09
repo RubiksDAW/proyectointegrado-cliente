@@ -37,6 +37,7 @@ export class RegisterEventModalComponent implements OnInit {
     this.eventForm = this.formBuilder.group({
       rutaId: ['', Validators.required],
       fecha: ['', Validators.required],
+      ubicacion: ['', Validators.required],
       maxParticipantes: ['', Validators.required],
     });
   }
@@ -60,7 +61,7 @@ export class RegisterEventModalComponent implements OnInit {
   //   this.closeModal();
   // }
   async onSubmit() {
-    const { rutaId, fecha, maxParticipantes } = this.eventForm.value;
+    const { rutaId, fecha, ubicacion, maxParticipantes } = this.eventForm.value;
     const creador = await this.auth.getProfileId();
 
     const fechaValida = await this.fechaValida();
@@ -69,7 +70,7 @@ export class RegisterEventModalComponent implements OnInit {
     }
 
     this.events
-      .register(rutaId, fecha, [], maxParticipantes, creador)
+      .register(rutaId, fecha, [], ubicacion, maxParticipantes, creador)
       .subscribe({
         next: (res) => {
           console.log(res);

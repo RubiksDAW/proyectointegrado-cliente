@@ -1,3 +1,13 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-searchbar [(ngModel)]="searchTerm"></ion-searchbar>
+    <ion-buttons slot="end">
+      <ion-button (click)="searchEvents()">
+        <ion-icon name="search"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
 <ion-card *ngFor="let event of events$ | async">
   <ng-template #defaultImage>
     <img src="https://ionicframework.com/docs/img/demos/card-media.png" />

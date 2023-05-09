@@ -12,11 +12,7 @@
     <ion-slides>
       <ion-slide *ngFor="let imageURL of currentEvent?.ruta?.images">
         <div class="image-container">
-          <img
-            class="img"
-            [src]="'http://localhost:3300/uploads/' + imageURL"
-            alt="Imagen de la ruta"
-          />
+          <img class="img" [src]="imageURL" alt="Imagen de la ruta" />
         </div>
       </ion-slide>
     </ion-slides>

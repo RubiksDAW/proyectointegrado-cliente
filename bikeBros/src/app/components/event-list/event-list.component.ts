@@ -41,8 +41,8 @@ export class EventListComponent implements OnInit {
     });
 
     this.events$ = this.http.get<EventResponse[]>(
-      'http://localhost:3300/api/getAllEvents'
-      // 'https://bikebrosv2.herokuapp.com/api/getAllEvents'
+      // 'http://localhost:3300/api/getAllEvents'
+      'https://bikebrosv2.herokuapp.com/api/getAllEvents'
     );
 
     console.log(this.events$);
@@ -50,8 +50,8 @@ export class EventListComponent implements OnInit {
 
   ionViewDidEnter() {
     this.events$ = this.http.get<EventResponse[]>(
-      'http://localhost:3300/api/getAllEvents'
-      // 'https://bikebrosv2.herokuapp.com/api/getAllEvents'
+      // 'http://localhost:3300/api/getAllEvents'
+      'https://bikebrosv2.herokuapp.com/api/getAllEvents'
     );
   }
   // Habiendo guardado el usuario actual en el current user podemos obtener la id para pasarla como parametro

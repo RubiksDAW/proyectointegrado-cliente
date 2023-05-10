@@ -9,8 +9,8 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class RoutesService {
-  // private url = 'https://bikebrosv2.herokuapp.com';
-  private url = 'http://localhost:3300';
+  private url = 'https://bikebrosv2.herokuapp.com';
+  // private url = 'http://localhost:3300';
 
   constructor(
     private http: HttpClient,

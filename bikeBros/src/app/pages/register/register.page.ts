@@ -17,7 +17,7 @@ import { AuthService } from '../../services/auth.service';
 export class RegisterPage implements OnInit {
   private builder = inject(FormBuilder);
   registerForm: FormGroup;
-
+  images: File[] = [];
   constructor(
     public fb: FormBuilder,
     private navCtrl: NavController,
@@ -35,7 +35,7 @@ export class RegisterPage implements OnInit {
       rpassword: new FormControl('', Validators.required),
       age: new FormControl('', Validators.required),
       description: new FormControl('', Validators.nullValidator),
-      imageURL: new FormControl('', Validators.nullValidator),
+      images: [null],
     });
   }
 
@@ -163,20 +163,31 @@ export class RegisterPage implements OnInit {
     if (password === rpassword) {
       // console.log(nick,email,password,age,description,imageURL)
       // console.log(nick,password)
-      this.auth
-        .registerUser(nick, email, password, age, description, imageURL)
-        .subscribe({
-          next: (res) => {
-            // console.log(res)
-            this.auth.onLogOut();
-            this.router.navigate(['/login'], { replaceUrl: true });
-            // this.auth.loginUser(nick, password);
-          },
 
-          error: (err) => {
-            console.error(err);
-          },
-        });
+      const formData = new FormData();
+
+      formData.append('nick', nick);
+      formData.append('email', email);
+      formData.append('password', password);
+      formData.append('age', age);
+      formData.append('description', description);
+      // Agrega las imágenes al objeto FormData
+      for (let i = 0; i < this.images.length; i++) {
+        formData.append('images', this.images[i]);
+      }
+
+      this.auth.registerUser(formData).subscribe({
+        next: (res) => {
+          // console.log(res)
+          this.auth.onLogOut();
+          this.router.navigate(['/login'], { replaceUrl: true });
+          // this.auth.loginUser(nick, password);
+        },
+
+        error: (err) => {
+          console.error(err);
+        },
+      });
     } else {
       const alert = await this.alertController.create({
         header: 'Error de registro',
@@ -193,6 +204,15 @@ export class RegisterPage implements OnInit {
       await alert.present();
 
       return;
+    }
+  }
+
+  onImageChange(event: any) {
+    const files = event.target.files;
+    this.images = [];
+
+    for (let i = 0; i < files.length; i++) {
+      this.images.push(files[i]);
     }
   }
 }

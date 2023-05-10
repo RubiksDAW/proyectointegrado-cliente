@@ -9,8 +9,8 @@ import { Observable } from 'rxjs';
 export class AuthService {
   constructor(private http: HttpClient, private router: Router) {}
 
-  private url = 'https://bikebrosv2.herokuapp.com';
-  // private url = 'http://localhost:3300';
+  // private url = 'https://bikebrosv2.herokuapp.com';
+  private url = 'http://localhost:3300';
   headers = new HttpHeaders().set('Content-Type', 'application/json');
   currentUser = {};
 
@@ -23,25 +23,11 @@ export class AuthService {
     });
   }
 
-  registerUser(
-    nick: string,
-    email: string,
-    password: string,
-    age: number,
-    description: string,
-    imageURL: string
-  ) {
+  registerUser(formData: FormData) {
     // console.log('nick', nick, 'Contraseña', password);
     const url = `${this.url}/api/auth/registro`;
 
-    return this.http.post(url, {
-      nick: nick,
-      password: password,
-      email: email,
-      age: age,
-      description: description,
-      imageURL: imageURL,
-    });
+    return this.http.post(url, formData);
   }
 
   editUserProfile(
@@ -96,7 +82,7 @@ export class AuthService {
         .toPromise();
       return !!userAlreadyExist; // Convierte la respuesta en un valor booleano
     } catch (error) {
-      console.error(error);
+      // console.error(error);
       return false; // En caso de error, retorna false
     }
   }

@@ -8,8 +8,8 @@ import { EventResponse } from '../interfaces/event.interface';
   providedIn: 'root',
 })
 export class EventService {
-  // private url = 'https://bikebrosv2.herokuapp.com';
-  private url = 'http://localhost:3300';
+  private url = 'https://bikebrosv2.herokuapp.com';
+  // private url = 'http://localhost:3300';
 
   constructor(private http: HttpClient, private router: Router) {}
 

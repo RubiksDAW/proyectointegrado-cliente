@@ -53,9 +53,9 @@
       <ion-input type="text" formControlName="description"></ion-input>
     </ion-item>
 
-    <ion-item lines="full">
-      <ion-label position="floating">URL de tu imagen de perfil</ion-label>
-      <ion-input type="text" formControlName="imageURL"></ion-input>
+    <ion-item>
+      <ion-label>Imágenes</ion-label>
+      <input type="file" (change)="onImageChange($event)" accept="image/*" />
     </ion-item>
 
     <ion-row>

@@ -2,10 +2,7 @@
   <ion-slides>
     <ion-slide *ngFor="let imageURL of ruta.images">
       <div class="image-container">
-        <img
-          class="img"
-          src="{{ 'http://localhost:3300/uploads/' + imageURL }}"
-        />
+        <img class="img" src="{{ imageURL }}" />
       </div>
     </ion-slide>
   </ion-slides>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AlertController, ModalController } from '@ionic/angular';
 import { Observable, map } from 'rxjs';
 import { Route } from 'src/app/interfaces/route.interface';
@@ -21,7 +22,8 @@ export class RegisterEventModalComponent implements OnInit {
     private modalController: ModalController,
     private auth: AuthService,
     private events: EventService,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -74,6 +76,7 @@ export class RegisterEventModalComponent implements OnInit {
       .subscribe({
         next: (res) => {
           console.log(res);
+          this.router.navigate(['/success-event']);
         },
         error: (err) => {
           console.log(err);

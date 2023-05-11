@@ -18,7 +18,7 @@ export class EventListComponent implements OnInit {
   roles: string[];
 
   searchTerm: string;
-
+  authorEventId: string;
   constructor(
     private eventService: EventService,
     private router: Router,
@@ -33,6 +33,7 @@ export class EventListComponent implements OnInit {
         console.log(response);
         // guardo el objeto entero en profileUser para poder mostrarlo en la vista
         this.currentUser = response;
+        console.log(this.currentUser.id);
         this.roles = this.currentUser.roles;
       },
       error: (err) => {
@@ -44,11 +45,20 @@ export class EventListComponent implements OnInit {
       // 'http://localhost:3300/api/getAllEvents'
       'https://bikebrosv2.herokuapp.com/api/getAllEvents'
     );
+    this.events$.subscribe({
+      next: (events) => {
+        console.log(events);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
 
     console.log(this.events$);
   }
 
   ionViewDidEnter() {
+    location.reload();
     this.events$ = this.http.get<EventResponse[]>(
       // 'http://localhost:3300/api/getAllEvents'
       'https://bikebrosv2.herokuapp.com/api/getAllEvents'
@@ -74,13 +84,32 @@ export class EventListComponent implements OnInit {
 
   async deleteEvent(id: string) {
     const authorEventId = await this.eventService.getEventAuthorId(id);
+    console.log(authorEventId);
     // Controlamos que solo pueda borrar la ruta el usuario creador o un administrador
     if (
       this.currentUser.roles.includes('ROLE_ADMIN') ||
       this.currentUser.id == authorEventId
     ) {
-      this.eventService.deleteEvent(id);
-      this.ionViewDidEnter();
+      const alert = await this.alertController.create({
+        header: 'Confirmar eliminación',
+        message: '¿Estás seguro de que quieres borrar este evento?',
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel',
+            cssClass: 'secondary',
+          },
+          {
+            text: 'Eliminar',
+            handler: () => {
+              this.eventService.deleteEvent(id);
+              this.router.navigateByUrl('/deleted-event');
+            },
+          },
+        ],
+      });
+
+      await alert.present();
     } else {
       const alert = await this.alertController.create({
         header: 'Permiso denegado',

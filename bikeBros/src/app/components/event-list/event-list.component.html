@@ -32,7 +32,7 @@
       >Ver evento</ion-button
     >
     <ion-button
-      *ngIf="event.creator == currentUser?.id || roles?.includes('ROLE_ADMIN')"
+      *ngIf="event.creador == currentUser?.id || roles?.includes('ROLE_ADMIN')"
       (click)="deleteEvent(event._id)"
       >Borrar Evento</ion-button
     >

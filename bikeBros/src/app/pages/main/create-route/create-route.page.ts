@@ -14,16 +14,22 @@ export class CreateRoutePage implements OnInit {
 
   ngOnInit() {}
 
+  // ionDidEnterView() {
+  //   location.reload()
+  // }
+
   async showRouteRegisterModal() {
     const modal = await this.modalController.create({
       component: RegisterRouteModalComponent,
     });
+    this.selectedPage = 'eventos';
     return await modal.present();
   }
   async showEventRegisterModal() {
     const modal = await this.modalController.create({
       component: RegisterEventModalComponent,
     });
+
     return await modal.present();
   }
 }

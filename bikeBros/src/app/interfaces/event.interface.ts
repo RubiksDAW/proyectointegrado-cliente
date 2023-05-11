@@ -37,7 +37,7 @@ export interface EventResponse {
   fecha: Date | null;
   participantes: User[] | null;
   maxParticipantes: number;
-  creator: string;
+  creador: string;
   __v: number;
 }
 

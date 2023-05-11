@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { HttpClient } from '@angular/common/http'; // Importa HttpClient para realizar la solicitud de carga de archivos
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 import { RoutesService } from 'src/app/services/routes.service';
 
@@ -50,7 +50,8 @@ export class RegisterRouteModalComponent implements OnInit {
     private modalController: ModalController,
     private router: Router,
     private auth: AuthService,
-    private http: HttpClient
+    private http: HttpClient,
+    private alertController: AlertController
   ) {}
 
   ngOnInit() {
@@ -62,22 +63,14 @@ export class RegisterRouteModalComponent implements OnInit {
       description: ['', Validators.required],
       origin: ['', Validators.required],
       destination: ['', Validators.required],
-      images: [null],
+      images: [null, Validators.required],
     });
   }
 
   async submitForm() {
     // Desestructuraramos los valores que nos llevan a través del formulario
-    const {
-      name,
-      difficulty_level,
-      distance,
-      location,
-      description,
-      origin,
-      destination,
-      imageURL,
-    } = this.routeForm.value;
+    const { name, difficulty_level, distance, location, description } =
+      this.routeForm.value;
 
     const originForm = this.origin;
     const destinationForm = this.destination;
@@ -103,6 +96,26 @@ export class RegisterRouteModalComponent implements OnInit {
     formData.append('author', await author);
     console.log(`Origen: ${originForm}, destino: ${destinationForm}`);
 
+    // Validar campos antes de enviar el formulario
+    if (
+      !name ||
+      !difficulty_level ||
+      !distance ||
+      !location ||
+      !description ||
+      !originForm ||
+      !destinationForm ||
+      !this.images.length
+    ) {
+      const alert = await this.alertController.create({
+        header: 'Campos vacíos',
+        message:
+          'Por favor, complete todos los campos antes de enviar el formulario.',
+        buttons: ['OK'],
+      });
+      await alert.present();
+      return;
+    }
     this.routeService.register(formData).subscribe({
       next: (res) => {
         console.log(res);
@@ -113,8 +126,7 @@ export class RegisterRouteModalComponent implements OnInit {
     });
 
     await this.modalController.dismiss();
-    this.router.navigate(['/main/create-route'], { skipLocationChange: false });
-    this.router.navigate(['/main/create-route'], { replaceUrl: true });
+    this.router.navigate(['/success-route']);
   }
 
   async closeModal() {

@@ -63,16 +63,6 @@ export class RouteListComponent implements OnInit {
     );
   }
 
-  ionViewDidEnter() {
-    this.routes$ = this.routesSer.getAllRoutes().pipe(
-      map((res) => {
-        // Aqui podemos aplicar logica para modificar el array de objetos que nos llega
-
-        // Aqui debemos seguir devolviendo un array de rutas, ya que el observable es lo que espera
-        return res;
-      })
-    );
-  }
   // Almacena en localstorage la id de la ruta seleccionada.
   setIdRoute(id: string) {
     localStorage.setItem('id', id);
@@ -94,7 +84,7 @@ export class RouteListComponent implements OnInit {
       this.profileUser.id == authorRouteId
     ) {
       this.routesSer.deleteRouteById(id);
-      this.ionViewDidEnter();
+      this.router.navigateByUrl('/deleted-route');
     } else {
       const alert = await this.alertController.create({
         header: 'Permiso denegado',

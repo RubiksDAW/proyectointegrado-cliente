@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController, ModalController } from '@ionic/angular';
-import { Observable, map } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Route } from 'src/app/interfaces/route.interface';
 import { AuthService } from 'src/app/services/auth.service';
 import { EventService } from 'src/app/services/event.service';
@@ -15,10 +15,12 @@ import { RoutesService } from 'src/app/services/routes.service';
 })
 export class RegisterEventModalComponent implements OnInit {
   eventForm: FormGroup;
-  routes$: Observable<Route[]>;
+  routes: Route[] = [];
+  // routes$: Observable<Route[]>;
+  subscription: Subscription;
   constructor(
     private formBuilder: FormBuilder,
-    private routes: RoutesService,
+    private routeSer: RoutesService,
     private modalController: ModalController,
     private auth: AuthService,
     private events: EventService,
@@ -27,14 +29,10 @@ export class RegisterEventModalComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.routes$ = this.routes.getAllRoutes().pipe(
-      map((res) => {
-        // Aqui podemos aplicar logica para modificar el array de objetos que nos llega
-
-        // Aqui debemos seguir devolviendo un array de rutas, ya que el observable es lo que espera
-        return res;
-      })
-    );
+    this.getRoutes();
+    this.subscription = this.routeSer.refresh$.subscribe(() => {
+      this.getRoutes();
+    });
 
     this.eventForm = this.formBuilder.group({
       rutaId: ['', Validators.required],
@@ -76,7 +74,7 @@ export class RegisterEventModalComponent implements OnInit {
       .subscribe({
         next: (res) => {
           console.log(res);
-          this.router.navigate(['/success-event']);
+          // this.router.navigate(['/success-event']);
         },
         error: (err) => {
           console.log(err);
@@ -114,5 +112,12 @@ export class RegisterEventModalComponent implements OnInit {
     }
 
     return null;
+  }
+
+  getRoutes(): void {
+    this.routeSer.getAllRoutes().subscribe((data: any) => {
+      this.routes = data.routes;
+      console.log(this.routes);
+    });
   }
 }

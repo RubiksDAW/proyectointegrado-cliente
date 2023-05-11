@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, IonSlides, ModalController } from '@ionic/angular';
-import { Observable, map } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Comment } from 'src/app/interfaces/comment.interface';
 import { AuthService } from 'src/app/services/auth.service';
 import { CommentsService } from 'src/app/services/comments.service';
@@ -18,7 +18,7 @@ export class RouteListComponent implements OnInit {
   // routes: Route[] = [];
   @ViewChild(IonSlides) slides: IonSlides;
   //Esto es un observable, cuando lleva un dollar
-  routes$: Observable<Route[]>;
+
   comments: Comment[] = [];
   profileUser: any;
   roles: string[];
@@ -27,6 +27,10 @@ export class RouteListComponent implements OnInit {
 
   searchTerm: string;
   selectedDifficulty: string;
+
+  routes: Route[] = [];
+  // routes$: Observable<Route[]>;
+  subscription: Subscription;
 
   constructor(
     private routesSer: RoutesService,
@@ -53,14 +57,20 @@ export class RouteListComponent implements OnInit {
       },
     });
 
-    this.routes$ = this.routesSer.getAllRoutes().pipe(
-      map((res) => {
-        // Aqui podemos aplicar logica para modificar el array de objetos que nos llega
-        console.log(res);
-        // Aqui debemos seguir devolviendo un array de rutas, ya que el observable es lo que espera
-        return res;
-      })
-    );
+    // this.routes$ = this.routesSer.getAllRoutes().pipe(
+    //   map((res) => {
+    //     // Aqui podemos aplicar logica para modificar el array de objetos que nos llega
+    //     console.log(res);
+    //     // Aqui debemos seguir devolviendo un array de rutas, ya que el observable es lo que espera
+    //     return res;
+    //   })
+    // );
+    this.getRoutes();
+    this.subscription = this.routesSer.refresh$.subscribe(() => {
+      this.getRoutes();
+    });
+
+    console.log(this.subscription);
   }
 
   // Almacena en localstorage la id de la ruta seleccionada.
@@ -118,19 +128,24 @@ export class RouteListComponent implements OnInit {
   }
 
   searchRoutes() {
-    console.log(this.searchTerm);
-    this.routes$ = this.routesSer
-      .getAllRoutes(this.searchTerm, this.selectedDifficulty)
-      .pipe(
-        map((res) => {
-          // Aquí podemos aplicar lógica para modificar el array de objetos que nos llega
-          console.log(res);
-          // Aquí debemos seguir devolviendo un array de rutas, ya que el observable es lo que espera
-          return res;
-        })
-      );
+    // console.log(this.searchTerm);
+    // this.routes$ = this.routesSer
+    //   .getAllRoutes(this.searchTerm, this.selectedDifficulty)
+    //   .pipe(
+    //     map((res) => {
+    //       // Aquí podemos aplicar lógica para modificar el array de objetos que nos llega
+    //       console.log(res);
+    //       // Aquí debemos seguir devolviendo un array de rutas, ya que el observable es lo que espera
+    //       return res;
+    //     })
+    //   );
 
-    console.log(this.routes$);
+    // console.log(this.routes$);
+    this.routesSer
+      .getAllRoutes(this.searchTerm, this.selectedDifficulty)
+      .subscribe((data: any) => {
+        this.routes = data.routes;
+      });
   }
 
   nextSlide() {
@@ -141,5 +156,12 @@ export class RouteListComponent implements OnInit {
 
   prevSlide() {
     this.slides.slidePrev();
+  }
+
+  getRoutes(): void {
+    this.routesSer.getAllRoutes().subscribe((data: any) => {
+      this.routes = data.routes;
+      console.log(this.routes);
+    });
   }
 }

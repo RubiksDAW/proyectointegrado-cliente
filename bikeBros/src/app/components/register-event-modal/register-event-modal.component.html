@@ -14,10 +14,7 @@
     <ion-item>
       <ion-label>Ruta</ion-label>
       <ion-select formControlName="rutaId">
-        <ion-select-option
-          *ngFor="let route of routes$ | async"
-          [value]="route._id"
-        >
+        <ion-select-option *ngFor="let route of routes" [value]="route._id">
           {{ route.name }}
         </ion-select-option>
       </ion-select>

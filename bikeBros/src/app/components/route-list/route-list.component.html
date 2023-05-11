@@ -18,7 +18,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-card *ngFor="let ruta of routes$ | async">
+<ion-card *ngFor="let ruta of routes">
   <ion-slides #slides>
     <ion-slide *ngFor="let imageURL of ruta.images">
       <div class="image-container">

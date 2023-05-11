@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, firstValueFrom, map } from 'rxjs';
-import { Route, RoutesResponse } from '../interfaces/route.interface';
+import { Observable, Subject, firstValueFrom, map, tap } from 'rxjs';
+import { Route } from '../interfaces/route.interface';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -11,6 +11,9 @@ import { AuthService } from './auth.service';
 export class RoutesService {
   private url = 'https://bikebrosv2.herokuapp.com';
   // private url = 'http://localhost:3300';
+
+  // Declaramos una variable para observar
+  private refreshRoute$ = new Subject<void>();
 
   constructor(
     private http: HttpClient,
@@ -25,10 +28,14 @@ export class RoutesService {
   //   return this.http.get<RoutesResponse>(url).pipe(map((resp) => resp.routes));
   // }
 
+  get refresh$() {
+    return this.refreshRoute$;
+  }
+
   getAllRoutes(
     searchTerm?: string,
     selectedDifficulty?: string
-  ): Observable<any> {
+  ): Observable<Route[]> {
     let query: any = {};
     if (searchTerm) {
       // Si se proporciona un término de búsqueda, filtrar las rutas por nombre o nivel de dificultad
@@ -45,10 +52,10 @@ export class RoutesService {
     }
 
     return this.http
-      .get<RoutesResponse>(`${this.url}/api/route/getAll`, {
+      .get<Route[]>(`${this.url}/api/route/getAll`, {
         params: query,
       })
-      .pipe(map((resp) => resp.routes));
+      .pipe(map((resp) => resp));
   }
 
   getRouteById(id: string) {
@@ -86,7 +93,11 @@ export class RoutesService {
 
   register(formData: FormData) {
     const url = `${this.url}/api/route/register`;
-    return this.http.post(url, formData);
+    return this.http.post(url, formData).pipe(
+      tap(() => {
+        this.refreshRoute$.next();
+      })
+    );
   }
 
   getIdRoute() {

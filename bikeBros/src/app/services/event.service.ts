@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, map } from 'rxjs';
+import { Observable, Subject, map, tap } from 'rxjs';
 import { EventResponse } from '../interfaces/event.interface';
 
 @Injectable({
@@ -11,12 +11,15 @@ export class EventService {
   private url = 'https://bikebrosv2.herokuapp.com';
   // private url = 'http://localhost:3300';
 
+  private refreshEvent$ = new Subject<void>();
+
   constructor(private http: HttpClient, private router: Router) {}
 
-  // getAllEvents(): Observable<EventResponse[]> {
-  //   return this.http.get<EventResponse[]>(`${this.url}/api/getAllEvents`);
-  // }
-  getAllEvents(searchTerm?: string): Observable<any[]> {
+  get refresh$() {
+    return this.refreshEvent$;
+  }
+
+  getAllEvents(searchTerm?: string): Observable<EventResponse> {
     let query = {};
     if (searchTerm) {
       // Si se proporciona un término de búsqueda, filtrar las rutas por nombre o nivel de dificultad
@@ -27,7 +30,7 @@ export class EventService {
       query = {};
     }
     return this.http
-      .get(`${this.url}/api/getAllEvents`, { params: query })
+      .get<EventResponse>(`${this.url}/api/getAllEvents`, { params: query })
       .pipe(map((resp: any) => resp));
   }
 
@@ -46,14 +49,20 @@ export class EventService {
   ) {
     const url = `${this.url}/api/createEvent`;
 
-    return this.http.post(url, {
-      ruta: rutaId,
-      fecha: fecha,
-      participantes: participantes,
-      ubicacion: ubicacion,
-      maxParticipantes: maxParticipantes,
-      creador: creador,
-    });
+    return this.http
+      .post(url, {
+        ruta: rutaId,
+        fecha: fecha,
+        participantes: participantes,
+        ubicacion: ubicacion,
+        maxParticipantes: maxParticipantes,
+        creador: creador,
+      })
+      .pipe(
+        tap(() => {
+          this.refreshEvent$.next();
+        })
+      );
   }
 
   updateEvent(event: EventResponse): Observable<EventResponse> {

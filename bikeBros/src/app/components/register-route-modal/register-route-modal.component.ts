@@ -126,7 +126,7 @@ export class RegisterRouteModalComponent implements OnInit {
     });
 
     await this.modalController.dismiss();
-    this.router.navigate(['/success-route']);
+    // this.router.navigate(['/success-route']);
   }
 
   async closeModal() {

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-import { Observable, map } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { EventResponse } from 'src/app/interfaces/event.interface';
 import { AuthService } from 'src/app/services/auth.service';
 import { EventService } from 'src/app/services/event.service';
@@ -13,12 +13,14 @@ import { EventService } from 'src/app/services/event.service';
   styleUrls: ['./event-list.component.scss'],
 })
 export class EventListComponent implements OnInit {
-  events$: Observable<EventResponse[]>;
+  // events$: Observable<Event[]>;
   currentUser: any;
   roles: string[];
 
   searchTerm: string;
   authorEventId: string;
+  events: EventResponse[] = [];
+  subscription: Subscription;
   constructor(
     private eventService: EventService,
     private router: Router,
@@ -41,29 +43,32 @@ export class EventListComponent implements OnInit {
       },
     });
 
-    this.events$ = this.http.get<EventResponse[]>(
-      // 'http://localhost:3300/api/getAllEvents'
-      'https://bikebrosv2.herokuapp.com/api/getAllEvents'
-    );
-    this.events$.subscribe({
-      next: (events) => {
-        console.log(events);
-      },
-      error: (err) => {
-        console.log(err);
-      },
+    // this.events$ = this.http.get<Event[]>(
+    //   // 'http://localhost:3300/api/getAllEvents'
+    //   'https://bikebrosv2.herokuapp.com/api/getAllEvents'
+    // );
+    // this.events$.subscribe({
+    //   next: (events) => {
+    //     console.log(events);
+    //   },
+    //   error: (err) => {
+    //     console.log(err);
+    //   },
+    // });
+    this.getEvents();
+    this.subscription = this.eventService.refresh$.subscribe(() => {
+      this.getEvents();
     });
-
-    console.log(this.events$);
+    console.log(this.events);
   }
 
-  ionViewDidEnter() {
-    location.reload();
-    this.events$ = this.http.get<EventResponse[]>(
-      // 'http://localhost:3300/api/getAllEvents'
-      'https://bikebrosv2.herokuapp.com/api/getAllEvents'
-    );
-  }
+  // ionViewDidEnter() {
+  //   location.reload();
+  //   this.events$ = this.http.get<Event[]>(
+  //     // 'http://localhost:3300/api/getAllEvents'
+  //     'https://bikebrosv2.herokuapp.com/api/getAllEvents'
+  //   );
+  // }
   // Habiendo guardado el usuario actual en el current user podemos obtener la id para pasarla como parametro
   // al metodo que crearemos para apuntar usuarios a un evento, al igual que al de desapuntarlos.
   printId() {
@@ -128,15 +133,18 @@ export class EventListComponent implements OnInit {
   }
 
   searchEvents() {
-    this.events$ = this.eventService.getAllEvents(this.searchTerm).pipe(
-      map((res) => {
-        // Aquí podemos aplicar lógica para modificar el array de objetos que nos llega
-        console.log(res);
-        // Aquí debemos seguir devolviendo un array de rutas, ya que el observable es lo que espera
-        return res;
-      })
-    );
+    this.eventService.getAllEvents(this.searchTerm).subscribe((data: any) => {
+      this.events = data;
+      console.log(data);
+    });
 
-    console.log(this.events$);
+    // console.log(this.events$);
+  }
+
+  getEvents(): void {
+    this.eventService.getAllEvents().subscribe((data: any) => {
+      this.events = data;
+      console.log(data);
+    });
   }
 }

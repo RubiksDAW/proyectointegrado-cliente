@@ -22,7 +22,7 @@ export class CreateRoutePage implements OnInit {
     const modal = await this.modalController.create({
       component: RegisterRouteModalComponent,
     });
-    this.selectedPage = 'eventos';
+    // this.selectedPage = 'eventos';
     return await modal.present();
   }
   async showEventRegisterModal() {

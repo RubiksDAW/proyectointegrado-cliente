@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 import { EventResponse } from 'src/app/interfaces/event.interface';
 import { AuthService } from 'src/app/services/auth.service';
 import { EventService } from 'src/app/services/event.service';
@@ -17,7 +18,8 @@ export class EventPage implements OnInit {
   constructor(
     private event: EventService,
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    public alertController: AlertController // Agregar el servicio AlertController aquí
   ) {}
 
   async ngOnInit() {
@@ -69,8 +71,15 @@ export class EventPage implements OnInit {
     const userId = await this.auth.getProfileId();
     this.event.registerUser(eventId, userId);
     this.assist = true;
-    this.router.navigate(['/main/create-route']);
-    // this.ionViewDidEnter();
+    await this.router.navigate(['/main/create-route']);
+
+    const alert = await this.alertController.create({
+      header: '¡Te has registrado correctamente!',
+      message: 'Ahora eres un participante del evento.',
+      buttons: ['OK'],
+    });
+
+    await alert.present();
   }
 
   async leftEvent() {
@@ -79,7 +88,14 @@ export class EventPage implements OnInit {
 
     this.event.unregisterUser(eventId, userId);
     this.assist = false;
-    this.router.navigate(['/main/create-route']);
-    // this.ionViewDidEnter();
+    await this.router.navigate(['/main/create-route']);
+
+    const alert = await this.alertController.create({
+      header: '¡Te has desregistrado correctamente!',
+      message: 'Ya no eres un participante del evento.',
+      buttons: ['OK'],
+    });
+
+    await alert.present();
   }
 }

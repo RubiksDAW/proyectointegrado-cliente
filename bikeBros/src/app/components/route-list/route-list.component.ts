@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, ModalController } from '@ionic/angular';
+import { AlertController, IonSlides, ModalController } from '@ionic/angular';
 import { Observable, map } from 'rxjs';
 import { Comment } from 'src/app/interfaces/comment.interface';
 import { AuthService } from 'src/app/services/auth.service';
@@ -16,7 +16,7 @@ import { EditRouteModalComponent } from '../edit-route-modal/edit-route-modal.co
 })
 export class RouteListComponent implements OnInit {
   // routes: Route[] = [];
-
+  @ViewChild(IonSlides) slides: IonSlides;
   //Esto es un observable, cuando lleva un dollar
   routes$: Observable<Route[]>;
   comments: Comment[] = [];
@@ -141,5 +141,15 @@ export class RouteListComponent implements OnInit {
       );
 
     console.log(this.routes$);
+  }
+
+  nextSlide() {
+    console.log(this.slides);
+    console.log('ey');
+    this.slides.slideNext();
+  }
+
+  prevSlide() {
+    this.slides.slidePrev();
   }
 }

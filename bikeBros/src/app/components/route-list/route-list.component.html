@@ -19,10 +19,16 @@
 </ion-header>
 
 <ion-card *ngFor="let ruta of routes$ | async">
-  <ion-slides>
+  <ion-slides #slides>
     <ion-slide *ngFor="let imageURL of ruta.images">
       <div class="image-container">
+        <button class="slide-button slide-button-left" (click)="prevSlide()">
+          <ion-icon name="arrow-back"></ion-icon>
+        </button>
         <img class="img" src="{{ imageURL }}" />
+        <button class="slide-button slide-button-right" (click)="nextSlide()">
+          <ion-icon name="arrow-forward"></ion-icon>
+        </button>
       </div>
     </ion-slide>
   </ion-slides>

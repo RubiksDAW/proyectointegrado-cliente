@@ -113,37 +113,9 @@ export class RegisterRouteModalComponent implements OnInit {
     });
 
     await this.modalController.dismiss();
-    this.router.navigate(['/main/create-route']);
+    this.router.navigate(['/main/create-route'], { skipLocationChange: false });
+    this.router.navigate(['/main/create-route'], { replaceUrl: true });
   }
-  // Codigo original antes de Multer
-  // this.routeService
-  //   .register(
-  //     name,
-  //     difficulty_level,
-  //     distance,
-  //     location,
-  //     description,
-  //     originForm,
-  //     destinationForm,
-  //     imageURL,
-  //     await author
-  //   )
-  //   .subscribe({
-  //     next: (res) => {
-  //       console.log(res);
-  //     },
-  //     error: (err) => {
-  //       console.log(err);
-  //     },
-  //   });
-  // OBLIGATORIO HACER LA LLAMADA A SUSCRIBE
-
-  // this.routeService.register2()
-  // this.modalController.dismiss()
-
-  // Aquí puedes enviar el nuevo registro al servidor
-  // await this.modalController.dismiss();
-  // this.router.navigate([`/main/create-route`]);
 
   async closeModal() {
     await this.modalController.dismiss();

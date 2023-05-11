@@ -87,20 +87,6 @@ export class AuthService {
     }
   }
 
-  // async checkIfNickExists(nick: string): Promise<boolean> {
-  //   const userNick = nick.trim().toLowerCase();
-  //   try {
-  //     const response = await this.http
-  //       .get(`${this.url}/api/verify/${userNick}`)
-  //       .toPromise();
-  //     const userAlreadyExist = !!response;
-  //     return userAlreadyExist;
-  //   } catch (error) {
-  //     // console.error(error);
-  //     return false;
-  //   }
-  // }
-
   async checkIfEmailExists(email: string): Promise<boolean> {
     const userEmail = email.trim().toLowerCase();
     try {
@@ -114,19 +100,6 @@ export class AuthService {
       return false;
     }
   }
-
-  // async checkIfEmailExists(email: string): Promise<boolean> {
-  //   const userEmail = email.trim().toLowerCase();
-  //   try {
-  //     const userAlreadyExist = await this.http
-  //       .get(`${this.url}/user/${userEmail}`)
-  //       .toPromise();
-  //     return !!userAlreadyExist; // Convierte la respuesta en un valor booleano
-  //   } catch (error) {
-  //     console.error(error);
-  //     return false; // En caso de error, retorna false
-  //   }
-  // }
 
   getProfile() {
     const token = localStorage.getItem('token');

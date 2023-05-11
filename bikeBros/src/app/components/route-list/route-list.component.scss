@@ -63,3 +63,27 @@
   height: 100%;
   object-fit: cover; /* Ajusta la imagen al contenedor sin deformarla */
 }
+
+.slide-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  color: white;
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.slide-button-left {
+  left: 8px;
+}
+
+.slide-button-right {
+  right: 8px;
+}

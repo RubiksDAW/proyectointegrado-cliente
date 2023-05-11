@@ -105,7 +105,7 @@ export class RouteListComponent implements OnInit {
   showId() {
     this.auth.getProfileId();
   }
-
+  // Meotodo para controlar que se muestre o no la sección de comentarios.
   toggleComment(routeId: string) {
     this.commentStatus[routeId] = !this.commentStatus[routeId];
   }

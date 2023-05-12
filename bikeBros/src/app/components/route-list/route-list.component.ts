@@ -78,6 +78,36 @@ export class RouteListComponent implements OnInit {
 
   // En este metodo hacemos la comprobación previa de los roles que tiene el usuario actual,
   // en caso de ser admin puede borrar una ruta, sino no es posible borrarlas.
+  // async deleteRoute(id: string) {
+  //   const authorRouteId = await this.routesSer.getRouteAuthorId(id);
+  //   // Controlamos que solo pueda borrar la ruta el usuario creador o un administrador
+  //   if (
+  //     this.profileUser.roles.includes('ROLE_ADMIN') ||
+  //     this.profileUser.id == authorRouteId
+  //   ) {
+  //     // this.routesSer.deleteRouteById(id);
+  //     this.routesSer.deleteRouteById(id).subscribe((data: any) => {
+  //       this.routes = data.routes;
+  //       console.log(this.routes);
+  //     });
+  //     this.router.navigateByUrl('/deleted-route');
+  //   } else {
+  //     const alert = await this.alertController.create({
+  //       header: 'Permiso denegado',
+  //       message: 'Solo el creador o un Administrador pueden borrar la ruta',
+  //       buttons: [
+  //         {
+  //           text: 'Aceptar',
+  //           role: 'cancel',
+  //           cssClass: 'secondary',
+  //         },
+  //       ],
+  //     });
+
+  //     await alert.present();
+  //   }
+  // }
+
   async deleteRoute(id: string) {
     const authorRouteId = await this.routesSer.getRouteAuthorId(id);
     // Controlamos que solo pueda borrar la ruta el usuario creador o un administrador
@@ -85,12 +115,28 @@ export class RouteListComponent implements OnInit {
       this.profileUser.roles.includes('ROLE_ADMIN') ||
       this.profileUser.id == authorRouteId
     ) {
-      // this.routesSer.deleteRouteById(id);
-      this.routesSer.deleteRouteById(id).subscribe((data: any) => {
-        this.routes = data.routes;
-        console.log(this.routes);
+      const alert = await this.alertController.create({
+        header: 'Confirmar eliminación',
+        message: '¿Está seguro de que desea eliminar esta ruta?',
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel',
+            cssClass: 'secondary',
+          },
+          {
+            text: 'Eliminar',
+            handler: () => {
+              this.routesSer.deleteRouteById(id).subscribe((data: any) => {
+                this.routes = data.routes;
+                console.log(this.routes);
+              });
+              this.router.navigateByUrl('/deleted-route');
+            },
+          },
+        ],
       });
-      this.router.navigateByUrl('/deleted-route');
+      await alert.present();
     } else {
       const alert = await this.alertController.create({
         header: 'Permiso denegado',
@@ -103,7 +149,6 @@ export class RouteListComponent implements OnInit {
           },
         ],
       });
-
       await alert.present();
     }
   }

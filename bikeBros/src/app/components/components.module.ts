@@ -10,6 +10,7 @@ import { FavListComponent } from './fav-list/fav-list.component';
 import { InputCommentComponent } from './input-comment/input-comment.component';
 import { RegisterEventModalComponent } from './register-event-modal/register-event-modal.component';
 import { RegisterRouteModalComponent } from './register-route-modal/register-route-modal.component';
+import { ReportComponent } from './report/report.component';
 import { RouteListComponent } from './route-list/route-list.component';
 import { RouteMapComponent } from './route-map/route-map.component';
 
@@ -25,6 +26,7 @@ import { RouteMapComponent } from './route-map/route-map.component';
     BoxCommentsComponent,
     EditRouteModalComponent,
     FavListComponent,
+    ReportComponent,
   ],
   imports: [CommonModule, ReactiveFormsModule, IonicModule, FormsModule],
   exports: [
@@ -38,6 +40,7 @@ import { RouteMapComponent } from './route-map/route-map.component';
     BoxCommentsComponent,
     EditRouteModalComponent,
     FavListComponent,
+    ReportComponent,
   ],
 })
 export class ComponentsModule {}

@@ -57,6 +57,7 @@
       (click)="setIdRoute(ruta._id)"
       >Editar route</ion-button
     >
+    <ion-button (click)="openReport(ruta._id)">Reportar</ion-button>
     <ion-button (click)="toggleComment(ruta._id)">
       {{ commentStatus[ruta._id] ? "Ocultar" : "Comentar" }}
     </ion-button>

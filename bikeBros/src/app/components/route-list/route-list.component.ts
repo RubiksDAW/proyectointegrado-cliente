@@ -8,6 +8,7 @@ import { CommentsService } from 'src/app/services/comments.service';
 import { RoutesService } from 'src/app/services/routes.service';
 import { Route } from '../../interfaces/route.interface';
 import { EditRouteModalComponent } from '../edit-route-modal/edit-route-modal.component';
+import { ReportComponent } from '../report/report.component';
 
 @Component({
   selector: 'app-route-list',
@@ -204,5 +205,15 @@ export class RouteListComponent implements OnInit {
       this.routes = data.routes;
       console.log(this.routes);
     });
+  }
+
+  async openReport(id: string) {
+    const modal = await this.modal.create({
+      component: ReportComponent,
+      componentProps: {
+        id,
+      },
+    });
+    return await modal.present();
   }
 }

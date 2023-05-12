@@ -74,7 +74,7 @@ export class RegisterEventModalComponent implements OnInit {
       .subscribe({
         next: (res) => {
           console.log(res);
-          // this.router.navigate(['/success-event']);
+          this.router.navigate(['/success-event']);
         },
         error: (err) => {
           console.log(err);

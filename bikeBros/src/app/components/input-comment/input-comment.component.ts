@@ -28,8 +28,13 @@ export class InputCommentComponent implements OnInit {
     const { comment } = this.commentForm.value;
     const authorId = await this.auth.getProfileId();
     const authorNick = await this.auth.getUserById(authorId);
-    this.comment.addComment(this.routeId, comment, authorId, authorNick);
+    // this.comment.addComment(this.routeId, comment, authorId, authorNick);
+    console.log(this.routeId, comment, authorId, authorNick);
+    this.comment
+      .addComment(this.routeId, comment, authorId, authorNick)
+      .subscribe((data) => {
+        console.log(data);
+      });
     this.commentForm.reset();
-    this.ngOnInit();
   }
 }

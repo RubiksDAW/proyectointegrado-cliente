@@ -77,14 +77,22 @@ export class EventService {
 
     return this.http.get<EventResponse>(url);
   }
+  // deleteEvent(id: string) {
+  //   this.http.delete(`${this.url}/api/deleteEvent/${id}`).subscribe(
+  //     (response) => {
+  //       console.log(response);
+  //     },
+  //     (error) => {
+  //       console.log(error);
+  //     }
+  //   );
+  // }
   deleteEvent(id: string) {
-    this.http.delete(`${this.url}/api/deleteEvent/${id}`).subscribe(
-      (response) => {
-        console.log(response);
-      },
-      (error) => {
-        console.log(error);
-      }
+    const url = `${this.url}/api/deleteEvent/${id}`;
+    return this.http.delete(url).pipe(
+      tap(() => {
+        this.refreshEvent$.next();
+      })
     );
   }
 

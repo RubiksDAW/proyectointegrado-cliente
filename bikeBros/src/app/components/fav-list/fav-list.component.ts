@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, ModalController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 import { Route } from 'src/app/interfaces/route.interface';
 import { AuthService } from 'src/app/services/auth.service';
 import { CommentsService } from 'src/app/services/comments.service';
@@ -19,6 +20,8 @@ export class FavListComponent implements OnInit {
   showComment: boolean;
   commentStatus: { [routeId: string]: boolean } = {};
   userId: string;
+
+  subscription: Subscription;
   constructor(
     private routesSer: RoutesService,
     private router: Router,
@@ -30,15 +33,6 @@ export class FavListComponent implements OnInit {
 
   async ngOnInit() {
     this.userId = await this.auth.getProfileId();
-    this.routes$ = Promise.resolve(
-      await this.routesSer.getFavoriteRoutes(this.userId)
-    );
-  }
-
-  async ionViewDidEnter() {
-    this.routes$ = Promise.resolve(
-      await this.routesSer.getFavoriteRoutes(this.userId)
-    );
   }
 
   // Almacena en localstorage la id de la ruta seleccionada.
@@ -95,4 +89,8 @@ export class FavListComponent implements OnInit {
   }
 
   searchRoutes() {}
+
+  getFavs() {
+    this.routesSer.getUserFavoriteRouteIds(this.userId);
+  }
 }

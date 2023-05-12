@@ -9,8 +9,8 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class RoutesService {
-  private url = 'https://bikebrosv2.herokuapp.com';
-  // private url = 'http://localhost:3300';
+  // private url = 'https://bikebrosv2.herokuapp.com';
+  private url = 'http://localhost:3300';
 
   // Declaramos una variable para observar
   private refreshRoute$ = new Subject<void>();
@@ -64,33 +64,6 @@ export class RoutesService {
     return this.http.get<Route>(url);
   }
 
-  // Antes de implementar multer
-  // register(
-  //   name: string,
-  //   difficulty_level: string,
-  //   distance: number,
-  //   location: string,
-  //   description: string,
-  //   origin: string,
-  //   destination: string,
-  //   imageURL: string,
-  //   author: string
-  // ) {
-  //   const url = `${this.url}/api/route/register`;
-
-  //   return this.http.post(url, {
-  //     name: name,
-  //     difficulty_level: difficulty_level,
-  //     distance: distance,
-  //     location: location,
-  //     description: description,
-  //     origin: origin,
-  //     destination: destination,
-  //     imageURL: imageURL,
-  //     author: author,
-  //   });
-  // }
-
   register(formData: FormData) {
     const url = `${this.url}/api/route/register`;
     return this.http.post(url, formData).pipe(
@@ -106,14 +79,22 @@ export class RoutesService {
   }
 
   // Método para eliminar una ruta por ID solo si el usuario que lo llama es un admin
+  // deleteRouteById(routeId: string) {
+  //   this.http.delete(`${this.url}/route/delete/${routeId}`).subscribe(
+  //     (response) => {
+  //       console.log(response);
+  //     },
+  //     (error) => {
+  //       console.log(error);
+  //     }
+  //   );
+  // }
   deleteRouteById(routeId: string) {
-    this.http.delete(`${this.url}/route/delete/${routeId}`).subscribe(
-      (response) => {
-        console.log(response);
-      },
-      (error) => {
-        console.log(error);
-      }
+    const url = `${this.url}/route/delete/${routeId}`;
+    return this.http.delete(url).pipe(
+      tap(() => {
+        this.refreshRoute$.next();
+      })
     );
   }
 
@@ -135,7 +116,11 @@ export class RoutesService {
   editRoute(formData: FormData, id: string) {
     const url = `${this.url}/route/${id}/modify`;
 
-    return this.http.put(url, formData);
+    return this.http.put(url, formData).pipe(
+      tap(() => {
+        this.refreshRoute$.next();
+      })
+    );
   }
 
   async addFavoriteRoute(routeId: string) {
@@ -145,7 +130,11 @@ export class RoutesService {
     };
     const url = `${this.url}/favs/routes/addFavRoute/${routeId}`;
 
-    return this.http.post(url, body);
+    return this.http.post(url, body).pipe(
+      tap(() => {
+        this.refreshRoute$.next();
+      })
+    );
   }
 
   async removeFavoriteRoute(routeId: string) {
@@ -156,7 +145,11 @@ export class RoutesService {
 
     const url = `${this.url}/favs/routes/removeFavRoute/${routeId}`;
 
-    return this.http.post(url, body);
+    return this.http.post(url, body).pipe(
+      tap(() => {
+        this.refreshRoute$.next();
+      })
+    );
   }
 
   async getUserFavoriteRouteIds(userId: string): Promise<string[]> {
@@ -177,6 +170,20 @@ export class RoutesService {
   // getFavoriteRoutes(userId: string): Observable<any> {
   //   const url = `${this.url}/favs/routes/${userId}`;
   //   return this.http.get(url);
+  // }
+
+  // async getFavoriteRoutes(userId: string): Promise<Route[]> {
+  //   console.log('id: ' + userId);
+  //   try {
+  //     const res = await firstValueFrom(
+  //       this.http.get<Route[]>(`${this.url}/favs/${userId}`)
+  //     );
+  //     console.log(res);
+  //     return Promise.resolve(res);
+  //   } catch (error) {
+  //     console.error(error);
+  //     return Promise.resolve([]);
+  //   }
   // }
 
   async getFavoriteRoutes(userId: string): Promise<Route[]> {

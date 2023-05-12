@@ -43,18 +43,6 @@ export class EventListComponent implements OnInit {
       },
     });
 
-    // this.events$ = this.http.get<Event[]>(
-    //   // 'http://localhost:3300/api/getAllEvents'
-    //   'https://bikebrosv2.herokuapp.com/api/getAllEvents'
-    // );
-    // this.events$.subscribe({
-    //   next: (events) => {
-    //     console.log(events);
-    //   },
-    //   error: (err) => {
-    //     console.log(err);
-    //   },
-    // });
     this.getEvents();
     this.subscription = this.eventService.refresh$.subscribe(() => {
       this.getEvents();
@@ -62,15 +50,6 @@ export class EventListComponent implements OnInit {
     console.log(this.events);
   }
 
-  // ionViewDidEnter() {
-  //   location.reload();
-  //   this.events$ = this.http.get<Event[]>(
-  //     // 'http://localhost:3300/api/getAllEvents'
-  //     'https://bikebrosv2.herokuapp.com/api/getAllEvents'
-  //   );
-  // }
-  // Habiendo guardado el usuario actual en el current user podemos obtener la id para pasarla como parametro
-  // al metodo que crearemos para apuntar usuarios a un evento, al igual que al de desapuntarlos.
   printId() {
     console.log(this.currentUser.id);
   }
@@ -107,7 +86,10 @@ export class EventListComponent implements OnInit {
           {
             text: 'Eliminar',
             handler: () => {
-              this.eventService.deleteEvent(id);
+              //Llegados aquí procede a hacer borrado del evento
+              this.eventService.deleteEvent(id).subscribe((data: any) => {
+                this.events = data;
+              });
               this.router.navigateByUrl('/deleted-event');
             },
           },

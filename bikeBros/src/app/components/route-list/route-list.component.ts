@@ -57,14 +57,6 @@ export class RouteListComponent implements OnInit {
       },
     });
 
-    // this.routes$ = this.routesSer.getAllRoutes().pipe(
-    //   map((res) => {
-    //     // Aqui podemos aplicar logica para modificar el array de objetos que nos llega
-    //     console.log(res);
-    //     // Aqui debemos seguir devolviendo un array de rutas, ya que el observable es lo que espera
-    //     return res;
-    //   })
-    // );
     this.getRoutes();
     this.subscription = this.routesSer.refresh$.subscribe(() => {
       this.getRoutes();
@@ -93,7 +85,11 @@ export class RouteListComponent implements OnInit {
       this.profileUser.roles.includes('ROLE_ADMIN') ||
       this.profileUser.id == authorRouteId
     ) {
-      this.routesSer.deleteRouteById(id);
+      // this.routesSer.deleteRouteById(id);
+      this.routesSer.deleteRouteById(id).subscribe((data: any) => {
+        this.routes = data.routes;
+        console.log(this.routes);
+      });
       this.router.navigateByUrl('/deleted-route');
     } else {
       const alert = await this.alertController.create({

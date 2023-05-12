@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { Comment } from 'src/app/interfaces/comment.interface';
 import { AuthService } from 'src/app/services/auth.service';
 import { CommentsService } from 'src/app/services/comments.service';
@@ -10,27 +11,29 @@ import { CommentsService } from 'src/app/services/comments.service';
 })
 export class BoxCommentsComponent implements OnInit {
   @Input() routeId: string;
-  comments: Comment[];
+  comments: Comment[] = [];
   authorNicks: { [authorId: string]: string } = {};
-  constructor(private comment: CommentsService, private auth: AuthService) {}
+  subscription: Subscription;
+
+  constructor(
+    private commentServ: CommentsService,
+    private auth: AuthService
+  ) {}
 
   ngOnInit() {
     // this.obtenerNicksAutores();
-    this.obtenerComentarios();
+    this.getComments();
+    this.subscription = this.commentServ.refresh$.subscribe(() => {
+      this.getComments();
+    });
   }
 
-  obtenerComentarios() {
-    // Reemplaza con el ID de la ruta que desees obtener los comentarios
-    this.comment
-      .getRouteComments(this.routeId)
-      .then(async (res) => {
-        // console.log(res);
-        this.comments = res;
-        // console.log(this.comments);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  getComments() {
+    // console.log(this.routeId);
+    this.commentServ.getRouteComments(this.routeId).subscribe((data: any) => {
+      this.comments = data.comments;
+      console.log(data.comments);
+    });
   }
 
   // obtenerNicksAutores() {

@@ -186,17 +186,22 @@ export class RoutesService {
   //   }
   // }
 
-  async getFavoriteRoutes(userId: string): Promise<Route[]> {
-    console.log('id: ' + userId);
-    try {
-      const res = await firstValueFrom(
-        this.http.get<Route[]>(`${this.url}/favs/${userId}`)
-      );
-      console.log(res);
-      return Promise.resolve(res);
-    } catch (error) {
-      console.error(error);
-      return Promise.resolve([]);
-    }
+  getFavoriteRoutes(userId: string): Observable<Route[]> {
+    return this.http
+      .get<Route[]>(`${this.url}/favs/${userId}`)
+      .pipe(map((resp: any) => resp));
   }
+  // async getFavoriteRoutes(userId: string): Promise<Route[]> {
+  //   console.log('id: ' + userId);
+  //   try {
+  //     const res = await firstValueFrom(
+  //       this.http.get<Route[]>(`${this.url}/favs/${userId}`)
+  //     );
+  //     console.log(res);
+  //     return Promise.resolve(res);
+  //   } catch (error) {
+  //     console.error(error);
+  //     return Promise.resolve([]);
+  //   }
+  // }
 }

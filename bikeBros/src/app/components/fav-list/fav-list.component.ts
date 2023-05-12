@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
-import { Route } from 'src/app/interfaces/route.interface';
 import { AuthService } from 'src/app/services/auth.service';
 import { CommentsService } from 'src/app/services/comments.service';
 import { RoutesService } from 'src/app/services/routes.service';
@@ -13,15 +12,16 @@ import { EditRouteModalComponent } from '../edit-route-modal/edit-route-modal.co
   styleUrls: ['./fav-list.component.scss'],
 })
 export class FavListComponent implements OnInit {
-  routes$: Promise<Route[]>;
+  // routes$: Promise<Route[]>;
   comments: Comment[] = [];
   profileUser: any;
   roles: string[];
   showComment: boolean;
   commentStatus: { [routeId: string]: boolean } = {};
   userId: string;
-
+  favs: any[] = [];
   subscription: Subscription;
+
   constructor(
     private routesSer: RoutesService,
     private router: Router,
@@ -33,6 +33,10 @@ export class FavListComponent implements OnInit {
 
   async ngOnInit() {
     this.userId = await this.auth.getProfileId();
+    this.getFavs();
+    this.subscription = this.routesSer.refresh$.subscribe(() => {
+      this.getFavs();
+    });
   }
 
   // Almacena en localstorage la id de la ruta seleccionada.
@@ -91,6 +95,9 @@ export class FavListComponent implements OnInit {
   searchRoutes() {}
 
   getFavs() {
-    this.routesSer.getUserFavoriteRouteIds(this.userId);
+    this.routesSer.getFavoriteRoutes(this.userId).subscribe((data: any) => {
+      this.favs = data;
+      console.log(data);
+    });
   }
 }

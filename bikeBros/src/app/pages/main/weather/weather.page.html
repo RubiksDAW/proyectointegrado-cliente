@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <!-- //Aqui al pulsar deberia redirigirnos a Inicio, no a inicio de registro -->
+      <!-- <ion-back-button defaultHref="/main"></ion-back-button> -->
+    </ion-buttons>
+    <ion-title>Tiempo</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <div>
+    <ion-searchbar
+      color="primary"
+      class="searchBar"
+      placeholder="Ciudad..."
+      [(ngModel)]="searchQuery"
+      (ionChange)="search()"
+      animated
+    ></ion-searchbar>
+
+    <ion-card class="card">
+      <ion-item lines="none">
+        <p slot="start" style="font-weight: 500; color: white">
+          Reporte actual
+        </p>
+        <ion-label id="date" slot="end"
+          >{{todayDay | date : "EEE dd MMM" }}</ion-label
+        >
+        <!-- <span>{{todayDay | date :  "EEE dd MMM" }}</span> -->
+      </ion-item>
+
+      <ion-item lines="none">
+        <span id="temp">
+          {{(weatherDetails?.main.temp - 273.15).toFixed(0)}}
+        </span>
+
+        <img slot="end" [src]="icon" width="160px" height="160px" />
+      </ion-item>
+      <ion-item lines="none">
+        <ion-icon id="locationIcon" name="location"></ion-icon>
+        <span id="location">{{weatherDetails?.name}}</span>
+      </ion-item>
+    </ion-card>
+
+    <ion-card class="detailCard">
+      <ion-item>
+        <span>Maximum Temp</span>
+        <span slot="end"
+          >{{(weatherDetails?.main.temp_max - 273.15).toFixed(0)}}</span
+        >
+      </ion-item>
+      <ion-item>
+        <span>Manimum Temp</span>
+        <span slot="end"
+          >{{(weatherDetails?.main.temp_min - 273.15).toFixed(0)}}</span
+        >
+      </ion-item>
+      <ion-item>
+        <span>Humidity</span>
+        <span slot="end">{{weatherDetails?.main.humidity }} %</span>
+      </ion-item>
+    </ion-card>
+  </div>
+</ion-content>

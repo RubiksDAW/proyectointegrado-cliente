@@ -1,6 +1,6 @@
 .image-container {
   width: 100%;
-  padding-bottom: 75%; /* Establece una proporción de 4:3 para las imágenes */
+  // padding-bottom: 75%; /* Establece una proporción de 4:3 para las imágenes */
   position: relative;
   overflow: hidden;
 }
@@ -12,4 +12,20 @@
   width: 100%;
   height: 100%;
   object-fit: cover; /* Ajusta la imagen al contenedor sin deformarla */
+}
+
+.info {
+  font-weight: 500;
+  font-size: large;
+}
+
+.title {
+  text-align: center;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.icon {
+  font-size: 30px;
+  margin-right: 5px;
 }

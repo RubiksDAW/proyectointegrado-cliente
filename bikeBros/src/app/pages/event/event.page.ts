@@ -14,6 +14,7 @@ export class EventPage implements OnInit {
   id: any;
   currentEvent: EventResponse;
   assist: boolean;
+  showParticipants = false;
 
   constructor(
     private event: EventService,
@@ -97,5 +98,9 @@ export class EventPage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  toggleParticipants() {
+    this.showParticipants = !this.showParticipants;
   }
 }

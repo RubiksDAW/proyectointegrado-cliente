@@ -100,4 +100,8 @@ export class FavListComponent implements OnInit {
       console.log(data);
     });
   }
+
+  async closeModal() {
+    await this.modal.dismiss();
+  }
 }

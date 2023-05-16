@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>Detalles evento</ion-title>
+    <ion-title>Detalles del Evento</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -12,37 +12,70 @@
     <ion-slides>
       <ion-slide *ngFor="let imageURL of currentEvent?.ruta?.images">
         <div class="image-container">
-          <img class="img" [src]="imageURL" alt="Imagen de la ruta" />
+          <img class="image" [src]="imageURL" alt="Imagen de la ruta" />
         </div>
       </ion-slide>
     </ion-slides>
-    <ion-card-header>
-      <ion-card-title> {{ currentEvent?.ruta?.name }} </ion-card-title>
-      <ion-card-subtitle>
-        {{ currentEvent?.ruta?.location }}
-      </ion-card-subtitle>
-      <ion-card-subtitle
-        >Numero de participantes: {{ currentEvent?.participantes?.length }}/{{
-        currentEvent?.maxParticipantes }}</ion-card-subtitle
-      >
-    </ion-card-header>
-
     <ion-card-content>
-      <p>Descripción ruta: {{ currentEvent?.ruta?.description }}</p>
-      <p>Fecha: {{ currentEvent?.fecha | date:'dd/MM/yyyy HH:mm' }}</p>
-      <p>Participantes:</p>
+      <ion-card-title class="title">
+        {{ currentEvent?.ruta?.name }}
+      </ion-card-title>
+      <ion-item>
+        <ion-icon class="icon" name="person-circle" class="icon"></ion-icon>
+
+        {{ currentEvent?.ruta?.location }}
+      </ion-item>
+      <ion-item>
+        <ion-icon class="icon" name="person-circle" class="icon"></ion-icon>
+
+        {{ currentEvent?.participantes?.length }} / {{
+        currentEvent?.maxParticipantes }}
+      </ion-item>
+      <ion-item>
+        <ion-icon name="calendar-outline" class="icon"></ion-icon>
+
+        {{ currentEvent?.fecha | date:'dd/MM/yyyy HH:mm' }}
+      </ion-item>
+      <ion-item>
+        <ion-label>Descripción:</ion-label>
+        <span>{{ currentEvent?.ruta?.description }}</span>
+      </ion-item>
+    </ion-card-content>
+    <!-- <ion-card-content>
+      <p class="info">Participantes:</p>
       <ion-list>
         <ion-item *ngFor="let participante of currentEvent?.participantes">
           <ion-label>{{ participante.nick }}</ion-label>
         </ion-item>
+      </ion-list> 
+      </ion-card-content> -->
+    <ion-card>
+      <ion-item lines="none" color="light" (click)="toggleParticipants()">
+        <ion-label>Participantes</ion-label>
+        <ion-icon name="chevron-up" *ngIf="showParticipants"></ion-icon>
+        <ion-icon name="chevron-down" *ngIf="!showParticipants"></ion-icon>
+      </ion-item>
+      <ion-list *ngIf="showParticipants">
+        <ion-item *ngFor="let participante of currentEvent?.participantes">
+          <ion-label>{{ participante.nick }}</ion-label>
+        </ion-item>
       </ion-list>
-    </ion-card-content>
+    </ion-card>
 
-    <!-- <ion-button (click)="joinEvent()">Inscribirme</ion-button> -->
-    <ion-button *ngIf="!assist" (click)="joinEvent()" color="success"
-      >Apuntarse al evento</ion-button
+    <ion-button
+      expand="block"
+      *ngIf="!assist"
+      (click)="joinEvent()"
+      color="success"
     >
-    <ion-button *ngIf="assist" (click)="leftEvent()" color="danger">
+      Apuntarse al evento
+    </ion-button>
+    <ion-button
+      expand="block"
+      *ngIf="assist"
+      (click)="leftEvent()"
+      color="danger"
+    >
       Desapuntarse del evento
     </ion-button>
   </ion-card>

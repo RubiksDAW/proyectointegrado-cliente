@@ -1,42 +1,57 @@
-<ion-card *ngFor="let ruta of favs">
-  <ion-slides>
-    <ion-slide *ngFor="let imageURL of ruta.images">
-      <div class="image-container">
-        <img class="img" src="{{ imageURL }}" />
+<ion-header>
+  <ion-toolbar>
+    <ion-title> Rutas favoritas </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-card *ngFor="let ruta of favs">
+    <ion-slides>
+      <ion-slide *ngFor="let imageURL of ruta.images">
+        <div class="image-container">
+          <img class="img" src="{{ imageURL }}" />
+        </div>
+      </ion-slide>
+    </ion-slides>
+
+    <ion-card-header>
+      <ion-card-title>{{ ruta.name }}</ion-card-title>
+      <ion-card-subtitle>Ubicación: {{ ruta.location }}</ion-card-subtitle>
+      <ion-card-subtitle
+        >Dificultad: {{ ruta.difficulty_level }}</ion-card-subtitle
+      >
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-button
+        (click)="closeModal()"
+        (click)="setIdRoute(ruta._id)"
+        (click)="checkRoute(ruta._id)"
+        >Ver</ion-button
+      >
+
+      <ion-button
+        *ngIf="ruta.author == profileUser?.id || roles?.includes('ROLE_ADMIN')"
+        (click)="deleteRoute(ruta._id)"
+        >Delete route</ion-button
+      >
+      <ion-button
+        *ngIf="ruta.author == profileUser?.id || roles?.includes('ROLE_ADMIN')"
+        (click)="showRouteEditModal()"
+        (click)="setIdRoute(ruta._id)"
+        >Editar route</ion-button
+      >
+      <ion-button (click)="toggleComment(ruta._id)">
+        {{ commentStatus[ruta._id] ? "Ocultar" : "Comentar" }}
+      </ion-button>
+      <div id="comment" [hidden]="!commentStatus[ruta._id]">
+        <app-input-comment [routeId]="ruta._id"></app-input-comment>
+        <app-box-comments [routeId]="ruta._id"></app-box-comments>
       </div>
-    </ion-slide>
-  </ion-slides>
-
-  <ion-card-header>
-    <ion-card-title>{{ ruta.name }}</ion-card-title>
-    <ion-card-subtitle>Ubicación: {{ ruta.location }}</ion-card-subtitle>
-    <ion-card-subtitle
-      >Dificultad: {{ ruta.difficulty_level }}</ion-card-subtitle
-    >
-  </ion-card-header>
-
-  <ion-card-content>
-    <ion-button (click)="setIdRoute(ruta._id)" (click)="checkRoute(ruta._id)"
-      >Ver</ion-button
-    >
-
-    <ion-button
-      *ngIf="ruta.author == profileUser?.id || roles?.includes('ROLE_ADMIN')"
-      (click)="deleteRoute(ruta._id)"
-      >Delete route</ion-button
-    >
-    <ion-button
-      *ngIf="ruta.author == profileUser?.id || roles?.includes('ROLE_ADMIN')"
-      (click)="showRouteEditModal()"
-      (click)="setIdRoute(ruta._id)"
-      >Editar route</ion-button
-    >
-    <ion-button (click)="toggleComment(ruta._id)">
-      {{ commentStatus[ruta._id] ? "Ocultar" : "Comentar" }}
-    </ion-button>
-    <div id="comment" [hidden]="!commentStatus[ruta._id]">
-      <app-input-comment [routeId]="ruta._id"></app-input-comment>
-      <app-box-comments [routeId]="ruta._id"></app-box-comments>
-    </div>
-  </ion-card-content>
-</ion-card>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

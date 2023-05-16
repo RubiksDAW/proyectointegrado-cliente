@@ -34,11 +34,6 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'news',
-        loadChildren: () =>
-          import('../main/news/news.module').then((m) => m.NewsPageModule),
-      },
-      {
         path: 'create-route',
         loadChildren: () =>
           import('../main/create-route/create-route.module').then(
@@ -49,6 +44,13 @@ const routes: Routes = [
         path: 'route',
         loadChildren: () =>
           import('../route/route.module').then((m) => m.RoutePageModule),
+      },
+      {
+        path: 'weather',
+        loadChildren: () =>
+          import('../main/weather/weather.module').then(
+            (m) => m.WeatherPageModule
+          ),
       },
     ],
   },

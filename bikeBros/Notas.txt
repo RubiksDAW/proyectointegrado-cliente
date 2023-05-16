@@ -5,25 +5,6 @@ Buscar información sobre variables de entorno para tema de la URL.
 
 Lista de bugs:
 
-- Cuando actualizo el perfil de un usuario desde su perfil, no cambia el nombre que se muestra al volver al perfil (Hasta que cierra sesión).
--- Intentar volver a cargar la info en profileUser para mostrar datos actualizados
-
-- Comprobar las mayuscula y minuscula para que no pueda haber ALEX y alex como dos usuarios distintos y para el email.
-
-- Averiguar la forma de eliminar el localStorage() cuando realices un nuevo registro, sino inicia sesión con el ultimo usuario
-  que no ha eliminado su sesión. (En teoria arreglado, testear)
-
-- Comprobar desde el register del front que el usuario no exista, llamando al metodo login y guardandolo
-    en una variable, si esa variable se inicializa existe y por lo tanto nos saca del proceso de registro devolviendo un error 
-    que mostraremos en la vista.
-
-- Al iniciar sesión no se transforma a UPPERCASE el valor del campo nick por lo que no detecta como registrado al usuario
-
-- Hacer lo mismo que con el nick para comprobar si existe pero ahora con el email. 
-
-- Mostrar alertas en el login si el usuario no existe o la contraseña no es valida, para que sea uniforme con 
-  el formulario de registro (Hecho)
-
 - Controlar que no se elimina el usuario del todo sino pasarlo a desactivado. 
 
 - En inspeccionar comprobar la pestaña Network para comprobar que las peticiones se están realizando correctamente
@@ -32,17 +13,9 @@ Lista de bugs:
 
 - Para las imagenes buscar info sobre MONGODB MULTER
 
-- Añadir alerta de confirmación para cerrar SESIÓN
-
-- IMPORTANTE, LOS METODOS EN LA PAGINA REGISTRO checkIfEmailExists Y checkIfNickExists HAN DEJADO DE FUNCIONAR
-
-- IMPORTANTE, MIRAR METODO AFTERINIT()
-
 - CONTROL DE RUTAS SE VUELVE LOCO POR EL METODO DE CERRAR SESIÓN
 
 - EL COMPONENTE MISTERIOSO QUE FALLABA ERA POR UNA RUTA INCORRECTA. 
-
--EN LA MODIFICACIÓN DE LAS RUTAS NO LLEGA ORIGIN Y DESTINTION SI UTILIZO EL MISMO INPUT QUE PARA EL REGISTER. SI USO CAMPOS NORMALES FUNCIONA
 
 - PARA REFRESCAR LA VISTA DEL EVENTO CUANDO VUELVE PARA ATRAS QUE SE MUESTRE UN MENSAJE DE AÑADIDO
 

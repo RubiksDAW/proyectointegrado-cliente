@@ -2,14 +2,14 @@
   <ion-toolbar>
     <ion-buttons slot="start">
       <!-- //Aqui al pulsar deberia redirigirnos a Inicio, no a inicio de registro -->
-      <!-- <ion-back-button defaultHref="/" text="Atrás"></ion-back-button> -->
+      <!-- <ion-back-button defaultHref="/main"></ion-back-button> -->
     </ion-buttons>
     <ion-title>Mi perfil</ion-title>
   </ion-toolbar>
 </ion-header>
 <!-- // Hacer la card del perfil un boton -->
 <ion-content>
-  <ion-item-divider></ion-item-divider>
+  <!-- <ion-item-divider></ion-item-divider> -->
   <ion-card (click)="openProfileOptions()">
     <ion-item *ngIf="profileUser">
       <ion-avatar slot="end">
@@ -27,19 +27,41 @@
         <ion-card-subtitle></ion-card-subtitle>
       </ion-label>
     </ion-item>
-    <ion-item-divider></ion-item-divider>
   </ion-card>
-  <ion-title>Rutas Favoritas</ion-title>
-  <app-fav-list></app-fav-list>
+  <!-- <ion-item-divider></ion-item-divider> -->
 
-  <!-- <app-route-list></app-route-list> -->
+  <ion-card>
+    <ion-button expand="block" (click)="openFavRoutes()"> Favoritas</ion-button>
+  </ion-card>
+  <ion-card>
+    <ion-button expand="block" (click)="openFavRoutes()">
+      Eventos pendientes</ion-button
+    >
+  </ion-card>
+  <ion-item-divider></ion-item-divider>
 
-  <!-- <ion-card>
+  <ion-card *ngIf="userStats" class="stats">
+    <ion-title class="title">Estadisticas de uso</ion-title>
     <ion-item>
-      <ion-button expand="full" (click)="editProfile()">Editar perfil</ion-button>
-    <ion-button (click)="confirmDelete()" color="danger" expand="full">Borrar perfil</ion-button>
+      <ion-icon name="information-circle" slot="start" class="icon"></ion-icon>
+      <ion-label>Rutas creadas: {{userStats?.totalRoutes}}</ion-label>
     </ion-item>
-  </ion-card> -->
+    <ion-item>
+      <ion-icon name="information-circle" slot="start" class="icon"></ion-icon>
+      <ion-label>Eventos creados: {{userStats?.totalEvents}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="information-circle" slot="start" class="icon"></ion-icon>
+      <ion-label>Comentarios: {{userStats?.totalComments}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="information-circle" slot="start" class="icon"></ion-icon>
+      <ion-label
+        >Eventos pendientes: {{userStats?.totalEventosParticipa}}</ion-label
+      >
+    </ion-item>
+  </ion-card>
+
   <ion-button
     (click)="onClick()"
     expand="block"

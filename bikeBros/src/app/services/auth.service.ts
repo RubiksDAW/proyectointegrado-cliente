@@ -1,18 +1,23 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subject, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private http: HttpClient, private router: Router) {}
-
-  private url = 'https://bikebrosv2.herokuapp.com';
-  // private url = 'http://localhost:3300';
+  // private url = 'https://bikebrosv2.herokuapp.com';
+  private url = 'http://localhost:3300';
   headers = new HttpHeaders().set('Content-Type', 'application/json');
   currentUser = {};
+  private refreshUsers$ = new Subject<void>();
+
+  constructor(private http: HttpClient, private router: Router) {}
+
+  get refresh$() {
+    return this.refreshUsers$;
+  }
 
   loginUser(nick: string, password: string): Observable<any> {
     const url = `${this.url}/api/auth/login`;
@@ -74,6 +79,12 @@ export class AuthService {
     );
   }
 
+  getUserByNick(nick: string): Observable<any> {
+    return this.http
+      .get(`${this.url}/api/auth/verify/${nick}`)
+      .pipe(map((resp) => resp));
+  }
+
   async checkIfNickExists(nick: string): Promise<boolean> {
     const userNick = nick.trim().toLowerCase();
     try {
@@ -105,7 +116,7 @@ export class AuthService {
     const token = localStorage.getItem('token');
     const url = `${this.url}/api/auth/profile`;
     const headers = new HttpHeaders({ Authorization: `${token}` });
-    return this.http.get(url, { headers: headers });
+    return this.http.get(url, { headers: headers }).pipe(map((resp) => resp));
   }
 
   loggedIn(): boolean {

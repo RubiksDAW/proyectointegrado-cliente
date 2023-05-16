@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, ModalController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
+import { FavListComponent } from 'src/app/components/fav-list/fav-list.component';
 import { AuthService } from '../../../services/auth.service';
 
 @Component({
@@ -10,6 +12,12 @@ import { AuthService } from '../../../services/auth.service';
   styleUrls: ['./profile.page.scss'],
 })
 export class ProfilePage implements OnInit {
+  public profileUser: any;
+  public userStats: any = '';
+  private url = 'http://localhost:3300/';
+  // private url = 'https://bikebrosv2.herokuapp.com';
+  subscription: Subscription;
+  subscription2: Subscription;
   constructor(
     private modalController: ModalController,
     private auth: AuthService,
@@ -18,16 +26,26 @@ export class ProfilePage implements OnInit {
     private alertController: AlertController
   ) {}
 
-  public profileUser: any;
+  async ngOnInit() {
+    const nick = localStorage.getItem('nick');
 
-  private url = 'http://localhost:3300/';
+    if (nick) {
+      this.getStats(nick);
+      this.subscription = this.auth.refresh$.subscribe(() => {
+        this.getStats(nick);
+      });
+    }
 
-  ngOnInit() {
+    this.getUser();
+    this.subscription2 = this.auth.refresh$.subscribe(() => {
+      this.getUser();
+    });
     //Hacemos uso del metodo getProfile en el servicio para obtener los datos asociados
     // al usuario que ha iniciado sesión
     this.auth.getProfile().subscribe({
       next: (response) => {
         console.log(response);
+
         // guardo el objeto entero en profileUser para poder mostrarlo en la vista
         this.profileUser = response;
       },
@@ -120,5 +138,27 @@ export class ProfilePage implements OnInit {
 
   openProfileOptions() {
     this.router.navigate(['main/profile-options']);
+  }
+
+  async openFavRoutes() {
+    const modal = await this.modalController.create({
+      component: FavListComponent,
+    });
+    // this.selectedPage = 'eventos';
+    return await modal.present();
+  }
+
+  getUser() {
+    this.auth.getProfile().subscribe((data: any) => {
+      this.profileUser = data;
+      console.log(data);
+    });
+  }
+
+  getStats(nick: string) {
+    this.auth.getUserByNick(nick).subscribe((data: any) => {
+      this.userStats = data;
+      console.log(data);
+    });
   }
 }

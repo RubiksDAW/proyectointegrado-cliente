@@ -1,26 +1,10 @@
-<!-- <ion-card>
-  <ion-card-header>
-    <ion-card-title>Comentarios</ion-card-title>
-  </ion-card-header>
-
-  <ion-list *ngIf="comments">
-    <ion-item *ngFor="let comment of comments">
-      <ion-label text-wrap>
-        <p>{{ comment.authorNick }}</p>
-        <h2>{{ comment.content }}</h2>
-        <p>ID: {{ comment._id }}</p>
-      </ion-label>
-    </ion-item>
-  </ion-list>
-
-  <ion-text *ngIf="comments.length === 0">No hay comentarios.</ion-text>
-</ion-card> -->
 <ion-card>
   <ion-card-header>
     <ion-card-title>Comentarios</ion-card-title>
   </ion-card-header>
 
   <ion-list *ngIf="comments?.length">
+    <!-- <ion-button>Eliminar</ion-button> -->
     <ion-item *ngFor="let comment of comments">
       <!-- <ion-thumbnail slot="start">
         <img [src]="comment.authorAvatarURL" />
@@ -29,6 +13,7 @@
         <h2>{{ comment.authorNick }}</h2>
         <p>{{ comment.content }}</p>
         <p>ID: {{ comment._id }}</p>
+        <ion-button color="danger">Eliminar</ion-button>
       </ion-label>
     </ion-item>
   </ion-list>

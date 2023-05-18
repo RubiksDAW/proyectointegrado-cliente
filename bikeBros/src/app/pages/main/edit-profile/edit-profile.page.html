@@ -1,17 +1,19 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="main/profile" text="Atrás"></ion-back-button>
+      <ion-back-button
+        defaultHref="main/profile"
+        text="Atrás"
+      ></ion-back-button>
     </ion-buttons>
     <ion-title>Editar perfil</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content *ngIf="profileUser" >
+<ion-content *ngIf="profileUser">
   <form [formGroup]="editForm">
-
     <ion-item lines="full">
       <ion-label position="floating">Nick</ion-label>
-      <ion-input type="text" formControlName="nick" required></ion-input>
+      <ion-input type="text" formControlName="nick" readonly></ion-input>
     </ion-item>
     <ion-item lines="full">
       <ion-label position="floating">Email</ion-label>
@@ -21,7 +23,7 @@
       <ion-label position="floating">Contraseña</ion-label>
       <ion-input type="text" formControlName="password" required></ion-input>
     </ion-item> -->
-    
+
     <ion-item lines="full">
       <ion-label position="floating">Edad</ion-label>
       <ion-input type="number" formControlName="age" required></ion-input>
@@ -30,13 +32,19 @@
       <ion-label position="floating">Breve descripción</ion-label>
       <ion-input type="text" formControlName="description"></ion-input>
     </ion-item>
-    <ion-item lines="full">
-      <ion-label position="floating">URL de tu imagen de perfil</ion-label>
-      <ion-input type="text" formControlName="imageURL"></ion-input>
+    <ion-item>
+      <ion-label>Imágen de perfil</ion-label>
+      <input type="file" (change)="onImageChange($event)" accept="image/*" />
     </ion-item>
     <ion-row>
       <ion-col>
-        <ion-button type="submit" color="danger" expand="block" (click)="editProfile()">Editar Perfil</ion-button>
+        <ion-button
+          type="submit"
+          color="danger"
+          expand="block"
+          (click)="editProfile()"
+          >Editar Perfil</ion-button
+        >
       </ion-col>
     </ion-row>
   </form>

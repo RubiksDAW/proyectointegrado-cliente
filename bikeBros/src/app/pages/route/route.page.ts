@@ -81,6 +81,22 @@ export class RoutePage implements OnInit {
     });
   }
 
+  // async calculateRoute() {
+  //   this.directionsService.route(
+  //     {
+  //       origin: await this.route.origin,
+  //       destination: await this.route.destination,
+  //       travelMode: google.maps.TravelMode.BICYCLING,
+  //     },
+  //     (response: any, status: string) => {
+  //       if (status === google.maps.DirectionsStatus.OK) {
+  //         this.directionsDisplay.setDirections(response);
+  //       } else {
+  //         alert('Could not display directions due to: ' + status);
+  //       }
+  //     }
+  //   );
+  // }
   async calculateRoute() {
     this.directionsService.route(
       {
@@ -91,8 +107,12 @@ export class RoutePage implements OnInit {
       (response: any, status: string) => {
         if (status === google.maps.DirectionsStatus.OK) {
           this.directionsDisplay.setDirections(response);
+
+          // Obtener la distancia de la ruta
+          const distance = response.routes[0].legs[0].distance.text;
+          console.log('Distancia de la ruta:', distance);
         } else {
-          alert('Could not display directions due to: ' + status);
+          alert('No se pudieron mostrar las indicaciones debido a: ' + status);
         }
       }
     );

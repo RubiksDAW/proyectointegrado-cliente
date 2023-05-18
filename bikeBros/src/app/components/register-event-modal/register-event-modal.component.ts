@@ -38,7 +38,10 @@ export class RegisterEventModalComponent implements OnInit {
       rutaId: ['', Validators.required],
       fecha: ['', Validators.required],
       ubicacion: ['', Validators.required],
-      maxParticipantes: ['', Validators.required],
+      maxParticipantes: [
+        '',
+        [Validators.required, Validators.pattern(/^[1-9][0-9]*$/)],
+      ],
     });
   }
 

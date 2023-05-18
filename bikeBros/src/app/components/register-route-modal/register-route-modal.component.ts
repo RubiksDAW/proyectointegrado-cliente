@@ -69,20 +69,24 @@ export class RegisterRouteModalComponent implements OnInit {
 
   async submitForm() {
     // Desestructuraramos los valores que nos llevan a través del formulario
-    const { name, difficulty_level, distance, location, description } =
+    const { name, difficulty_level, location, description } =
       this.routeForm.value;
 
     const originForm = this.origin;
     const destinationForm = this.destination;
-    const author = this.auth.getProfileId();
 
+    const distance = await this.calcularDistancia(originForm, destinationForm);
+    const author = this.auth.getProfileId();
+    const distanceKM = distance / 1000;
+    const distanceText = distanceKM.toString();
     // Probando a implementar Multer
     const formData = new FormData();
 
+    console.log(distance);
     // Agrega los demás campos al objeto FormData
     formData.append('name', name);
     formData.append('difficulty_level', difficulty_level);
-    formData.append('distance', distance);
+    formData.append('distance', distanceText);
     formData.append('location', location);
     formData.append('description', description);
     formData.append('origin', originForm);
@@ -201,5 +205,26 @@ export class RegisterRouteModalComponent implements OnInit {
     for (let i = 0; i < files.length; i++) {
       this.images.push(files[i]);
     }
+  }
+
+  async calcularDistancia(origen: string, destino: string): Promise<number> {
+    return new Promise<number>((resolve, reject) => {
+      const directionsService = new google.maps.DirectionsService();
+      directionsService.route(
+        {
+          origin: origen,
+          destination: destino,
+          travelMode: google.maps.TravelMode.BICYCLING,
+        },
+        (response: any, status: string) => {
+          if (status === google.maps.DirectionsStatus.OK) {
+            const distance = response.routes[0].legs[0].distance.value;
+            resolve(distance);
+          } else {
+            reject('No se pudo calcular la distancia debido a: ' + status);
+          }
+        }
+      );
+    });
   }
 }

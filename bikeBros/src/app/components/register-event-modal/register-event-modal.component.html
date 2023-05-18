@@ -41,10 +41,11 @@
         formControlName="maxParticipantes"
         type="number"
         required
+        pattern="[1-9][0-9]*"
       ></ion-input>
     </ion-item>
 
-    <ion-button type="submit" [disabled]="!eventForm.valid"
+    <ion-button type="submit" expand="block" [disabled]="!eventForm.valid"
       >Registrar evento</ion-button
     >
   </form>

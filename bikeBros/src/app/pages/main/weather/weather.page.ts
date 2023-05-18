@@ -1,9 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { environment } from 'src/environments/environment';
 
-const API_URL = environment.API_URL;
-const API_KEY = environment.API_KEY;
+// const API_URL = environment.API_URL;
+// const API_KEY = environment.API_KEY;
 @Component({
   selector: 'app-weather',
   templateUrl: './weather.page.html',

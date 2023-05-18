@@ -9,7 +9,7 @@ import { Observable, Subject, map } from 'rxjs';
 export class AuthService {
   // private url = 'https://bikebrosv2.herokuapp.com';
   private url = 'http://localhost:3300';
-  headers = new HttpHeaders().set('Content-Type', 'application/json');
+  // headers = new HttpHeaders().set('Content-Type', 'application/json');
   currentUser = {};
   private refreshUsers$ = new Subject<void>();
 
@@ -35,23 +35,10 @@ export class AuthService {
     return this.http.post(url, formData);
   }
 
-  editUserProfile(
-    id: string,
-    nick: string,
-    email: string,
-    age: number,
-    description: string,
-    imageURL: string
-  ) {
+  editUserProfile(formData: FormData, id: string) {
     const url = `${this.url}/${id}`;
 
-    return this.http.put(url, {
-      nick,
-      email,
-      age,
-      description,
-      imageURL,
-    });
+    return this.http.put(url, formData);
   }
 
   // eliminar un usuario segun su id

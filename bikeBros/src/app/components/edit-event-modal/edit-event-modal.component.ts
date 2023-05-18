@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { AlertController, ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { Route } from 'src/app/interfaces/route.interface';
@@ -9,23 +8,23 @@ import { EventService } from 'src/app/services/event.service';
 import { RoutesService } from 'src/app/services/routes.service';
 
 @Component({
-  selector: 'app-register-event-modal',
-  templateUrl: './register-event-modal.component.html',
-  styleUrls: ['./register-event-modal.component.scss'],
+  selector: 'app-edit-event-modal',
+  templateUrl: './edit-event-modal.component.html',
+  styleUrls: ['./edit-event-modal.component.scss'],
 })
-export class RegisterEventModalComponent implements OnInit {
+export class EditEventModalComponent implements OnInit {
   eventForm: FormGroup;
   routes: Route[] = [];
-  // routes$: Observable<Route[]>;
   subscription: Subscription;
+  eventId: string;
+
   constructor(
     private formBuilder: FormBuilder,
     private routeSer: RoutesService,
     private modalController: ModalController,
     private auth: AuthService,
     private events: EventService,
-    private alertController: AlertController,
-    private router: Router
+    private alertController: AlertController
   ) {}
 
   ngOnInit() {
@@ -40,38 +39,68 @@ export class RegisterEventModalComponent implements OnInit {
       ubicacion: ['', Validators.required],
       maxParticipantes: ['', Validators.required],
     });
+
+    const idEvent = localStorage.getItem('id-event');
+
+    if (idEvent !== null) {
+      this.eventId = idEvent;
+    }
+
+    this.events.getEventById(this.eventId).subscribe((event) => {
+      console.log(event);
+      this.eventForm.patchValue({
+        rutaId: event.ruta?._id,
+        fecha: event.fecha,
+        ubicacion: event.ubicacion,
+        maxParticipantes: event.maxParticipantes,
+      });
+    });
   }
 
   async onSubmit() {
-    const { rutaId, fecha, ubicacion, maxParticipantes } = this.eventForm.value;
-    const creador = await this.auth.getProfileId();
+    const eventId = this.eventId;
+    const routeId = this.eventForm.controls['rutaId'].value;
+    const fecha = this.eventForm.controls['fecha'].value;
+    const ubicacion = this.eventForm.controls['ubicacion'].value;
+    const maxParticipantes = this.eventForm.controls['maxParticipantes'].value;
 
     const fechaValida = await this.fechaValida();
     if (fechaValida?.fechaInvalida) {
       return;
     }
+    console.log(fecha);
 
-    this.events
-      .register(rutaId, fecha, [], ubicacion, maxParticipantes, creador)
-      .subscribe({
-        next: (res) => {
-          console.log(res);
-          this.router.navigate(['/success-event']);
-        },
-        error: (err) => {
-          console.log(err);
-        },
-      });
+    const eventData = {
+      ruta: routeId,
+      fecha: fecha,
+      ubicacion: ubicacion,
+      maxParticipantes: maxParticipantes,
+    };
+    console.log(eventData);
+    this.events.editEvent(eventData, eventId).subscribe(
+      (res) => {
+        console.log(res);
+        // Realiza las acciones necesarias después de editar la ruta exitosamente
+        this.closeModal();
+      },
+      (err) => {
+        console.error(err);
+        // Realiza las acciones necesarias en caso de error
+      }
+    );
+  }
 
-    this.closeModal();
+  getRoutes(): void {
+    this.routeSer.getAllRoutes().subscribe((data: any) => {
+      this.routes = data.routes;
+      console.log(this.routes);
+    });
   }
 
   async closeModal() {
     await this.modalController.dismiss();
   }
 
-  // Con este metodo controlamos que el usuario no establezca una fecha para el evento
-  // anterior a la fecha actual.
   async fechaValida() {
     const fechaActual = new Date();
     const fechaSeleccionada = new Date(this.eventForm.controls['fecha'].value);
@@ -94,12 +123,5 @@ export class RegisterEventModalComponent implements OnInit {
     }
 
     return null;
-  }
-
-  getRoutes(): void {
-    this.routeSer.getAllRoutes().subscribe((data: any) => {
-      this.routes = data.routes;
-      console.log(this.routes);
-    });
   }
 }

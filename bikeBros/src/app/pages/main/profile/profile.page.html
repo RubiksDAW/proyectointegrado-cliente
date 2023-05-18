@@ -34,7 +34,7 @@
     <ion-button expand="block" (click)="openFavRoutes()"> Favoritas</ion-button>
   </ion-card>
   <ion-card>
-    <ion-button expand="block" (click)="openFavRoutes()">
+    <ion-button expand="block" (click)="openEventsJoined()">
       Eventos pendientes</ion-button
     >
   </ion-card>
@@ -57,7 +57,7 @@
     <ion-item>
       <ion-icon name="information-circle" slot="start" class="icon"></ion-icon>
       <ion-label
-        >Eventos pendientes: {{userStats?.totalEventosParticipa}}</ion-label
+        >Eventos pendientes: {{userStats?.totalEventsJoined}}</ion-label
       >
     </ion-item>
   </ion-card>

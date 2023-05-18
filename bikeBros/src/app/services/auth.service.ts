@@ -180,4 +180,12 @@ export class AuthService {
       console.error(error);
     }
   }
+
+  sendPasswordResetEmail(email: string) {
+    const url = `${this.url}/api/auth/reset-password`;
+    console.log(email);
+    return this.http.post(url, { email }).subscribe((res) => {
+      console.log(res);
+    });
+  }
 }

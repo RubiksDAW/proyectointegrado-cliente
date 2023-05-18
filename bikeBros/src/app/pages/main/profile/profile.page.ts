@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AlertController, ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { FavListComponent } from 'src/app/components/fav-list/fav-list.component';
+import { JoinedEventsListComponent } from 'src/app/components/joined-events-list/joined-events-list.component';
 import { AuthService } from '../../../services/auth.service';
 
 @Component({
@@ -143,6 +144,14 @@ export class ProfilePage implements OnInit {
   async openFavRoutes() {
     const modal = await this.modalController.create({
       component: FavListComponent,
+    });
+    // this.selectedPage = 'eventos';
+    return await modal.present();
+  }
+
+  async openEventsJoined() {
+    const modal = await this.modalController.create({
+      component: JoinedEventsListComponent,
     });
     // this.selectedPage = 'eventos';
     return await modal.present();

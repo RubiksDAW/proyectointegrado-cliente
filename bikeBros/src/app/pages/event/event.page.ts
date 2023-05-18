@@ -70,17 +70,23 @@ export class EventPage implements OnInit {
   async joinEvent() {
     const eventId = this.id;
     const userId = await this.auth.getProfileId();
-    this.event.registerUser(eventId, userId);
-    this.assist = true;
-    await this.router.navigate(['/main/create-route']);
 
-    const alert = await this.alertController.create({
-      header: '¡Te has registrado correctamente!',
-      message: 'Ahora eres un participante del evento.',
-      buttons: ['OK'],
-    });
+    try {
+      this.event.registerUser(eventId, userId);
 
-    await alert.present();
+      this.assist = true;
+      await this.router.navigate(['/main/create-route']);
+
+      const alert = await this.alertController.create({
+        header: '¡Te has registrado correctamente!',
+        message: 'Ahora eres un participante del evento.',
+        buttons: ['OK'],
+      });
+
+      await alert.present();
+    } catch (error) {
+      this.assist = false;
+    }
   }
 
   async leftEvent() {

@@ -10,15 +10,24 @@
   <form>
     <ion-item lines="full">
       <ion-label position="floating">Email</ion-label>
-      <ion-input type="email" required></ion-input>
+      <ion-input
+        type="email"
+        required
+        [(ngModel)]="email"
+        [ngModelOptions]="{standalone: true}"
+      ></ion-input>
     </ion-item>
     <ion-row>
       <ion-col>
-        <ion-button type="submit" color="danger" expand="block">Enviar</ion-button>
+        <ion-button
+          type="submit"
+          color="danger"
+          expand="block"
+          (click)="resetPassword()"
+          >Enviar</ion-button
+        >
       </ion-col>
     </ion-row>
-    <small class="ion-padding">
-      Introduce tu correo electronico.
-    </small>
+    <small class="ion-padding"> Introduce tu correo electronico. </small>
   </form>
 </ion-content>

@@ -44,20 +44,22 @@
 
   <ion-card-content>
     <ion-button (click)="setIdRoute(ruta._id)" (click)="checkRoute(ruta._id)"
-      >Ver</ion-button
-    >
+      ><ion-icon name="eye-outline"></ion-icon
+    ></ion-button>
 
     <ion-button
-      *ngIf="ruta.author == profileUser?.id || roles?.includes('ROLE_ADMIN')"
-      (click)="deleteRoute(ruta._id)"
-      >Delete route</ion-button
-    >
-    <ion-button
+      color="warning"
       *ngIf="ruta.author == profileUser?.id || roles?.includes('ROLE_ADMIN')"
       (click)="showRouteEditModal()"
       (click)="setIdRoute(ruta._id)"
-      >Editar route</ion-button
-    >
+      ><ion-icon name="create-outline"></ion-icon
+    ></ion-button>
+    <ion-button
+      color="danger"
+      *ngIf="ruta.author == profileUser?.id || roles?.includes('ROLE_ADMIN')"
+      (click)="deleteRoute(ruta._id)"
+      ><ion-icon name="trash-outline"></ion-icon
+    ></ion-button>
     <ion-button (click)="openReport(ruta._id)">Reportar</ion-button>
     <ion-button (click)="toggleComment(ruta._id)">
       {{ commentStatus[ruta._id] ? "Ocultar" : "Comentar" }}

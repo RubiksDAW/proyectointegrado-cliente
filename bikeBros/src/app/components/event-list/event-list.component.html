@@ -8,33 +8,53 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
+
 <ion-card *ngFor="let event of events">
-  <ng-template #defaultImage>
-    <img src="https://ionicframework.com/docs/img/demos/card-media.png" />
-  </ng-template>
-
   <ion-card-header>
-    <ion-card-title *ngIf="event.ruta"
-      >Punto de partida: {{ event.ubicacion }}
-    </ion-card-title>
+    <ion-card-title *ngIf="event.ruta" class="center">{{
+      event?.ruta?.name
+    }}</ion-card-title>
   </ion-card-header>
-  <ion-card-content>
-    <ion-card-subtitle
-      >Fecha del evento:{{
-        event.fecha | date : " dd/MM/yyyy"
-      }}</ion-card-subtitle
-    >
 
-    <ion-card-subtitle *ngIf="event.ruta">{{
-      event.ruta.description
-    }}</ion-card-subtitle>
-    <ion-button (click)="setIdEvent(event._id)" (click)="checkEvent(event._id)"
-      >Ver evento</ion-button
-    >
-    <ion-button
-      *ngIf="event.creador == currentUser?.id || roles?.includes('ROLE_ADMIN')"
-      (click)="deleteEvent(event._id)"
-      >Borrar Evento</ion-button
-    >
+  <ion-card-content>
+    <ion-item>
+      <ion-icon name="locate-outline" class="icon"></ion-icon>
+      {{ event.ubicacion }}
+    </ion-item>
+    <ion-item>
+      <ion-icon name="calendar-outline" class="icon"></ion-icon>
+      {{ event.fecha | date : "dd/MM/yyyy" }}
+    </ion-item>
+    <ion-item>
+      <ion-icon class="icon" name="person-circle" class="icon"></ion-icon>
+
+      {{ event?.participantes?.length }} / {{ event?.maxParticipantes }}
+    </ion-item>
+
+    <div class="buttons">
+      <ion-button (click)="setIdEvent(event._id); checkEvent(event._id)"
+        ><ion-icon name="eye-outline"></ion-icon
+      ></ion-button>
+
+      <ion-button
+        color="warning"
+        *ngIf="
+          event.creador == currentUser?.id || roles?.includes('ROLE_ADMIN')
+        "
+        (click)="setIdEvent(event._id); showEventEditModal()"
+      >
+        <ion-icon name="create-outline"></ion-icon>
+      </ion-button>
+
+      <ion-button
+        color="danger"
+        *ngIf="
+          event.creador == currentUser?.id || roles?.includes('ROLE_ADMIN')
+        "
+        (click)="deleteEvent(event._id)"
+      >
+        <ion-icon name="trash-outline"></ion-icon>
+      </ion-button>
+    </div>
   </ion-card-content>
 </ion-card>

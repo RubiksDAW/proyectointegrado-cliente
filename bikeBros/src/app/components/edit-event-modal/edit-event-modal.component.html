@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title> Editar evento</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+    <ion-item>
+      <ion-label>Ruta</ion-label>
+      <ion-select formControlName="rutaId">
+        <ion-select-option *ngFor="let route of routes" [value]="route._id">
+          {{ route.name }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Fecha</ion-label>
+      <ion-datetime
+        formControlName="fecha"
+        display-format="DD/MM/YYYY"
+        picker-format="DD/MM/YYYY"
+        locale="es"
+        required
+      >
+      </ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Ubicación</ion-label>
+      <ion-input formControlName="ubicacion" type="text" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Máximo de participantes</ion-label>
+      <ion-input
+        formControlName="maxParticipantes"
+        type="number"
+        required
+      ></ion-input>
+    </ion-item>
+
+    <ion-button expand="block" type="submit" [disabled]="!eventForm.valid"
+      >Editar evento</ion-button
+    >
+  </form>
+</ion-content>

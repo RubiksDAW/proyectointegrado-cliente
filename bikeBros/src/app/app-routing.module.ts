@@ -79,6 +79,10 @@ const routes: Routes = [
     path: 'deleted-route',
     loadChildren: () => import('./pages/deleted-route/deleted-route.module').then( m => m.DeletedRoutePageModule)
   },
+  {
+    path: 'public-profile',
+    loadChildren: () => import('./pages/public-profile/public-profile.module').then( m => m.PublicProfilePageModule)
+  },
 
 ];
 

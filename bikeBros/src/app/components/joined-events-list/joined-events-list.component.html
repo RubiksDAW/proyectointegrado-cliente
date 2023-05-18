@@ -1,0 +1,68 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Eventos inscritos</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ng-container *ngIf="events.length > 0; else noEventsMessage">
+    <ion-card *ngFor="let event of events">
+      <ion-card-header>
+        <ion-card-title *ngIf="event.ruta" class="center">{{
+          event?.ruta?.name
+        }}</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-item>
+          <ion-icon name="locate-outline" class="icon"></ion-icon>
+          {{ event.ubicacion }}
+        </ion-item>
+        <ion-item>
+          <ion-icon name="calendar-outline" class="icon"></ion-icon>
+          {{ event.fecha | date : "dd/MM/yyyy" }}
+        </ion-item>
+        <ion-item>
+          <ion-icon class="icon" name="person-circle" class="icon"></ion-icon>
+          {{ event?.participantes?.length }} / {{ event?.maxParticipantes }}
+        </ion-item>
+
+        <div class="buttons">
+          <ion-button
+            (click)="closeModal(); setIdEvent(event._id); checkEvent(event._id)"
+          >
+            <ion-icon name="eye-outline"></ion-icon>
+          </ion-button>
+
+          <ion-button
+            color="warning"
+            *ngIf="
+              event.creador == currentUser?.id || roles?.includes('ROLE_ADMIN')
+            "
+            (click)="setIdEvent(event._id); showEventEditModal()"
+          >
+            <ion-icon name="create-outline"></ion-icon>
+          </ion-button>
+
+          <ion-button
+            color="danger"
+            *ngIf="
+              event.creador == currentUser?.id || roles?.includes('ROLE_ADMIN')
+            "
+            (click)="deleteEvent(event._id)"
+          >
+            <ion-icon name="trash-outline"></ion-icon>
+          </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
+
+  <ng-template #noEventsMessage>
+    <div class="no-events-message">No estás inscrito a ningún evento.</div>
+  </ng-template>
+</ion-content>

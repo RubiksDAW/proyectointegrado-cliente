@@ -44,19 +44,19 @@
 
     <ion-card class="detailCard">
       <ion-item>
-        <span>Maximum Temp</span>
+        <span>Max Temp</span>
         <span slot="end"
           >{{(weatherDetails?.main.temp_max - 273.15).toFixed(0)}}</span
         >
       </ion-item>
       <ion-item>
-        <span>Manimum Temp</span>
+        <span>Min Temp</span>
         <span slot="end"
           >{{(weatherDetails?.main.temp_min - 273.15).toFixed(0)}}</span
         >
       </ion-item>
       <ion-item>
-        <span>Humidity</span>
+        <span>Humedad</span>
         <span slot="end">{{weatherDetails?.main.humidity }} %</span>
       </ion-item>
     </ion-card>

@@ -65,10 +65,16 @@ export class EventService {
       );
   }
 
-  updateEvent(event: EventResponse): Observable<EventResponse> {
-    return this.http.put<EventResponse>(
-      `${this.url}/api/updateEvent/${event._id}`,
-      event
+  // updateEvent(event: EventResponse): Observable<EventResponse> {
+  //   return this.http.put<EventResponse>(``, event);
+  // }
+  editEvent(formData: any, id: string) {
+    const url = `${this.url}/api/${id}/updateEvent`;
+    console.log(formData);
+    return this.http.put(url, formData).pipe(
+      tap(() => {
+        this.refreshEvent$.next();
+      })
     );
   }
 
@@ -112,8 +118,15 @@ export class EventService {
     }
   }
 
+  getEventsJoined(userId: string) {
+    console.log(userId);
+    const url = `${this.url}/api/getEventsJoined/${userId}`;
+    console.log(url);
+    return this.http.get(url).pipe(map((resp: any) => resp));
+  }
+
   registerUser(eventId: string, userId: string) {
-    this.http
+    return this.http
       .post(`${this.url}/api/events/register`, { eventId, userId })
       .subscribe(
         (response) => {

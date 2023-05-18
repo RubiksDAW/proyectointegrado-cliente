@@ -21,8 +21,7 @@
         {{ currentEvent?.ruta?.name }}
       </ion-card-title>
       <ion-item>
-        <ion-icon class="icon" name="person-circle" class="icon"></ion-icon>
-
+        <ion-icon name="navigate-circle-outline" class="icon"></ion-icon>
         {{ currentEvent?.ruta?.location }}
       </ion-item>
       <ion-item>
@@ -37,18 +36,10 @@
         {{ currentEvent?.fecha | date:'dd/MM/yyyy HH:mm' }}
       </ion-item>
       <ion-item>
-        <ion-label>Descripción:</ion-label>
         <span>{{ currentEvent?.ruta?.description }}</span>
       </ion-item>
     </ion-card-content>
-    <!-- <ion-card-content>
-      <p class="info">Participantes:</p>
-      <ion-list>
-        <ion-item *ngFor="let participante of currentEvent?.participantes">
-          <ion-label>{{ participante.nick }}</ion-label>
-        </ion-item>
-      </ion-list> 
-      </ion-card-content> -->
+
     <ion-card>
       <ion-item lines="none" color="light" (click)="toggleParticipants()">
         <ion-label>Participantes</ion-label>
@@ -64,12 +55,13 @@
 
     <ion-button
       expand="block"
-      *ngIf="!assist"
+      *ngIf="!assist && currentEvent && currentEvent.participantes && currentEvent.participantes.length < currentEvent.maxParticipantes"
       (click)="joinEvent()"
       color="success"
     >
       Apuntarse al evento
     </ion-button>
+
     <ion-button
       expand="block"
       *ngIf="assist"

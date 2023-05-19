@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
 import { AuthService } from 'src/app/services/auth.service';
 import { RoutesService } from 'src/app/services/routes.service';
 
@@ -36,7 +37,8 @@ export class RoutePage implements OnInit {
   constructor(
     private routeService: RoutesService,
     private http: HttpClient,
-    private auth: AuthService
+    private auth: AuthService,
+    private socialSharing: SocialSharing
   ) {}
 
   async ngOnInit() {
@@ -163,5 +165,14 @@ export class RoutePage implements OnInit {
     } else {
       this.isFav = false;
     }
+  }
+
+  shareViaSocialMedia() {
+    // Nombre de la imagen que deseas compartir (opcional)
+    const options = {
+      message: 'Mira esta ruta!',
+      url: `https://bikebrosv2.herokuapp.com/route/${this.id}`,
+    };
+    this.socialSharing.shareWithOptions(options);
   }
 }

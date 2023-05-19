@@ -27,6 +27,6 @@ NOTAS GOOGLE MAPS:
 - Buscar la forma de poder sacar los valores de puntos establecidos en el mapa por el usuario.
 
 - CAPACITOR SHARE 
-- cambiar icono subir imagenes 
 - Añadir infinity scroll
 - Darle una vuelta al sistema de reporte
+- Revisar imagenes en la vista que se muestren bien

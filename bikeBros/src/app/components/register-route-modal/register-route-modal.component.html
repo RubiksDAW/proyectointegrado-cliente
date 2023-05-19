@@ -67,13 +67,18 @@
     </ion-item>
     <ion-item>
       <ion-label>Imágenes</ion-label>
+      <label for="file-upload">
+        <ion-icon name="cloud-upload"></ion-icon>
+      </label>
       <input
+        id="file-upload"
         type="file"
         multiple
         (change)="onImageChange($event)"
         accept="image/*"
       />
     </ion-item>
+
     <ion-button type="submit" expand="block">Registrar ruta</ion-button>
   </form>
 </ion-content>

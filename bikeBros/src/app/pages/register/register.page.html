@@ -55,7 +55,15 @@
 
     <ion-item>
       <ion-label>Imágen de perfil</ion-label>
-      <input type="file" (change)="onImageChange($event)" accept="image/*" />
+      <label for="file-upload">
+        <ion-icon name="cloud-upload"></ion-icon>
+      </label>
+      <input
+        id="file-upload"
+        type="file"
+        (change)="onImageChange($event)"
+        accept="image/*"
+      />
     </ion-item>
 
     <ion-row>

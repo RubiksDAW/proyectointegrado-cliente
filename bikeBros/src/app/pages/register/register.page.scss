@@ -1,0 +1,16 @@
+/* Oculta el input de tipo archivo */
+input[type="file"] {
+  display: none;
+}
+
+/* Estilo del icono */
+ion-icon[name="cloud-upload"] {
+  cursor: pointer;
+  font-size: 24px;
+}
+
+/* Estilo del label */
+label[for="file-upload"] {
+  display: inline-block;
+  cursor: pointer;
+}

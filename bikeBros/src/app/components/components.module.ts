@@ -28,9 +28,9 @@ import { RouteMapComponent } from './route-map/route-map.component';
     BoxCommentsComponent,
     EditRouteModalComponent,
     FavListComponent,
-    ReportComponent,
     EditEventModalComponent,
     JoinedEventsListComponent,
+    ReportComponent,
   ],
   imports: [CommonModule, ReactiveFormsModule, IonicModule, FormsModule],
   exports: [
@@ -44,9 +44,9 @@ import { RouteMapComponent } from './route-map/route-map.component';
     BoxCommentsComponent,
     EditRouteModalComponent,
     FavListComponent,
-    ReportComponent,
     EditEventModalComponent,
     JoinedEventsListComponent,
+    ReportComponent,
   ],
 })
 export class ComponentsModule {}

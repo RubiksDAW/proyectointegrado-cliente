@@ -63,7 +63,9 @@
       (click)="deleteRoute(ruta._id)"
       ><ion-icon name="trash-outline"></ion-icon
     ></ion-button>
-    <ion-button (click)="openReport(ruta._id)">Reportar</ion-button>
+    <ion-button (click)="setIdRoute(ruta._id)" (click)="openReport()"
+      >Reportar</ion-button
+    >
     <ion-button (click)="toggleComment(ruta._id)">
       {{ commentStatus[ruta._id] ? "Ocultar" : "Comentar" }}
     </ion-button>

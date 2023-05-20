@@ -1,6 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
+import { ReportService } from 'src/app/services/report.service';
 
 @Component({
   selector: 'app-report',
@@ -8,31 +10,42 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./report.component.scss'],
 })
 export class ReportComponent implements OnInit {
-  @Input() id: string;
-  report: string;
+  routeId: string | null;
+  description: string;
   userName: string;
   idUser: string;
+  reportForm: FormGroup;
+  reason: string;
   constructor(
     private auth: AuthService,
-    private modalController: ModalController
-  ) {}
+    private formBuilder: FormBuilder,
+    private modalController: ModalController,
+    private report: ReportService
+  ) {
+    this.routeId = localStorage.getItem('id');
+  }
 
   async ngOnInit() {
-    this.idUser = await this.auth.getProfileId();
-    console.log(this.idUser);
-    this.auth.getUserById(this.idUser).then((user: any) => {
-      console.log(user);
-      this.userName = user;
-      // Asignar el nombre del usuario a la propiedad userName, o una cadena vacía si es null
+    console.log(this.routeId);
+    this.reportForm = this.formBuilder.group({
+      reason: [''],
+      description: [''],
     });
   }
 
-  onSubmit() {
-    console.log(this.id);
-    console.log(this.userName);
-    const mailtoLink = `mailto:aledelarosa2@gmail.com?subject=Reporte de una ruta &body= El usuario '${this.userName}'ha reportado la ruta cuyo id es: ${this.id}.<br> 
-    Comentario: ${this.report}`;
-    window.location.href = mailtoLink;
+  async onSubmit() {
+    const { reason, description } = this.reportForm.value;
+    if (this.routeId) {
+      console.log(this.routeId, reason, description);
+      this.report
+        .addReport(this.routeId, reason, description)
+        .subscribe((data) => {
+          console.log(data);
+        });
+      this.reportForm.reset();
+    } else {
+      console.log('Error: routeId es nulo.');
+    }
   }
 
   async closeModal() {

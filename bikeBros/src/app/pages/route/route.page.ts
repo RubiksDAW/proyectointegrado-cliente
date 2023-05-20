@@ -168,10 +168,9 @@ export class RoutePage implements OnInit {
   }
 
   shareViaSocialMedia() {
-    // Nombre de la imagen que deseas compartir (opcional)
     const options = {
       message: 'Mira esta ruta!',
-      url: `https://bikebrosv2.herokuapp.com/route/${this.id}`,
+      url: `https://bikebrosv2.herokuapp.com/route/id/${this.id}`,
     };
     this.socialSharing.shareWithOptions(options);
   }

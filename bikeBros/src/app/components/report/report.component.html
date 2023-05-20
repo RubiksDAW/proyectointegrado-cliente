@@ -9,10 +9,31 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <form (ngSubmit)="onSubmit()">
+  <form [formGroup]="reportForm" (submit)="onSubmit()">
     <ion-item>
-      <ion-label position="floating">Reporte</ion-label>
-      <ion-textarea [(ngModel)]="report" name="report" required></ion-textarea>
+      <ion-label>Motivo</ion-label>
+      <ion-select formControlName="reason" name="reason">
+        <ion-select-option value="ruta-inexistente"
+          >Ruta inexistente</ion-select-option
+        >
+        <ion-select-option value="actividad-ilicita"
+          >Actividad ilícita</ion-select-option
+        >
+        <ion-select-option value="contenido-ofensivo"
+          >Contenido ofensivo</ion-select-option
+        >
+        <ion-select-option value="ruta-duplicada"
+          >Ruta duplicada</ion-select-option
+        >
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Descripción</ion-label>
+      <ion-textarea
+        formControlName="description"
+        name="description"
+        required
+      ></ion-textarea>
     </ion-item>
     <ion-button expand="block" type="submit">Enviar</ion-button>
   </form>

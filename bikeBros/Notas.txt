@@ -30,3 +30,5 @@ NOTAS GOOGLE MAPS:
 - Añadir infinity scroll
 - Darle una vuelta al sistema de reporte
 - Revisar imagenes en la vista que se muestren bien
+- comprobar validaciones de los editables
+- Mirar modificar evento

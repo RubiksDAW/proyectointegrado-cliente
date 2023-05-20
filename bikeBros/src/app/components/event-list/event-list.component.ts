@@ -19,7 +19,9 @@ export class EventListComponent implements OnInit {
   roles: string[];
 
   searchTerm: string;
+
   authorEventId: string;
+
   events: EventResponse[] = [];
   subscription: Subscription;
   constructor(

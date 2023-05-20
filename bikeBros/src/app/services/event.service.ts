@@ -8,8 +8,8 @@ import { EventResponse } from '../interfaces/event.interface';
   providedIn: 'root',
 })
 export class EventService {
-  private url = 'https://bikebrosv2.herokuapp.com';
-  // private url = 'http://localhost:3300';
+  // private url = 'https://bikebrosv2.herokuapp.com';
+  private url = 'http://localhost:3300';
 
   private refreshEvent$ = new Subject<void>();
 
@@ -69,7 +69,7 @@ export class EventService {
   //   return this.http.put<EventResponse>(``, event);
   // }
   editEvent(formData: any, id: string) {
-    const url = `${this.url}/api/${id}/updateEvent`;
+    const url = `${this.url}/api/updateEvent/${id}`;
     console.log(formData);
     return this.http.put(url, formData).pipe(
       tap(() => {

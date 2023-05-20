@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { Comment } from 'src/app/interfaces/comment.interface';
 import { AuthService } from 'src/app/services/auth.service';
 import { CommentsService } from 'src/app/services/comments.service';
+// import { ReportService } from 'src/app/services/report.service';
 import { RoutesService } from 'src/app/services/routes.service';
 import { Route } from '../../interfaces/route.interface';
 import { EditRouteModalComponent } from '../edit-route-modal/edit-route-modal.component';
@@ -27,6 +28,7 @@ export class RouteListComponent implements OnInit {
   commentStatus: { [routeId: string]: boolean } = {};
 
   searchTerm: string;
+
   selectedDifficulty: string;
 
   routes: Route[] = [];
@@ -39,6 +41,7 @@ export class RouteListComponent implements OnInit {
     private auth: AuthService,
     private alertController: AlertController,
     private comment: CommentsService,
+    // private report: ReportService,
     private modal: ModalController
   ) {}
 
@@ -207,12 +210,9 @@ export class RouteListComponent implements OnInit {
     });
   }
 
-  async openReport(id: string) {
+  async openReport() {
     const modal = await this.modal.create({
       component: ReportComponent,
-      componentProps: {
-        id,
-      },
     });
     return await modal.present();
   }

@@ -184,8 +184,22 @@ export class RegisterPage implements OnInit {
           // this.auth.loginUser(nick, password);
         },
 
-        error: (err) => {
-          console.error(err);
+        error: async (err) => {
+          const alert = await this.alertController.create({
+            header: 'Error de registro',
+            cssClass: 'custom-alert',
+            message: 'Nombre inapropieado',
+            buttons: [
+              {
+                text: 'Aceptar',
+                cssClass: 'alert-button-confirm',
+              },
+            ],
+          });
+
+          await alert.present();
+
+          return;
         },
       });
     } else {

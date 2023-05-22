@@ -36,8 +36,15 @@ export class EditEventModalComponent implements OnInit {
     this.eventForm = this.formBuilder.group({
       rutaId: ['', Validators.required],
       fecha: ['', Validators.required],
-      ubicacion: ['', Validators.required],
-      maxParticipantes: ['', Validators.required],
+      ubicacion: ['', [Validators.required, Validators.pattern(/^[^0-9]*$/)]],
+      maxParticipantes: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(/^[1-9][0-9]*$/),
+          Validators.max(20),
+        ],
+      ],
     });
 
     const idEvent = localStorage.getItem('id-event');

@@ -1,51 +1,53 @@
-<ion-card *ngIf="profileUser">
-  <ion-header>
-    <ion-toolbar>
-      <ion-buttons slot="start">
-        <ion-back-button
-          defaultHref="main/profile"
-          text="Atrás"
-        ></ion-back-button>
-      </ion-buttons>
-    </ion-toolbar>
-  </ion-header>
-  <ion-card-content>
-    <ion-item lines="none">
-      <ion-avatar slot="end">
-        <img
-          *ngIf="profileUser.imageURL; else defaultImage"
-          [src]="profileUser.imageURL"
-        />
-        <ng-template #defaultImage>
-          <img src="../../../assets/icon/user (1).png" />
-        </ng-template>
-      </ion-avatar>
-    </ion-item>
-    <ion-item>
-      <ion-label>Usuario:</ion-label>
-      <ion-text>{{ profileUser.nick }}</ion-text>
-    </ion-item>
-    <ion-item>
-      <ion-label>Email:</ion-label>
-      <ion-text>{{ profileUser.email }}</ion-text>
-    </ion-item>
-    <ion-item>
-      <ion-label>Edad:</ion-label>
-      <ion-text>{{ profileUser.age }}</ion-text>
-    </ion-item>
-    <ion-item>
-      <ion-label>Descripción:</ion-label>
-      <ion-text>{{ profileUser.description }}</ion-text>
-    </ion-item>
-    <ion-item>
-      <ion-label>Roles:</ion-label>
-      <ion-text>{{ profileUser.roles.join(', ') }}</ion-text>
-    </ion-item>
-  </ion-card-content>
-  <ion-button expand="full" color="primary" (click)="editProfile()"
-    >Editar perfiles</ion-button
-  >
-  <ion-button expand="full" color="danger" (click)="confirmDelete()"
-    >Eliminar cuenta</ion-button
-  >
-</ion-card>
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <!-- //Aqui al pulsar deberia redirigirnos a Inicio, no a inicio de registro -->
+      <ion-back-button defaultHref="/main"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Info</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card class="card" *ngIf="profileUser">
+    <ion-card-content>
+      <ion-item class="img-container" lines="none">
+        <ion-avatar>
+          <img
+            class="ion-avatar"
+            *ngIf="profileUser.imageURL; else defaultImage"
+            [src]="profileUser.imageURL"
+          />
+          <ng-template #defaultImage>
+            <img src="../../../assets/icon/user (1).png" />
+          </ng-template>
+        </ion-avatar>
+      </ion-item>
+
+      <ion-title class="title">Información personal</ion-title>
+      <ion-item>
+        <ion-icon name="person-circle-outline" class="icon"></ion-icon>
+        <ion-label class="info">{{ profileUser.nick }}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-icon name="mail-outline" class="icon"></ion-icon>
+        <ion-label class="info">{{profileUser.email}}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-icon name="calendar-number-outline" class="icon"></ion-icon>
+        <ion-label class="info">{{profileUser?.age}} años</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-icon name="information-circle-outline" class="icon"></ion-icon>
+        <ion-label class="info">{{profileUser.description}}</ion-label>
+      </ion-item>
+    </ion-card-content>
+
+    <ion-button expand="full" color="primary" (click)="editProfile()"
+      >Editar perfil</ion-button
+    >
+    <ion-button expand="full" color="danger" (click)="confirmDelete()"
+      >Eliminar cuenta</ion-button
+    >
+  </ion-card>
+</ion-content>

@@ -1,10 +1,9 @@
-
 <ion-header *ngIf="profileUser">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-button color="medium" (click)="cancel()">Cancel</ion-button>
     </ion-buttons>
-    <ion-title>Welcome</ion-title>
+    <ion-title color="danger">Eliminar</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="deleteProfile(profileUser.id)">Confirm</ion-button>
     </ion-buttons>
@@ -12,11 +11,13 @@
 </ion-header>
 <ion-content class="ion-padding">
   <ion-item>
-    <p>¿Estás seguro de borrar tu perfil?</p>
+    <h1 class="title">Eliminar mi cuenta</h1>
+  </ion-item>
+  <ion-item>
+    <p>
+      Queremos informarte que la acción que estás a punto de realizar no tiene
+      vuelta atrás. Es importante que comprendas que una vez que lleves a cabo
+      esta acción, no será posible revertirla y los cambios serán permanentes.
+    </p>
   </ion-item>
 </ion-content>
-
-
-
-
-

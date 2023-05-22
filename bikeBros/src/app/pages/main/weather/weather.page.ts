@@ -18,6 +18,8 @@ export class WeatherPage implements OnInit {
     this.loadData();
   }
 
+  ngOnInit() {}
+
   loadData() {
     this.http
       // .get(`${API_URL}weather?q=${'Sevilla'}&appid=${API_KEY}`)
@@ -26,7 +28,7 @@ export class WeatherPage implements OnInit {
       )
       .subscribe((response) => {
         this.weatherDetails = response;
-        this.icon = `http://openweathermap.org/img/wn/${this.weatherDetails.weather[0].icon}@4x.png`;
+        this.icon = `https://openweathermap.org/img/wn/${this.weatherDetails.weather[0].icon}@4x.png`;
 
         console.log(response);
       });
@@ -40,10 +42,8 @@ export class WeatherPage implements OnInit {
         )
         .subscribe((response) => {
           this.weatherDetails = response;
-          this.icon = `http://openweathermap.org/img/wn/${this.weatherDetails.weather[0].icon}@4x.png`;
+          this.icon = `https://openweathermap.org/img/wn/${this.weatherDetails.weather[0].icon}@4x.png`;
         });
     }
   }
-
-  ngOnInit() {}
 }

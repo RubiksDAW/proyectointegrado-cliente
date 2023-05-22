@@ -102,6 +102,7 @@ export class JoinedEventsListComponent implements OnInit {
     }
   }
   async showEventEditModal() {
+    console.log('ey');
     const modal = await this.modal.create({
       component: EditEventModalComponent,
     });

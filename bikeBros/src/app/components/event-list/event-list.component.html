@@ -11,6 +11,13 @@
 <ion-list>
   <ion-card *ngFor="let event of events">
     <ion-card-header>
+      <ion-slides>
+        <ion-slide *ngFor="let imageURL of event.ruta?.images">
+          <div class="image-container">
+            <img class="img" src="{{ imageURL }}" />
+          </div>
+        </ion-slide>
+      </ion-slides>
       <ion-card-title *ngIf="event.ruta" class="center">{{
         event?.ruta?.name
       }}</ion-card-title>
@@ -45,15 +52,18 @@
         >
           <ion-icon name="create-outline"></ion-icon>
         </ion-button>
-        <ion-button (click)="setIdEvent(event._id)" (click)="openReport()"
-          >Reportar</ion-button
-        >
+        <ion-button
+          color="danger"
+          (click)="setIdEvent(event._id)"
+          (click)="openReport()"
+          ><ion-icon name="ban-outline"></ion-icon
+        ></ion-button>
         <ion-button
           color="warning"
           *ngIf="roles?.includes('ROLE_ADMIN')"
           (click)="openReportList(event._id)"
-          ><ion-icon name="create-outline"></ion-icon>Caja reports</ion-button
-        >
+          ><ion-icon name="receipt-outline"></ion-icon
+        ></ion-button>
         <ion-button
           color="danger"
           *ngIf="

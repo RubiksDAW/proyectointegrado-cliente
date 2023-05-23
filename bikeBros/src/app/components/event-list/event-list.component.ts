@@ -18,6 +18,7 @@ import { ReportEventComponent } from '../report-event/report-event.component';
 export class EventListComponent implements OnInit {
   // events$: Observable<Event[]>;
   currentUser: any;
+
   roles: string[];
 
   searchTerm: string;
@@ -138,17 +139,16 @@ export class EventListComponent implements OnInit {
   getEvents(): void {
     this.eventService.getAllEvents().subscribe((data: any) => {
       this.events = data.events;
-      console.log(data);
+      console.log(data.totalPages);
     });
   }
 
   loadMoreData(event: any): void {
-    console.log('ey');
     console.log(this.events.length);
     console.log(this.totalItems);
     if (!this.isLoading && this.events.length < this.totalItems) {
       console.log(this.searchTerm);
-      console.log('ou');
+      console.log(this.totalItems);
       this.isLoading = true;
       this.currentPage++;
       console.log(this.currentPage);

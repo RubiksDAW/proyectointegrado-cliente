@@ -22,9 +22,13 @@ export class RouteListComponent implements OnInit {
   //Esto es un observable, cuando lleva un dollar
 
   comments: Comment[] = [];
+
   profileUser: any;
+
   roles: string[];
+
   showComment: boolean;
+
   commentStatus: { [routeId: string]: boolean } = {};
 
   searchTerm: string;
@@ -236,13 +240,12 @@ export class RouteListComponent implements OnInit {
   }
 
   loadMoreData(event: any): void {
-    console.log('ey');
     console.log(this.routes.length);
     console.log(this.totalItems);
     if (!this.isLoading && this.routes.length < this.totalItems) {
       console.log(this.searchTerm);
       console.log(this.selectedDifficulty);
-      console.log('ou');
+
       this.isLoading = true;
       this.currentPage++;
       console.log(this.currentPage);

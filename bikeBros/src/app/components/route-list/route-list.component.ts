@@ -7,7 +7,6 @@ import { AuthService } from 'src/app/services/auth.service';
 import { CommentsService } from 'src/app/services/comments.service';
 // import { ReportService } from 'src/app/services/report.service';
 import { RoutesService } from 'src/app/services/routes.service';
-import { Route } from '../../interfaces/route.interface';
 import { EditRouteModalComponent } from '../edit-route-modal/edit-route-modal.component';
 import { ReportComponent } from '../report/report.component';
 
@@ -31,7 +30,12 @@ export class RouteListComponent implements OnInit {
 
   selectedDifficulty: string;
 
-  routes: Route[] = [];
+  public routes: any[] = []; // Arreglo para almacenar las rutas
+  public currentPage: number = 1; // Página actual
+  public itemsPerPage: number = 5; // Cantidad de elementos por página
+  public totalItems: number = 100; // Total de elementos disponibles
+  public isLoading: boolean = false; // Variable para controlar la carga de datos
+
   // routes$: Observable<Route[]>;
   subscription: Subscription;
 
@@ -205,7 +209,10 @@ export class RouteListComponent implements OnInit {
 
   getRoutes(): void {
     this.routesSer.getAllRoutes().subscribe((data: any) => {
+      console.log(data);
       this.routes = data.routes;
+      // this.totalItems = this.routes.length;
+      console.log(this.totalItems);
       console.log(this.routes);
     });
   }
@@ -215,5 +222,40 @@ export class RouteListComponent implements OnInit {
       component: ReportComponent,
     });
     return await modal.present();
+  }
+
+  loadMoreData(event: any): void {
+    console.log('ey');
+    console.log(this.routes.length);
+    console.log(this.totalItems);
+    if (!this.isLoading && this.routes.length < this.totalItems) {
+      console.log(this.searchTerm);
+      console.log(this.selectedDifficulty);
+      console.log('ou');
+      this.isLoading = true;
+      this.currentPage++;
+      console.log(this.currentPage);
+
+      // Lógica para obtener más elementos, por ejemplo, haciendo otra solicitud al servicio
+      this.routesSer
+        .getAllRoutes(
+          this.searchTerm,
+          this.selectedDifficulty,
+          this.currentPage,
+          this.itemsPerPage
+        )
+        .subscribe((data: any) => {
+          // Agregar los nuevos elementos al arreglo existente
+          this.routes = this.routes.concat(data.routes);
+          console.log(this.routes);
+          this.isLoading = false;
+
+          // Completar la acción de carga infinita
+          event.target.complete();
+        });
+    } else {
+      // Completar la acción de carga infinita si no hay más elementos
+      event.target.complete();
+    }
   }
 }

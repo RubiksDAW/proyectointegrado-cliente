@@ -8,8 +8,8 @@ import { EventResponse } from '../interfaces/event.interface';
   providedIn: 'root',
 })
 export class EventService {
-  private url = 'https://bikebrosv2.herokuapp.com';
-  // private url = 'http://localhost:3300';
+  // private url = 'https://bikebrosv2.herokuapp.com';
+  private url = 'http://localhost:3300';
 
   private refreshEvent$ = new Subject<void>();
 
@@ -19,15 +19,20 @@ export class EventService {
     return this.refreshEvent$;
   }
 
-  getAllEvents(searchTerm?: string): Observable<EventResponse> {
-    let query = {};
+  getAllEvents(
+    searchTerm?: string,
+    page?: number,
+    pageSize?: number
+  ): Observable<EventResponse> {
+    let query: any = {
+      page: page ? page.toString() : undefined,
+      pageSize: pageSize ? pageSize.toString() : undefined,
+    };
     if (searchTerm) {
       // Si se proporciona un término de búsqueda, filtrar las rutas por nombre o nivel de dificultad
       query = {
         searchTerm: searchTerm,
       };
-    } else {
-      query = {};
     }
     return this.http
       .get<EventResponse>(`${this.url}/api/getAllEvents`, { params: query })

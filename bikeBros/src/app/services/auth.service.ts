@@ -7,8 +7,8 @@ import { Observable, Subject, map } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthService {
-  private url = 'https://bikebrosv2.herokuapp.com';
-  // private url = 'http://localhost:3300';
+  // private url = 'https://bikebrosv2.herokuapp.com';
+  private url = 'http://localhost:3300';
   // headers = new HttpHeaders().set('Content-Type', 'application/json');
   currentUser = {};
   private refreshUsers$ = new Subject<void>();
@@ -161,6 +161,26 @@ export class AuthService {
       const data = await user.json();
       console.log(data.nick);
       const userNick = data.nick;
+
+      return userNick;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async getUserProfileById(userId: string | null) {
+    const url = `${this.url}/user/${userId}`;
+
+    try {
+      const user = await fetch(url);
+
+      if (!user.ok) {
+        throw new Error('Error al obtener la respuesta de la solicitud');
+      }
+
+      const data = await user.json();
+      console.log(data);
+      const userNick = data;
 
       return userNick;
     } catch (error) {

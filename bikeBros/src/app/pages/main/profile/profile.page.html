@@ -43,19 +43,23 @@
   <ion-card *ngIf="userStats" class="stats">
     <ion-title class="title">Estadisticas de uso</ion-title>
     <ion-item>
-      <ion-icon name="information-circle" slot="start" class="icon"></ion-icon>
+      <ion-icon name="bicycle-outline" slot="start" class="icon"></ion-icon>
       <ion-label>Rutas creadas: {{userStats?.totalRoutes}}</ion-label>
     </ion-item>
     <ion-item>
-      <ion-icon name="information-circle" slot="start" class="icon"></ion-icon>
+      <ion-icon name="today-outline" slot="start" class="icon"></ion-icon>
       <ion-label>Eventos creados: {{userStats?.totalEvents}}</ion-label>
     </ion-item>
     <ion-item>
-      <ion-icon name="information-circle" slot="start" class="icon"></ion-icon>
+      <ion-icon name="mail-outline" slot="start" class="icon"></ion-icon>
       <ion-label>Comentarios: {{userStats?.totalComments}}</ion-label>
     </ion-item>
     <ion-item>
-      <ion-icon name="information-circle" slot="start" class="icon"></ion-icon>
+      <ion-icon
+        name="calendar-number-outline"
+        slot="start"
+        class="icon"
+      ></ion-icon>
       <ion-label
         >Eventos pendientes: {{userStats?.totalEventsJoined}}</ion-label
       >

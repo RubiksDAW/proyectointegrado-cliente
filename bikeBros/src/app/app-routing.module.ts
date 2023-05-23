@@ -63,27 +63,42 @@ const routes: Routes = [
     path: 'event',
     loadChildren: () =>
       import('./pages/event/event.module').then((m) => m.EventPageModule),
-  },  {
+  },
+  {
     path: 'success-route',
-    loadChildren: () => import('./pages/success-route/success-route.module').then( m => m.SuccessRoutePageModule)
+    loadChildren: () =>
+      import('./pages/success-route/success-route.module').then(
+        (m) => m.SuccessRoutePageModule
+      ),
   },
   {
     path: 'success-event',
-    loadChildren: () => import('./pages/success-event/success-event.module').then( m => m.SuccessEventPageModule)
+    loadChildren: () =>
+      import('./pages/success-event/success-event.module').then(
+        (m) => m.SuccessEventPageModule
+      ),
   },
   {
     path: 'deleted-event',
-    loadChildren: () => import('./pages/deleted-event/deleted-event.module').then( m => m.DeletedEventPageModule)
+    loadChildren: () =>
+      import('./pages/deleted-event/deleted-event.module').then(
+        (m) => m.DeletedEventPageModule
+      ),
   },
   {
     path: 'deleted-route',
-    loadChildren: () => import('./pages/deleted-route/deleted-route.module').then( m => m.DeletedRoutePageModule)
+    loadChildren: () =>
+      import('./pages/deleted-route/deleted-route.module').then(
+        (m) => m.DeletedRoutePageModule
+      ),
   },
   {
-    path: 'public-profile',
-    loadChildren: () => import('./pages/public-profile/public-profile.module').then( m => m.PublicProfilePageModule)
+    path: 'public-profile/:id',
+    loadChildren: () =>
+      import('./pages/public-profile/public-profile.module').then(
+        (m) => m.PublicProfilePageModule
+      ),
   },
-
 ];
 
 @NgModule({

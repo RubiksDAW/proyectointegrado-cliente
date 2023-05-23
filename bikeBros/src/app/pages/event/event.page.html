@@ -48,7 +48,11 @@
       </ion-item>
       <ion-list *ngIf="showParticipants">
         <ion-item *ngFor="let participante of currentEvent?.participantes">
-          <ion-label>{{ participante.nick }}</ion-label>
+          <ion-label
+            (click)="setIdUser(participante._id)"
+            (click)="checkUser(participante._id)"
+            >{{ participante.nick }}</ion-label
+          >
         </ion-item>
       </ion-list>
     </ion-card>

@@ -7,6 +7,7 @@ import { EventResponse } from 'src/app/interfaces/event.interface';
 import { AuthService } from 'src/app/services/auth.service';
 import { EventService } from 'src/app/services/event.service';
 import { EditEventModalComponent } from '../edit-event-modal/edit-event-modal.component';
+import { ReportEventComponent } from '../report-event/report-event.component';
 
 @Component({
   selector: 'app-event-list',
@@ -23,6 +24,12 @@ export class EventListComponent implements OnInit {
   authorEventId: string;
 
   events: EventResponse[] = [];
+
+  public currentPage: number = 1; // Página actual
+  public itemsPerPage: number = 5; // Cantidad de elementos por página
+  public totalItems: number = 100; // Total de elementos disponibles
+  public isLoading: boolean = false; // Variable para controlar la carga de datos
+
   subscription: Subscription;
   constructor(
     private eventService: EventService,
@@ -120,7 +127,7 @@ export class EventListComponent implements OnInit {
 
   searchEvents() {
     this.eventService.getAllEvents(this.searchTerm).subscribe((data: any) => {
-      this.events = data;
+      this.events = data.events;
       console.log(data);
     });
 
@@ -129,14 +136,50 @@ export class EventListComponent implements OnInit {
 
   getEvents(): void {
     this.eventService.getAllEvents().subscribe((data: any) => {
-      this.events = data;
+      this.events = data.events;
       console.log(data);
     });
+  }
+
+  loadMoreData(event: any): void {
+    console.log('ey');
+    console.log(this.events.length);
+    console.log(this.totalItems);
+    if (!this.isLoading && this.events.length < this.totalItems) {
+      console.log(this.searchTerm);
+      console.log('ou');
+      this.isLoading = true;
+      this.currentPage++;
+      console.log(this.currentPage);
+
+      // Lógica para obtener más elementos, por ejemplo, haciendo otra solicitud al servicio
+      this.eventService
+        .getAllEvents(this.searchTerm, this.currentPage, this.itemsPerPage)
+        .subscribe((data: any) => {
+          // Agregar los nuevos elementos al arreglo existente
+          this.events = this.events.concat(data.events);
+          console.log(this.events);
+          this.isLoading = false;
+
+          // Completar la acción de carga infinita
+          event.target.complete();
+        });
+    } else {
+      // Completar la acción de carga infinita si no hay más elementos
+      event.target.complete();
+    }
   }
 
   async showEventEditModal() {
     const modal = await this.modal.create({
       component: EditEventModalComponent,
+    });
+    return await modal.present();
+  }
+
+  async openReport() {
+    const modal = await this.modal.create({
+      component: ReportEventComponent,
     });
     return await modal.present();
   }

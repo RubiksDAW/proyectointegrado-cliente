@@ -19,59 +19,67 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-card *ngFor="let ruta of routes">
-  <ion-slides #slides>
-    <ion-slide *ngFor="let imageURL of ruta.images">
-      <div class="image-container">
-        <button class="slide-button slide-button-left" (click)="prevSlide()">
-          <ion-icon name="arrow-back"></ion-icon>
-        </button>
-        <img class="img" src="{{ imageURL }}" />
-        <button class="slide-button slide-button-right" (click)="nextSlide()">
-          <ion-icon name="arrow-forward"></ion-icon>
-        </button>
+<ion-list>
+  <ion-card *ngFor="let ruta of routes">
+    <ion-slides #slides>
+      <ion-slide *ngFor="let imageURL of ruta.images">
+        <div class="image-container">
+          <button class="slide-button slide-button-left" (click)="prevSlide()">
+            <ion-icon name="arrow-back"></ion-icon>
+          </button>
+          <img class="img" src="{{ imageURL }}" />
+          <button class="slide-button slide-button-right" (click)="nextSlide()">
+            <ion-icon name="arrow-forward"></ion-icon>
+          </button>
+        </div>
+      </ion-slide>
+    </ion-slides>
+
+    <ion-card-header>
+      <ion-card-title>{{ ruta.name }}</ion-card-title>
+      <ion-card-subtitle>Ubicación: {{ ruta.location }}</ion-card-subtitle>
+      <ion-card-subtitle
+        >Dificultad: {{ ruta.difficulty_level }}</ion-card-subtitle
+      >
+      <ion-card-subtitle
+        >Distancia: {{ ruta.distance | number : ".0-0" }} km</ion-card-subtitle
+      >
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-button (click)="setIdRoute(ruta._id)" (click)="checkRoute(ruta._id)"
+        ><ion-icon name="eye-outline"></ion-icon
+      ></ion-button>
+
+      <ion-button
+        color="warning"
+        *ngIf="ruta.author == profileUser?.id || roles?.includes('ROLE_ADMIN')"
+        (click)="showRouteEditModal()"
+        (click)="setIdRoute(ruta._id)"
+        ><ion-icon name="create-outline"></ion-icon
+      ></ion-button>
+      <ion-button
+        color="danger"
+        *ngIf="ruta.author == profileUser?.id || roles?.includes('ROLE_ADMIN')"
+        (click)="deleteRoute(ruta._id)"
+        ><ion-icon name="trash-outline"></ion-icon
+      ></ion-button>
+      <ion-button (click)="setIdRoute(ruta._id)" (click)="openReport()"
+        >Reportar</ion-button
+      >
+      <ion-button (click)="toggleComment(ruta._id)">
+        {{ commentStatus[ruta._id] ? "Ocultar" : "Comentar" }}
+      </ion-button>
+      <div id="comment" [hidden]="!commentStatus[ruta._id]">
+        <app-input-comment [routeId]="ruta._id"></app-input-comment>
+        <app-box-comments [routeId]="ruta._id"></app-box-comments>
       </div>
-    </ion-slide>
-  </ion-slides>
-
-  <ion-card-header>
-    <ion-card-title>{{ ruta.name }}</ion-card-title>
-    <ion-card-subtitle>Ubicación: {{ ruta.location }}</ion-card-subtitle>
-    <ion-card-subtitle
-      >Dificultad: {{ ruta.difficulty_level }}</ion-card-subtitle
-    >
-    <ion-card-subtitle
-      >Distancia: {{ ruta.distance | number : ".0-0" }} km</ion-card-subtitle
-    >
-  </ion-card-header>
-
-  <ion-card-content>
-    <ion-button (click)="setIdRoute(ruta._id)" (click)="checkRoute(ruta._id)"
-      ><ion-icon name="eye-outline"></ion-icon
-    ></ion-button>
-
-    <ion-button
-      color="warning"
-      *ngIf="ruta.author == profileUser?.id || roles?.includes('ROLE_ADMIN')"
-      (click)="showRouteEditModal()"
-      (click)="setIdRoute(ruta._id)"
-      ><ion-icon name="create-outline"></ion-icon
-    ></ion-button>
-    <ion-button
-      color="danger"
-      *ngIf="ruta.author == profileUser?.id || roles?.includes('ROLE_ADMIN')"
-      (click)="deleteRoute(ruta._id)"
-      ><ion-icon name="trash-outline"></ion-icon
-    ></ion-button>
-    <ion-button (click)="setIdRoute(ruta._id)" (click)="openReport()"
-      >Reportar</ion-button
-    >
-    <ion-button (click)="toggleComment(ruta._id)">
-      {{ commentStatus[ruta._id] ? "Ocultar" : "Comentar" }}
-    </ion-button>
-    <div id="comment" [hidden]="!commentStatus[ruta._id]">
-      <app-input-comment [routeId]="ruta._id"></app-input-comment>
-      <app-box-comments [routeId]="ruta._id"></app-box-comments>
-    </div>
-  </ion-card-content>
-</ion-card>
+    </ion-card-content>
+  </ion-card>
+</ion-list>
+<ion-infinite-scroll (ionInfinite)="loadMoreData($event)">
+  <ion-infinite-scroll-content
+    loadingSpinner="bubbles"
+    loadingText="Cargando más datos..."
+  ></ion-infinite-scroll-content>
+</ion-infinite-scroll>

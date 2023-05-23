@@ -1,9 +1,53 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>public-profile</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Perfil público</ion-title>
   </ion-toolbar>
 </ion-header>
-
 <ion-content>
+  <!-- <ion-item-divider></ion-item-divider> -->
+  <ion-card *ngIf="publicProfileUser">
+    <div class="img-container">
+      <img
+        *ngIf="publicProfileUser.imageURL; else defaultImage"
+        src="{{publicProfileUser.imageURL}}"
+      />
 
+      <ng-template #defaultImage>
+        <img src="../../../assets/icon/user (1).png" />
+      </ng-template>
+    </div>
+    <ion-title class="title">Información personal</ion-title>
+    <ion-item>
+      <ion-icon name="person-circle-outline" class="icon"></ion-icon>
+      <ion-label class="info">{{ publicProfileUser.nick }}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="mail-outline" class="icon"></ion-icon>
+      <ion-label class="info">{{publicProfileUser.email}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="calendar-number-outline" class="icon"></ion-icon>
+      <ion-label class="info">{{publicProfileUser?.age}} años</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="information-circle-outline" class="icon"></ion-icon>
+      <ion-label class="info">{{publicProfileUser.description}}</ion-label>
+    </ion-item>
+  </ion-card>
+  <!-- <ion-item-divider></ion-item-divider> -->
+
+  <ion-card>
+    <ion-button expand="block" (click)="openFavRoutes()"
+      >Mis Rutas Favoritas</ion-button
+    >
+  </ion-card>
+  <ion-card>
+    <ion-button expand="block" (click)="openEventsJoined()">
+      Eventos pendientes</ion-button
+    >
+  </ion-card>
+  <ion-item-divider></ion-item-divider>
 </ion-content>

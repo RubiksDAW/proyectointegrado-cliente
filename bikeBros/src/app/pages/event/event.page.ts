@@ -109,4 +109,12 @@ export class EventPage implements OnInit {
   toggleParticipants() {
     this.showParticipants = !this.showParticipants;
   }
+
+  setIdUser(id: string) {
+    localStorage.setItem('id-public-user', id);
+    console.log(id);
+  }
+  checkUser(id: string) {
+    this.router.navigate([`/public-profile/${id}`]);
+  }
 }

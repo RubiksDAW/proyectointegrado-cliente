@@ -8,53 +8,62 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
+<ion-list>
+  <ion-card *ngFor="let event of events">
+    <ion-card-header>
+      <ion-card-title *ngIf="event.ruta" class="center">{{
+        event?.ruta?.name
+      }}</ion-card-title>
+    </ion-card-header>
 
-<ion-card *ngFor="let event of events">
-  <ion-card-header>
-    <ion-card-title *ngIf="event.ruta" class="center">{{
-      event?.ruta?.name
-    }}</ion-card-title>
-  </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-icon name="locate-outline" class="icon"></ion-icon>
+        {{ event.ubicacion }}
+      </ion-item>
+      <ion-item>
+        <ion-icon name="calendar-outline" class="icon"></ion-icon>
+        {{ event.fecha | date : "dd/MM/yyyy" }}
+      </ion-item>
+      <ion-item>
+        <ion-icon class="icon" name="person-circle" class="icon"></ion-icon>
 
-  <ion-card-content>
-    <ion-item>
-      <ion-icon name="locate-outline" class="icon"></ion-icon>
-      {{ event.ubicacion }}
-    </ion-item>
-    <ion-item>
-      <ion-icon name="calendar-outline" class="icon"></ion-icon>
-      {{ event.fecha | date : "dd/MM/yyyy" }}
-    </ion-item>
-    <ion-item>
-      <ion-icon class="icon" name="person-circle" class="icon"></ion-icon>
+        {{ event?.participantes?.length }} / {{ event?.maxParticipantes }}
+      </ion-item>
 
-      {{ event?.participantes?.length }} / {{ event?.maxParticipantes }}
-    </ion-item>
+      <div class="buttons">
+        <ion-button (click)="setIdEvent(event._id); checkEvent(event._id)"
+          ><ion-icon name="eye-outline"></ion-icon
+        ></ion-button>
 
-    <div class="buttons">
-      <ion-button (click)="setIdEvent(event._id); checkEvent(event._id)"
-        ><ion-icon name="eye-outline"></ion-icon
-      ></ion-button>
-
-      <ion-button
-        color="warning"
-        *ngIf="
-          event.creador == currentUser?.id || roles?.includes('ROLE_ADMIN')
-        "
-        (click)="setIdEvent(event._id); showEventEditModal()"
-      >
-        <ion-icon name="create-outline"></ion-icon>
-      </ion-button>
-
-      <ion-button
-        color="danger"
-        *ngIf="
-          event.creador == currentUser?.id || roles?.includes('ROLE_ADMIN')
-        "
-        (click)="deleteEvent(event._id)"
-      >
-        <ion-icon name="trash-outline"></ion-icon>
-      </ion-button>
-    </div>
-  </ion-card-content>
-</ion-card>
+        <ion-button
+          color="warning"
+          *ngIf="
+            event.creador == currentUser?.id || roles?.includes('ROLE_ADMIN')
+          "
+          (click)="setIdEvent(event._id); showEventEditModal()"
+        >
+          <ion-icon name="create-outline"></ion-icon>
+        </ion-button>
+        <ion-button (click)="setIdEvent(event._id)" (click)="openReport()"
+          >Reportar</ion-button
+        >
+        <ion-button
+          color="danger"
+          *ngIf="
+            event.creador == currentUser?.id || roles?.includes('ROLE_ADMIN')
+          "
+          (click)="deleteEvent(event._id)"
+        >
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-list>
+<ion-infinite-scroll (ionInfinite)="loadMoreData($event)">
+  <ion-infinite-scroll-content
+    loadingSpinner="bubbles"
+    loadingText="Cargando más datos..."
+  ></ion-infinite-scroll-content>
+</ion-infinite-scroll>

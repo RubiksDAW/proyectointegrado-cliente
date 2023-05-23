@@ -9,8 +9,8 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class RoutesService {
-  private url = 'https://bikebrosv2.herokuapp.com';
-  // private url = 'http://localhost:3300';
+  // private url = 'https://bikebrosv2.herokuapp.com';
+  private url = 'http://localhost:3300';
 
   // Declaramos una variable para observar
   private refreshRoute$ = new Subject<void>();
@@ -32,22 +32,48 @@ export class RoutesService {
     return this.refreshRoute$;
   }
 
+  // getAllRoutes(
+  //   searchTerm?: string,
+  //   selectedDifficulty?: string
+  // ): Observable<Route[]> {
+  //   let query: any = {};
+  //   if (searchTerm) {
+  //     // Si se proporciona un término de búsqueda, filtrar las rutas por nombre o nivel de dificultad
+  //     query = {
+  //       searchTerm: searchTerm,
+  //     };
+  //   } else {
+  //     query = {};
+  //   }
+
+  //   if (selectedDifficulty) {
+  //     // Si se proporciona un nivel de dificultad seleccionado, filtrar las rutas por ese nivel
+  //     query.difficulty_level = selectedDifficulty;
+  //   }
+
+  //   return this.http
+  //     .get<Route[]>(`${this.url}/api/route/getAll`, {
+  //       params: query,
+  //     })
+  //     .pipe(map((resp) => resp));
+  // }
+
   getAllRoutes(
     searchTerm?: string,
-    selectedDifficulty?: string
+    selectedDifficulty?: string,
+    page?: number,
+    pageSize?: number
   ): Observable<Route[]> {
-    let query: any = {};
+    let query: any = {
+      page: page ? page.toString() : undefined,
+      pageSize: pageSize ? pageSize.toString() : undefined,
+    };
+
     if (searchTerm) {
-      // Si se proporciona un término de búsqueda, filtrar las rutas por nombre o nivel de dificultad
-      query = {
-        searchTerm: searchTerm,
-      };
-    } else {
-      query = {};
+      query.searchTerm = searchTerm;
     }
 
     if (selectedDifficulty) {
-      // Si se proporciona un nivel de dificultad seleccionado, filtrar las rutas por ese nivel
       query.difficulty_level = selectedDifficulty;
     }
 

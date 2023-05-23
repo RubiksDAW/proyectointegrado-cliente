@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject, tap } from 'rxjs';
+import { Observable, Subject, map, tap } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
@@ -32,5 +32,17 @@ export class ReportService {
         this.refreshReports$.next();
       })
     );
+  }
+
+  getRouteReports(routeId: string): Observable<any> {
+    return this.http
+      .get<any>(`${this.url}/api/showRouteReports/${routeId}`)
+      .pipe(map((resp) => resp));
+  }
+
+  getEventReports(eventId: string): Observable<any> {
+    return this.http
+      .get<any>(`${this.url}/api/report/showEventReports/${eventId}`)
+      .pipe(map((resp) => resp));
   }
 }

@@ -7,6 +7,7 @@ import { EventResponse } from 'src/app/interfaces/event.interface';
 import { AuthService } from 'src/app/services/auth.service';
 import { EventService } from 'src/app/services/event.service';
 import { EditEventModalComponent } from '../edit-event-modal/edit-event-modal.component';
+import { ReportEventListComponent } from '../report-event-list/report-event-list.component';
 import { ReportEventComponent } from '../report-event/report-event.component';
 
 @Component({
@@ -180,6 +181,16 @@ export class EventListComponent implements OnInit {
   async openReport() {
     const modal = await this.modal.create({
       component: ReportEventComponent,
+    });
+    return await modal.present();
+  }
+
+  async openReportList(id: string) {
+    const modal = await this.modal.create({
+      component: ReportEventListComponent,
+      componentProps: {
+        eventId: id, // Reemplaza 'ID_DE_LA_RUTA' con el valor real de la ID de la ruta
+      },
     });
     return await modal.present();
   }

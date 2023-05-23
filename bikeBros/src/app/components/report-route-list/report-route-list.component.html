@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title> Reportes recibidos </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-card>
+    <ion-list *ngIf="reports?.length">
+      <!-- <ion-button>Eliminar</ion-button> -->
+      <ion-item *ngFor="let report of reports">
+        <!-- <ion-thumbnail slot="start">
+        <img [src]="comment.authorAvatarURL" />
+      </ion-thumbnail> -->
+        <ion-label text-wrap>
+          <h2>{{ report?.reason }}</h2>
+          <p>{{ report?.description }}</p>
+          <!-- <p>ID: {{ comment._id }}</p> -->
+          <!-- <ion-button color="danger">Eliminar</ion-button> -->
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
+    <ion-text *ngIf="!reports || reports.length === 0"
+      >No hay comentarios.</ion-text
+    >
+  </ion-card>
+</ion-content>

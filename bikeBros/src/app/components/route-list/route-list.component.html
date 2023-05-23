@@ -67,6 +67,13 @@
       <ion-button (click)="setIdRoute(ruta._id)" (click)="openReport()"
         >Reportar</ion-button
       >
+      <ion-button
+        color="warning"
+        *ngIf="roles?.includes('ROLE_ADMIN')"
+        (click)="openReportList(ruta._id)"
+        ><ion-icon name="create-outline"></ion-icon>Caja reports</ion-button
+      >
+
       <ion-button (click)="toggleComment(ruta._id)">
         {{ commentStatus[ruta._id] ? "Ocultar" : "Comentar" }}
       </ion-button>

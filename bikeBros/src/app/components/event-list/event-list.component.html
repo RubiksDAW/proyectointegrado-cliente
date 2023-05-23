@@ -49,6 +49,12 @@
           >Reportar</ion-button
         >
         <ion-button
+          color="warning"
+          *ngIf="roles?.includes('ROLE_ADMIN')"
+          (click)="openReportList(event._id)"
+          ><ion-icon name="create-outline"></ion-icon>Caja reports</ion-button
+        >
+        <ion-button
           color="danger"
           *ngIf="
             event.creador == currentUser?.id || roles?.includes('ROLE_ADMIN')

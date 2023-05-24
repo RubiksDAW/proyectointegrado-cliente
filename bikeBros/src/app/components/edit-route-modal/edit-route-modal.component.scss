@@ -1,0 +1,27 @@
+#pac-input {
+  background-color: #fff;
+  font-family: Roboto;
+  font-size: 15px;
+  font-weight: 300;
+  margin-left: 12px;
+  padding: 0 11px 0 13px;
+  text-overflow: ellipsis;
+  width: 400px;
+}
+
+/* Oculta el input de tipo archivo */
+input[type="file"] {
+  display: none;
+}
+
+/* Estilo del icono */
+ion-icon[name="cloud-upload"] {
+  cursor: pointer;
+  font-size: 24px;
+}
+
+/* Estilo del label */
+label[for="file-upload"] {
+  display: inline-block;
+  cursor: pointer;
+}

@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, IonSlides, ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { Comment } from 'src/app/interfaces/comment.interface';
 import { AuthService } from 'src/app/services/auth.service';
@@ -17,10 +17,6 @@ import { ReportComponent } from '../report/report.component';
   styleUrls: ['./route-list.component.scss'],
 })
 export class RouteListComponent implements OnInit {
-  // routes: Route[] = [];
-  @ViewChild(IonSlides) slides: IonSlides;
-  //Esto es un observable, cuando lleva un dollar
-
   comments: Comment[] = [];
 
   profileUser: any;
@@ -41,7 +37,6 @@ export class RouteListComponent implements OnInit {
   public totalItems: number = 100; // Total de elementos disponibles
   public isLoading: boolean = false; // Variable para controlar la carga de datos
 
-  // routes$: Observable<Route[]>;
   subscription: Subscription;
 
   constructor(
@@ -200,16 +195,6 @@ export class RouteListComponent implements OnInit {
       .subscribe((data: any) => {
         this.routes = data.routes;
       });
-  }
-
-  nextSlide() {
-    console.log(this.slides);
-    console.log('ey');
-    this.slides.slideNext();
-  }
-
-  prevSlide() {
-    this.slides.slidePrev();
   }
 
   getRoutes(): void {

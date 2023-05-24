@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { ReportService } from 'src/app/services/report.service';
@@ -18,7 +18,8 @@ export class ReportRouteListComponent implements OnInit {
   constructor(
     private report: ReportService,
     private auth: AuthService,
-    private modal: ModalController
+    private modal: ModalController,
+    private alertController: AlertController
   ) {}
 
   ngOnInit() {
@@ -60,5 +61,39 @@ export class ReportRouteListComponent implements OnInit {
   }
   async closeModal() {
     await this.modal.dismiss();
+  }
+
+  async deleteRouteReport(id: string) {
+    const alert = await this.alertController.create({
+      header: 'Confirmar eliminación',
+      message: '¿Estás seguro de que deseas eliminar este informe de ruta?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+        },
+        {
+          text: 'Eliminar',
+          handler: () => {
+            this.report
+              .deleteRouteReportById(this.routeId, id)
+              .subscribe(async (data: any) => {
+                const successAlert = await this.alertController.create({
+                  header: 'Informe de Ruta',
+                  message: 'Informe eliminado exitosamente',
+                  buttons: ['Aceptar'],
+                });
+
+                await successAlert.present();
+                this.closeModal();
+                console.log(data);
+              });
+          },
+        },
+      ],
+    });
+
+    await alert.present();
   }
 }

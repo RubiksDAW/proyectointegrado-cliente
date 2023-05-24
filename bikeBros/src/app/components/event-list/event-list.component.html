@@ -10,18 +10,16 @@
 </ion-header>
 <ion-list>
   <ion-card *ngFor="let event of events">
-    <ion-card-header>
-      <ion-slides>
-        <ion-slide *ngFor="let imageURL of event.ruta?.images">
-          <div class="image-container">
-            <img class="img" src="{{ imageURL }}" />
-          </div>
-        </ion-slide>
-      </ion-slides>
-      <ion-card-title *ngIf="event.ruta" class="center">{{
-        event?.ruta?.name
-      }}</ion-card-title>
-    </ion-card-header>
+    <ion-slides>
+      <ion-slide *ngFor="let imageURL of event.ruta?.images">
+        <div class="image-container">
+          <img class="img" src="{{ imageURL }}" />
+        </div>
+      </ion-slide>
+    </ion-slides>
+    <ion-card-title *ngIf="event.ruta" class="center">{{
+      event?.ruta?.name
+    }}</ion-card-title>
 
     <ion-card-content>
       <ion-item>
@@ -39,7 +37,9 @@
       </ion-item>
 
       <div class="buttons">
-        <ion-button (click)="setIdEvent(event._id); checkEvent(event._id)"
+        <ion-button
+          color="success"
+          (click)="setIdEvent(event._id); checkEvent(event._id)"
           ><ion-icon name="eye-outline"></ion-icon
         ></ion-button>
 

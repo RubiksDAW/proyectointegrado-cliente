@@ -7,8 +7,8 @@ import { CommentsResponse } from '../interfaces/comment.interface';
   providedIn: 'root',
 })
 export class CommentsService {
-  private url = 'https://bikebrosv2.herokuapp.com';
-  // private url = 'http://localhost:3300';
+  // private url = 'https://bikebrosv2.herokuapp.com';
+  private url = 'http://localhost:3300';
   private refreshComments$ = new Subject<void>();
 
   constructor(private http: HttpClient) {}
@@ -52,4 +52,17 @@ export class CommentsService {
   //   );
   //   return res.comments as Comment[];
   // }
+
+  deleteCommentById(routeId: string, commentId: string): Observable<any> {
+    const body = { routeId };
+    return this.http
+      .delete(`${this.url}/route/comments/delete/${commentId}`, {
+        body,
+      })
+      .pipe(
+        tap(() => {
+          this.refreshComments$.next();
+        })
+      );
+  }
 }

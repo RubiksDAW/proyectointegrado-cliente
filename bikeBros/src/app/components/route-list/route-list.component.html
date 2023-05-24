@@ -24,13 +24,7 @@
     <ion-slides #slides>
       <ion-slide *ngFor="let imageURL of ruta.images">
         <div class="image-container">
-          <button class="slide-button slide-button-left" (click)="prevSlide()">
-            <ion-icon name="arrow-back"></ion-icon>
-          </button>
           <img class="img" src="{{ imageURL }}" />
-          <button class="slide-button slide-button-right" (click)="nextSlide()">
-            <ion-icon name="arrow-forward"></ion-icon>
-          </button>
         </div>
       </ion-slide>
     </ion-slides>
@@ -47,36 +41,53 @@
     </ion-card-header>
 
     <ion-card-content>
-      <ion-button (click)="setIdRoute(ruta._id)" (click)="checkRoute(ruta._id)"
-        ><ion-icon name="eye-outline"></ion-icon
-      ></ion-button>
+      <div class="buttons">
+        <ion-button
+          color="success"
+          (click)="setIdRoute(ruta._id)"
+          (click)="checkRoute(ruta._id)"
+          ><ion-icon name="eye-outline"></ion-icon
+        ></ion-button>
 
-      <ion-button
-        color="warning"
-        *ngIf="ruta.author == profileUser?.id || roles?.includes('ROLE_ADMIN')"
-        (click)="showRouteEditModal()"
-        (click)="setIdRoute(ruta._id)"
-        ><ion-icon name="create-outline"></ion-icon
-      ></ion-button>
-      <ion-button
-        color="danger"
-        *ngIf="ruta.author == profileUser?.id || roles?.includes('ROLE_ADMIN')"
-        (click)="deleteRoute(ruta._id)"
-        ><ion-icon name="trash-outline"></ion-icon
-      ></ion-button>
-      <ion-button (click)="setIdRoute(ruta._id)" (click)="openReport()"
-        >Reportar</ion-button
-      >
-      <ion-button
-        color="warning"
-        *ngIf="roles?.includes('ROLE_ADMIN')"
-        (click)="openReportList(ruta._id)"
-        ><ion-icon name="create-outline"></ion-icon>Caja reports</ion-button
-      >
-
-      <ion-button (click)="toggleComment(ruta._id)">
-        {{ commentStatus[ruta._id] ? "Ocultar" : "Comentar" }}
-      </ion-button>
+        <ion-button
+          color="warning"
+          *ngIf="
+            ruta.author == profileUser?.id || roles?.includes('ROLE_ADMIN')
+          "
+          (click)="showRouteEditModal()"
+          (click)="setIdRoute(ruta._id)"
+          ><ion-icon name="create-outline"></ion-icon
+        ></ion-button>
+        <ion-button
+          color="danger"
+          *ngIf="
+            ruta.author == profileUser?.id || roles?.includes('ROLE_ADMIN')
+          "
+          (click)="deleteRoute(ruta._id)"
+          ><ion-icon name="trash-outline"></ion-icon
+        ></ion-button>
+        <ion-button
+          color="danger"
+          (click)="setIdRoute(ruta._id)"
+          (click)="openReport()"
+          ><ion-icon name="alert-circle-outline"></ion-icon
+        ></ion-button>
+        <ion-button
+          color="warning"
+          *ngIf="roles?.includes('ROLE_ADMIN')"
+          (click)="openReportList(ruta._id)"
+          ><ion-icon name="receipt-outline"></ion-icon
+        ></ion-button>
+      </div>
+      <div class="buttons">
+        <ion-button (click)="toggleComment(ruta._id)">
+          {{
+            commentStatus[ruta._id]
+              ? "Ocultar comentarios"
+              : "Abrir comentarios"
+          }}
+        </ion-button>
+      </div>
       <div id="comment" [hidden]="!commentStatus[ruta._id]">
         <app-input-comment [routeId]="ruta._id"></app-input-comment>
         <app-box-comments [routeId]="ruta._id"></app-box-comments>

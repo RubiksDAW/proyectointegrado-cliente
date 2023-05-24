@@ -1,6 +1,6 @@
 <ion-card>
   <ion-card-header>
-    <ion-card-title>Comentarios</ion-card-title>
+    <div class="center"><ion-card-title>Comentarios</ion-card-title></div>
   </ion-card-header>
 
   <ion-list *ngIf="comments?.length">
@@ -13,12 +13,14 @@
         <h2>{{ comment.authorNick }}</h2>
         <p>{{ comment.content }}</p>
         <!-- <p>ID: {{ comment._id }}</p> -->
-        <ion-button color="danger">Eliminar</ion-button>
+        <ion-button color="danger" (click)="deleteComment(comment._id)"
+          >Eliminar</ion-button
+        >
       </ion-label>
     </ion-item>
   </ion-list>
 
-  <ion-text *ngIf="!comments || comments.length === 0"
-    >No hay comentarios.</ion-text
-  >
+  <div class="nocomments" *ngIf="!comments || comments.length === 0">
+    <p>No hay comentarios.</p>
+  </div>
 </ion-card>

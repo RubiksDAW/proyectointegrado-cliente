@@ -19,14 +19,16 @@
         <ion-label text-wrap>
           <h2>{{ report?.reason }}</h2>
           <p>{{ report?.description }}</p>
-          <!-- <p>ID: {{ comment._id }}</p> -->
-          <!-- <ion-button color="danger">Eliminar</ion-button> -->
+          <p>ID: {{ report._id }}</p>
+          <ion-button color="danger" (click)="deleteRouteReport(report._id)"
+            >Eliminar</ion-button
+          >
         </ion-label>
       </ion-item>
     </ion-list>
 
-    <ion-text *ngIf="!reports || reports.length === 0"
-      >No hay comentarios.</ion-text
-    >
+    <div class="noreports" *ngIf="!reports || reports.length === 0">
+      <p>No hay reportes en esta ruta.</p>
+    </div>
   </ion-card>
 </ion-content>

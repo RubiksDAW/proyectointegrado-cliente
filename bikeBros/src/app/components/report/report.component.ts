@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
 import { ReportService } from 'src/app/services/report.service';
 
@@ -20,7 +20,8 @@ export class ReportComponent implements OnInit {
     private auth: AuthService,
     private formBuilder: FormBuilder,
     private modalController: ModalController,
-    private report: ReportService
+    private report: ReportService,
+    private alertController: AlertController
   ) {
     this.routeId = localStorage.getItem('id');
   }
@@ -39,10 +40,27 @@ export class ReportComponent implements OnInit {
       console.log(this.routeId, reason, description);
       this.report
         .addReport(this.routeId, reason, description)
-        .subscribe((data) => {
+        .subscribe(async (data) => {
+          const alert = await this.alertController.create({
+            header: 'Reporte de Ruta',
+            message:
+              'Esta ruta ha sido reportada. Un administrador revisará el reporte lo antes posible.',
+            buttons: [
+              {
+                text: 'Aceptar',
+                handler: () => {
+                  // Acciones a realizar al aceptar la alerta
+                  // Puedes agregar aquí cualquier lógica adicional que desees ejecutar al aceptar la alerta
+                },
+              },
+            ],
+          });
+          this.closeModal();
+          await alert.present();
           console.log(data);
         });
       this.reportForm.reset();
+      this.closeModal();
     } else {
       console.log('Error: routeId es nulo.');
     }

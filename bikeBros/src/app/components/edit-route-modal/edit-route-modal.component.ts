@@ -69,22 +69,24 @@ export class EditRouteModalComponent implements OnInit {
     });
   }
 
-  submitForm() {
+  async submitForm() {
     const id = this.routeId;
     const name = this.routeForm.controls['name'].value;
     const difficulty_level = this.routeForm.get('difficulty_level')?.value;
-    const distance = this.routeForm.get('distance')?.value;
+    // const distance = this.routeForm.get('distance')?.value;
     const location = this.routeForm.get('location')?.value;
     const description = this.routeForm.get('description')?.value;
     const originForm = this.routeForm.get('origin')?.value;
     const destinationForm = this.routeForm.get('destination')?.value;
-
+    const distance = await this.calcularDistancia(originForm, destinationForm);
+    const distanceKM = distance / 1000;
+    const distanceText = distanceKM.toString();
     const formData = new FormData();
 
     formData.append('_id', id);
     formData.append('name', name);
     formData.append('difficulty_level', difficulty_level);
-    formData.append('distance', distance);
+    formData.append('distance', distanceText);
     formData.append('location', location);
     formData.append('description', description);
     formData.append('origin', originForm);
@@ -176,6 +178,27 @@ export class EditRouteModalComponent implements OnInit {
     for (let i = 0; i < files.length; i++) {
       this.images.push(files[i]);
     }
+  }
+
+  async calcularDistancia(origen: string, destino: string): Promise<number> {
+    return new Promise<number>((resolve, reject) => {
+      const directionsService = new google.maps.DirectionsService();
+      directionsService.route(
+        {
+          origin: origen,
+          destination: destino,
+          travelMode: google.maps.TravelMode.BICYCLING,
+        },
+        (response: any, status: string) => {
+          if (status === google.maps.DirectionsStatus.OK) {
+            const distance = response.routes[0].legs[0].distance.value;
+            resolve(distance);
+          } else {
+            reject('No se pudo calcular la distancia debido a: ' + status);
+          }
+        }
+      );
+    });
   }
 
   async closeModal() {

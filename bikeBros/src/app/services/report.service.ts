@@ -5,8 +5,8 @@ import { Observable, Subject, map, tap } from 'rxjs';
   providedIn: 'root',
 })
 export class ReportService {
-  private url = 'https://bikebrosv2.herokuapp.com';
-  // private url = 'http://localhost:3300';
+  // private url = 'https://bikebrosv2.herokuapp.com';
+  private url = 'http://localhost:3300';
 
   private refreshReports$ = new Subject<void>();
 
@@ -44,5 +44,31 @@ export class ReportService {
     return this.http
       .get<any>(`${this.url}/api/report/showEventReports/${eventId}`)
       .pipe(map((resp) => resp));
+  }
+
+  deleteRouteReportById(routeId: string, reportId: string): Observable<any> {
+    const body = { routeId };
+    return this.http
+      .delete(`${this.url}/api/reports/route/delete/${reportId}`, {
+        body,
+      })
+      .pipe(
+        tap(() => {
+          this.refreshReports$.next();
+        })
+      );
+  }
+
+  deleteEventReportById(eventId: string, reportId: string): Observable<any> {
+    const body = { eventId };
+    return this.http
+      .delete(`${this.url}/api/reports/event/delete/${reportId}`, {
+        body,
+      })
+      .pipe(
+        tap(() => {
+          this.refreshReports$.next();
+        })
+      );
   }
 }

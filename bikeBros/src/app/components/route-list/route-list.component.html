@@ -21,7 +21,7 @@
 
 <ion-list>
   <ion-card *ngFor="let ruta of routes">
-    <ion-slides #slides>
+    <ion-slides>
       <ion-slide *ngFor="let imageURL of ruta.images">
         <div class="image-container">
           <img class="img" src="{{ imageURL }}" />
@@ -58,6 +58,13 @@
           (click)="setIdRoute(ruta._id)"
           ><ion-icon name="create-outline"></ion-icon
         ></ion-button>
+
+        <ion-button
+          color="danger"
+          (click)="setIdRoute(ruta._id)"
+          (click)="openReport()"
+          ><ion-icon name="alert-circle-outline"></ion-icon
+        ></ion-button>
         <ion-button
           color="danger"
           *ngIf="
@@ -66,27 +73,24 @@
           (click)="deleteRoute(ruta._id)"
           ><ion-icon name="trash-outline"></ion-icon
         ></ion-button>
-        <ion-button
-          color="danger"
-          (click)="setIdRoute(ruta._id)"
-          (click)="openReport()"
-          ><ion-icon name="alert-circle-outline"></ion-icon
-        ></ion-button>
-        <ion-button
-          color="warning"
-          *ngIf="roles?.includes('ROLE_ADMIN')"
-          (click)="openReportList(ruta._id)"
-          ><ion-icon name="receipt-outline"></ion-icon
-        ></ion-button>
       </div>
       <div class="buttons">
-        <ion-button (click)="toggleComment(ruta._id)">
+        <ion-button style="width: 100%" (click)="toggleComment(ruta._id)">
           {{
             commentStatus[ruta._id]
               ? "Ocultar comentarios"
               : "Abrir comentarios"
           }}
         </ion-button>
+      </div>
+      <div class="buttons">
+        <ion-button
+          style="width: 100%"
+          color="warning"
+          *ngIf="roles?.includes('ROLE_ADMIN')"
+          (click)="openReportList(ruta._id)"
+          >Revisar Reportes</ion-button
+        >
       </div>
       <div id="comment" [hidden]="!commentStatus[ruta._id]">
         <app-input-comment [routeId]="ruta._id"></app-input-comment>

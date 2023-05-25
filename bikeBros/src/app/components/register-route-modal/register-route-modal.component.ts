@@ -56,7 +56,7 @@ export class RegisterRouteModalComponent implements OnInit {
 
   ngOnInit() {
     this.routeForm = this.formBuilder.group({
-      name: ['', [Validators.required]],
+      name: ['', [Validators.required, Validators.maxLength(30)]],
       difficulty_level: ['', Validators.required],
       distance: [0, Validators.required],
       location: ['', [Validators.required, Validators.pattern(/^[^0-9]*$/)]],

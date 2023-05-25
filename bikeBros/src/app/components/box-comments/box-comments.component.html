@@ -13,7 +13,12 @@
         <h2>{{ comment.authorNick }}</h2>
         <p>{{ comment.content }}</p>
         <!-- <p>ID: {{ comment._id }}</p> -->
-        <ion-button color="danger" (click)="deleteComment(comment._id)"
+        <ion-button
+          *ngIf="
+            comment.authorId == currentUser.id || roles?.includes('ROLE_ADMIN')
+          "
+          color="danger"
+          (click)="deleteComment(comment._id)"
           >Eliminar</ion-button
         >
       </ion-label>

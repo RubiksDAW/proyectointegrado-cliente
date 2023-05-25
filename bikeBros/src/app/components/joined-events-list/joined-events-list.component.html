@@ -9,13 +9,19 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ng-container *ngIf="events.length > 0; else noEventsMessage">
+  <ion-content *ngIf="events.length > 0; else noEventsMessage">
     <ion-card *ngFor="let event of events">
-      <ion-card-header>
-        <ion-card-title *ngIf="event.ruta" class="center">{{
-          event?.ruta?.name
-        }}</ion-card-title>
-      </ion-card-header>
+      <ion-slides>
+        <ion-slide *ngFor="let imageURL of event.ruta?.images">
+          <div class="image-container">
+            <img class="img" src="{{ imageURL }}" />
+          </div>
+        </ion-slide>
+      </ion-slides>
+
+      <ion-card-header *ngIf="event.ruta" class="center">{{
+        event?.ruta?.name
+      }}</ion-card-header>
 
       <ion-card-content>
         <ion-item>
@@ -33,12 +39,14 @@
 
         <div class="buttons">
           <ion-button
+            style="width: 100%"
             (click)="closeModal(); setIdEvent(event._id); checkEvent(event._id)"
-          >
+            >Ir al Evento
+
             <ion-icon name="eye-outline"></ion-icon>
           </ion-button>
 
-          <ion-button
+          <!-- <ion-button
             color="warning"
             *ngIf="
               event.creador == currentUser?.id || roles?.includes('ROLE_ADMIN')
@@ -56,11 +64,11 @@
             (click)="deleteEvent(event._id)"
           >
             <ion-icon name="trash-outline"></ion-icon>
-          </ion-button>
+          </ion-button> -->
         </div>
       </ion-card-content>
     </ion-card>
-  </ng-container>
+  </ion-content>
 
   <ng-template #noEventsMessage>
     <div class="no-events-message">No estás inscrito a ningún evento.</div>

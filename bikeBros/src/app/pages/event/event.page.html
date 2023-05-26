@@ -16,10 +16,11 @@
         </div>
       </ion-slide>
     </ion-slides>
-    <ion-card-content>
-      <ion-card-title class="title">
-        {{ currentEvent?.ruta?.name }}
-      </ion-card-title>
+
+    <ion-card-title class="title">
+      {{ currentEvent?.ruta?.name }}
+    </ion-card-title>
+    <div class="main-info">
       <ion-item>
         <ion-icon name="navigate-circle-outline" class="icon"></ion-icon>
         {{ currentEvent?.ruta?.location }}
@@ -30,15 +31,15 @@
         {{ currentEvent?.participantes?.length }} / {{
         currentEvent?.maxParticipantes }}
       </ion-item>
-      <ion-item>
-        <ion-icon name="calendar-outline" class="icon"></ion-icon>
+    </div>
+    <ion-item>
+      <ion-icon name="calendar-outline" class="icon"></ion-icon>
 
-        {{ currentEvent?.fecha | date:'dd/MM/yyyy HH:mm' }}
-      </ion-item>
-      <ion-item>
-        <span>{{ currentEvent?.ruta?.description }}</span>
-      </ion-item>
-    </ion-card-content>
+      {{ currentEvent?.fecha | date:'dd/MM/yyyy HH:mm' }}
+    </ion-item>
+    <ion-item>
+      <span class="description">{{ currentEvent?.ruta?.description }}</span>
+    </ion-item>
 
     <ion-card>
       <ion-item lines="none" color="light" (click)="toggleParticipants()">

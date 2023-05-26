@@ -3,6 +3,7 @@
   font-size: x-large;
   // border-bottom: 1px solid white;
   padding-bottom: 10px;
+  color: white;
   // border: 1px solid red;
 }
 
@@ -19,4 +20,18 @@
 }
 .image-container {
   max-height: 300px;
+}
+
+.floating-toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+}
+.floating-toolbar ion-searchbar {
+  background: transparent;
+  position: relative;
+  z-index: 1;
+  margin-top: 70px;
 }

@@ -27,16 +27,17 @@ export class RouteListComponent implements OnInit {
 
   commentStatus: { [routeId: string]: boolean } = {};
 
-  searchTerm: string;
+  searchTerm: string = '';
 
-  selectedDifficulty: string;
+  selectedDifficulty: string = '';
 
+  kmDistance: number = 0;
   public routes: any[] = []; // Arreglo para almacenar las rutas
   public currentPage: number = 1; // Página actual
   public itemsPerPage: number = 5; // Cantidad de elementos por página
-  public totalItems: number = 100; // Total de elementos disponibles
   public isLoading: boolean = false; // Variable para controlar la carga de datos
-
+  public totalItems: number;
+  public totalPages: number;
   subscription: Subscription;
 
   constructor(
@@ -45,7 +46,6 @@ export class RouteListComponent implements OnInit {
     private auth: AuthService,
     private alertController: AlertController,
     private comment: CommentsService,
-    // private report: ReportService,
     private modal: ModalController
   ) {}
 
@@ -64,7 +64,7 @@ export class RouteListComponent implements OnInit {
         console.log(err);
       },
     });
-
+    console.log(this.kmDistance);
     this.getRoutes();
     this.subscription = this.routesSer.refresh$.subscribe(() => {
       this.getRoutes();
@@ -83,38 +83,6 @@ export class RouteListComponent implements OnInit {
   checkRoute(id: string) {
     this.router.navigate([`/route/${id}`]);
   }
-
-  // En este metodo hacemos la comprobación previa de los roles que tiene el usuario actual,
-  // en caso de ser admin puede borrar una ruta, sino no es posible borrarlas.
-  // async deleteRoute(id: string) {
-  //   const authorRouteId = await this.routesSer.getRouteAuthorId(id);
-  //   // Controlamos que solo pueda borrar la ruta el usuario creador o un administrador
-  //   if (
-  //     this.profileUser.roles.includes('ROLE_ADMIN') ||
-  //     this.profileUser.id == authorRouteId
-  //   ) {
-  //     // this.routesSer.deleteRouteById(id);
-  //     this.routesSer.deleteRouteById(id).subscribe((data: any) => {
-  //       this.routes = data.routes;
-  //       console.log(this.routes);
-  //     });
-  //     this.router.navigateByUrl('/deleted-route');
-  //   } else {
-  //     const alert = await this.alertController.create({
-  //       header: 'Permiso denegado',
-  //       message: 'Solo el creador o un Administrador pueden borrar la ruta',
-  //       buttons: [
-  //         {
-  //           text: 'Aceptar',
-  //           role: 'cancel',
-  //           cssClass: 'secondary',
-  //         },
-  //       ],
-  //     });
-
-  //     await alert.present();
-  //   }
-  // }
 
   async deleteRoute(id: string) {
     const authorRouteId = await this.routesSer.getRouteAuthorId(id);
@@ -176,37 +144,18 @@ export class RouteListComponent implements OnInit {
     return await modal.present();
   }
 
-  searchRoutes() {
-    // console.log(this.searchTerm);
-    // this.routes$ = this.routesSer
-    //   .getAllRoutes(this.searchTerm, this.selectedDifficulty)
-    //   .pipe(
-    //     map((res) => {
-    //       // Aquí podemos aplicar lógica para modificar el array de objetos que nos llega
-    //       console.log(res);
-    //       // Aquí debemos seguir devolviendo un array de rutas, ya que el observable es lo que espera
-    //       return res;
-    //     })
-    //   );
-
-    // console.log(this.routes$);
+  getRoutes(): void {
     this.routesSer
-      .getAllRoutes(this.searchTerm, this.selectedDifficulty)
+      .getAllRoutes(this.currentPage, this.itemsPerPage)
       .subscribe((data: any) => {
+        console.log(data);
         this.routes = data.routes;
+        this.totalItems = data.totalRoutes;
+        this.totalPages = data.totalPages;
+        console.log(this.totalItems);
+        console.log(this.routes);
       });
   }
-
-  getRoutes(): void {
-    this.routesSer.getAllRoutes().subscribe((data: any) => {
-      console.log(data);
-      this.routes = data.routes;
-      // this.totalItems = this.routes.length;
-      console.log(this.totalItems);
-      console.log(this.routes);
-    });
-  }
-
   async openReport() {
     const modal = await this.modal.create({
       component: ReportComponent,
@@ -225,36 +174,29 @@ export class RouteListComponent implements OnInit {
   }
 
   loadMoreData(event: any): void {
-    console.log(this.routes.length);
-    console.log(this.totalItems);
-    if (!this.isLoading && this.routes.length < this.totalItems) {
-      console.log(this.searchTerm);
-      console.log(this.selectedDifficulty);
-
+    if (!this.isLoading && this.currentPage < this.totalPages) {
       this.isLoading = true;
       this.currentPage++;
       console.log(this.currentPage);
 
-      // Lógica para obtener más elementos, por ejemplo, haciendo otra solicitud al servicio
       this.routesSer
-        .getAllRoutes(
-          this.searchTerm,
-          this.selectedDifficulty,
-          this.currentPage,
-          this.itemsPerPage
-        )
+        .getAllRoutes(this.currentPage, this.itemsPerPage)
         .subscribe((data: any) => {
-          // Agregar los nuevos elementos al arreglo existente
-          this.routes = this.routes.concat(data.routes);
-          console.log(this.routes);
-          this.isLoading = false;
+          // Verificar si hay datos retornados por la solicitud
+          if (data && data.routes && data.routes.length > 0) {
+            // Agregar los nuevos elementos al arreglo existente
+            this.routes = this.routes.concat(data.routes);
+          }
 
-          // Completar la acción de carga infinita
+          this.isLoading = false;
           event.target.complete();
         });
     } else {
-      // Completar la acción de carga infinita si no hay más elementos
       event.target.complete();
     }
+  }
+
+  updateKmDistance() {
+    console.log(this.kmDistance); // Verifica si se muestra el valor actualizado en la consola
   }
 }

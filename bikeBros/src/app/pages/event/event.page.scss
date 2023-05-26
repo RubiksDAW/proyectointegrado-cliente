@@ -31,3 +31,14 @@
   font-size: 30px;
   margin-right: 5px;
 }
+
+.description {
+  border-top: 1px solid white;
+  padding-top: 10px;
+}
+
+.main-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}

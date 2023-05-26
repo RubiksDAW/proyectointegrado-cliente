@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
+import { PipesModule } from '../pipes/pipes.module';
 import { BoxCommentsComponent } from './box-comments/box-comments.component';
 import { ConfirmDeleteAccountComponent } from './confirm-delete-account/confirm-delete-account.component';
 import { EditEventModalComponent } from './edit-event-modal/edit-event-modal.component';
@@ -38,7 +39,13 @@ import { RouteMapComponent } from './route-map/route-map.component';
     ReportRouteListComponent,
     ReportEventListComponent,
   ],
-  imports: [CommonModule, ReactiveFormsModule, IonicModule, FormsModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    IonicModule,
+    FormsModule,
+    PipesModule,
+  ],
   exports: [
     ConfirmDeleteAccountComponent,
     RegisterRouteModalComponent,

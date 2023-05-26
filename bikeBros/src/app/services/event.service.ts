@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subject, map, tap } from 'rxjs';
@@ -19,24 +19,19 @@ export class EventService {
     return this.refreshEvent$;
   }
 
-  getAllEvents(
-    searchTerm?: string,
-    page?: number,
-    pageSize?: number
-  ): Observable<EventResponse> {
-    let query: any = {
-      page: page ? page.toString() : undefined,
-      pageSize: pageSize ? pageSize.toString() : undefined,
-    };
-    if (searchTerm) {
-      // Si se proporciona un término de búsqueda, filtrar las rutas por nombre o nivel de dificultad
-      query = {
-        searchTerm: searchTerm,
-      };
+  getAllEvents(page?: number, pageSize?: number): Observable<EventResponse> {
+    let params = new HttpParams();
+
+    if (page) {
+      params = params.set('page', page.toString());
     }
-    return this.http
-      .get<EventResponse>(`${this.url}/api/getAllEvents`, { params: query })
-      .pipe(map((resp: any) => resp));
+
+    if (pageSize) {
+      params = params.set('pageSize', pageSize.toString());
+    }
+
+    return this.http.get<any>(`${this.url}/api/getAllEvents`, { params });
+    // .pipe(map((resp: EventResponse) => resp));
   }
 
   // Los metodos que vienen a continuación no han sido probados

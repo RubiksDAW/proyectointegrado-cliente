@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subject, firstValueFrom, map, tap } from 'rxjs';
@@ -58,30 +58,52 @@ export class RoutesService {
   //     .pipe(map((resp) => resp));
   // }
 
-  getAllRoutes(
-    searchTerm?: string,
-    selectedDifficulty?: string,
-    page?: number,
-    pageSize?: number
-  ): Observable<Route[]> {
-    let query: any = {
-      page: page ? page.toString() : undefined,
-      pageSize: pageSize ? pageSize.toString() : undefined,
-    };
+  // getAllRoutes(
+  //   searchTerm?: string,
+  //   selectedDifficulty?: string,
+  //   page?: number,
+  //   pageSize?: number
+  // ): Observable<Route[]> {
+  //   let query: any = {
+  //     page: page ? page.toString() : undefined,
+  //     pageSize: pageSize ? pageSize.toString() : undefined,
+  //   };
 
-    if (searchTerm) {
-      query.searchTerm = searchTerm;
+  //   if (searchTerm) {
+  //     query.searchTerm = searchTerm;
+  //   }
+
+  //   if (selectedDifficulty) {
+  //     query.difficulty_level = selectedDifficulty;
+  //   }
+
+  //   return this.http
+  //     .get<Route[]>(`${this.url}/api/route/getAll`, {
+  //       params: query,
+  //     })
+  //     .pipe(map((resp) => resp));
+  // }
+  // getAllRoutes(): Observable<Route[]> {
+  //   return this.http
+  //     .get<Route[]>(`${this.url}/api/route/getAll`)
+  //     .pipe(map((resp) => resp));
+  // }
+  // routes.service.ts
+
+  // routes.service.ts
+
+  getAllRoutes(page?: number, pageSize?: number): Observable<any> {
+    let params = new HttpParams();
+
+    if (page) {
+      params = params.set('page', page.toString());
     }
 
-    if (selectedDifficulty) {
-      query.difficulty_level = selectedDifficulty;
+    if (pageSize) {
+      params = params.set('pageSize', pageSize.toString());
     }
 
-    return this.http
-      .get<Route[]>(`${this.url}/api/route/getAll`, {
-        params: query,
-      })
-      .pipe(map((resp) => resp));
+    return this.http.get<any>(`${this.url}/api/route/getAll`, { params });
   }
 
   getRouteById(id: string) {

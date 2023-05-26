@@ -9,6 +9,8 @@ import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthGuard } from './guards/auth.guard';
+import { RoutesFilterPipe } from './pipes/routes-filter.pipe';
+// import { EventFilterPipe } from './event-filter.pipe';
 // import { ReportService } from './services/report.service';
 
 @NgModule({
@@ -24,6 +26,7 @@ import { AuthGuard } from './guards/auth.guard';
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     AuthGuard,
     SocialSharing,
+    RoutesFilterPipe,
     // ReportService,
   ],
   bootstrap: [AppComponent],

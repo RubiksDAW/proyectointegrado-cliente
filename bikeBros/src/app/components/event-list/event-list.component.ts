@@ -26,12 +26,13 @@ export class EventListComponent implements OnInit {
   authorEventId: string;
 
   events: EventResponse[] = [];
-
+  startDate: Date;
+  endDate: Date;
   public currentPage: number = 1; // Página actual
   public itemsPerPage: number = 5; // Cantidad de elementos por página
   public totalItems: number = 100; // Total de elementos disponibles
   public isLoading: boolean = false; // Variable para controlar la carga de datos
-
+  public totalPages: number;
   subscription: Subscription;
   constructor(
     private eventService: EventService,
@@ -127,38 +128,43 @@ export class EventListComponent implements OnInit {
     }
   }
 
-  searchEvents() {
-    this.eventService.getAllEvents(this.searchTerm).subscribe((data: any) => {
-      this.events = data.events;
-      console.log(data);
-    });
+  // searchEvents() {
+  //   this.eventService.getAllEvents(this.searchTerm).subscribe((data: any) => {
+  //     this.events = data.events;
+  //     console.log(data);
+  //   });
 
-    // console.log(this.events$);
-  }
+  //   // console.log(this.events$);
+  // }
 
   getEvents(): void {
-    this.eventService.getAllEvents().subscribe((data: any) => {
-      this.events = data.events;
-      console.log(data.totalPages);
-    });
+    this.eventService
+      .getAllEvents(this.currentPage, this.itemsPerPage)
+      .subscribe((data: any) => {
+        this.events = data.events;
+        this.totalItems = data.totalEvents;
+        this.totalPages = data.totalPages;
+        console.log(data.totalPages);
+      });
   }
 
   loadMoreData(event: any): void {
     console.log(this.events.length);
     console.log(this.totalItems);
-    if (!this.isLoading && this.events.length < this.totalItems) {
-      console.log(this.searchTerm);
-      console.log(this.totalItems);
+    if (!this.isLoading && this.currentPage < this.totalPages) {
       this.isLoading = true;
       this.currentPage++;
-      console.log(this.currentPage);
 
       // Lógica para obtener más elementos, por ejemplo, haciendo otra solicitud al servicio
       this.eventService
-        .getAllEvents(this.searchTerm, this.currentPage, this.itemsPerPage)
+        .getAllEvents(this.currentPage, this.itemsPerPage)
         .subscribe((data: any) => {
+          if (data && data.events && data.events.length > 0) {
+            // Agregar los nuevos elementos al arreglo existente
+            this.events = this.events.concat(data.events);
+          }
           // Agregar los nuevos elementos al arreglo existente
-          this.events = this.events.concat(data.events);
+          // this.events = this.events.concat(data.events);
           console.log(this.events);
           this.isLoading = false;
 

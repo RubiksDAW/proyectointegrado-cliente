@@ -1,26 +1,39 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar class="floating-toolbar">
     <ion-searchbar
       animated="true"
       placeholder="Buscar rutas..."
       [(ngModel)]="searchTerm"
-    ></ion-searchbar>
+    ></ion-searchbar
+    ><ion-range
+      [(ngModel)]="kmDistance"
+      pin="true"
+      snaps="true"
+      min="0"
+      max="200"
+      step="1"
+    >
+      <ion-label slot="start">0 km</ion-label>
+      <ion-label slot="end">200 km</ion-label>
+    </ion-range>
     <ion-select placeholder="Dificultad" [(ngModel)]="selectedDifficulty">
       <ion-select-option value="">Todas</ion-select-option>
       <ion-select-option value="Bajo">Bajo</ion-select-option>
       <ion-select-option value="Intermedio">Intermedio</ion-select-option>
       <ion-select-option value="Alto">Alto</ion-select-option>
     </ion-select>
-    <ion-buttons slot="end">
-      <ion-button (click)="searchRoutes()">
-        <ion-icon name="search"></ion-icon>
-      </ion-button>
-    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-list>
-  <ion-card *ngFor="let ruta of routes">
+<ion-list style="margin-top: 130px">
+  <ion-card
+    *ngFor="
+      let ruta of routes
+        | routesFilter : searchTerm
+        | routesFilterLevel : selectedDifficulty
+        | routeFilterDistance : kmDistance
+    "
+  >
     <ion-slides>
       <ion-slide *ngFor="let imageURL of ruta.images">
         <div class="image-container">

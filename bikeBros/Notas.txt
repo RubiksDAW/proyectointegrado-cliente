@@ -17,3 +17,4 @@ NOTAS GOOGLE MAPS:
 - Añadir infinity scroll
 - Darle una vuelta al sistema de reporte
 - comprobar validaciones de los editables
+- COntrolar los eventos (en el controlador comparar la fecha actual para devolverlos o no )

@@ -26,14 +26,14 @@ export class BoxCommentsComponent implements OnInit {
   async ngOnInit() {
     this.auth.getProfile().subscribe({
       next: (response) => {
-        console.log(response);
-        console.log(response);
+        // console.log(response);
+        // console.log(response);
         // guardo el objeto entero en profileUser para poder mostrarlo en la vista
         this.currentUser = response;
         // console.log(response);
         this.roles = this.currentUser.roles;
-        console.log(this.currentUser.id);
-        console.log(this.roles);
+        // console.log(this.currentUser.id);
+        // console.log(this.roles);
       },
       error: (err) => {
         console.log(err);

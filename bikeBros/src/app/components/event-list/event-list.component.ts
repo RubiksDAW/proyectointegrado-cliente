@@ -28,6 +28,7 @@ export class EventListComponent implements OnInit {
   events: EventResponse[] = [];
   startDate: Date;
   endDate: Date;
+
   public currentPage: number = 1; // Página actual
   public itemsPerPage: number = 5; // Cantidad de elementos por página
   public totalItems: number = 100; // Total de elementos disponibles
@@ -142,6 +143,7 @@ export class EventListComponent implements OnInit {
       .getAllEvents(this.currentPage, this.itemsPerPage)
       .subscribe((data: any) => {
         this.events = data.events;
+        console.log(data.events);
         this.totalItems = data.totalEvents;
         this.totalPages = data.totalPages;
         console.log(data.totalPages);

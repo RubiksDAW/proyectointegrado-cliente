@@ -160,7 +160,7 @@ export class RouteListComponent implements OnInit {
           this.routes = data.routes;
           this.totalItems = data.totalRoutes;
           this.totalPages = data.totalPages;
-          console.log(this.totalItems);
+          console.log(data.totalRoutes);
           console.log(this.routes);
 
           loading.dismiss(); // Ocultar el spinner cuando se obtienen los datos
@@ -170,6 +170,7 @@ export class RouteListComponent implements OnInit {
       // loading.dismiss(); // Ocultar el spinner en caso de error
     }
   }
+
   async openReport() {
     const modal = await this.modal.create({
       component: ReportComponent,

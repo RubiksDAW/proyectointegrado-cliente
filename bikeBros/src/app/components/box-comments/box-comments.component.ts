@@ -53,7 +53,7 @@ export class BoxCommentsComponent implements OnInit {
     // console.log(this.routeId);
     this.commentServ.getRouteComments(this.routeId).subscribe((data: any) => {
       this.comments = data.comments;
-      console.log(data.comments);
+      // console.log(data.comments);
     });
   }
 

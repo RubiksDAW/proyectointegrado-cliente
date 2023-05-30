@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { MessageFullComponent } from './components/message-full/message-full.component';
 import { AuthGuard } from './guards/auth.guard';
 // import ;
 const routes: Routes = [
@@ -98,6 +99,10 @@ const routes: Routes = [
       import('./pages/public-profile/public-profile.module').then(
         (m) => m.PublicProfilePageModule
       ),
+  },
+  {
+    path: 'message/:id',
+    component: MessageFullComponent,
   },
 ];
 

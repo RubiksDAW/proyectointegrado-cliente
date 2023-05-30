@@ -1,0 +1,13 @@
+.item {
+  display: flex;
+  flex-direction: row;
+
+  justify-content: last baseline;
+}
+
+.item ion-avatar {
+}
+
+.item ion-label {
+  padding-left: 10px;
+}

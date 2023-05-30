@@ -37,21 +37,17 @@ export class EditRouteModalComponent implements OnInit {
     this.routeForm = this.formBuilder.group({
       name: ['', Validators.required],
       difficulty_level: ['', Validators.required],
-      distance: [0, Validators.required],
       location: ['', Validators.required],
       description: ['', Validators.required],
       origin: ['', Validators.required],
       destination: ['', Validators.required],
-      images: [null],
+      images: ['', Validators.required],
     });
 
     const id = localStorage.getItem('id');
     if (id !== null) {
       this.routeId = id;
-    } else {
-      // Manejar el caso en el que el valor sea nulo
     }
-    // Obtener el ID de la ruta de la URL
 
     // Cargar los datos de la ruta existente
     this.routeService.getRouteById(this.routeId).subscribe((route) => {
@@ -71,13 +67,14 @@ export class EditRouteModalComponent implements OnInit {
 
   async submitForm() {
     const id = this.routeId;
-    const name = this.routeForm.controls['name'].value;
-    const difficulty_level = this.routeForm.get('difficulty_level')?.value;
-    // const distance = this.routeForm.get('distance')?.value;
-    const location = this.routeForm.get('location')?.value;
-    const description = this.routeForm.get('description')?.value;
-    const originForm = this.routeForm.get('origin')?.value;
-    const destinationForm = this.routeForm.get('destination')?.value;
+    const name = this.routeForm.controls['name'].value.trim();
+    const difficulty_level = this.routeForm
+      .get('difficulty_level')
+      ?.value.trim();
+    const location = this.routeForm.get('location')?.value.trim();
+    const description = this.routeForm.get('description')?.value.trim();
+    const originForm = this.routeForm.get('origin')?.value.trim();
+    const destinationForm = this.routeForm.get('destination')?.value.trim();
     const distance = await this.calcularDistancia(originForm, destinationForm);
     const distanceKM = distance / 1000;
     const distanceText = distanceKM.toString();

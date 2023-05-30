@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title> Mensajes recibidos </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-card>
+    <ion-list *ngIf="messages?.length">
+      <ion-item
+        *ngFor="let message of messages"
+        class="item"
+        (click)="openMessage(message._id)"
+      >
+        <ion-avatar>
+          <img [src]="message?.sender?.imageURL[0]" />
+        </ion-avatar>
+
+        <!-- <ion-label>{{ message?.sender?.nick }}</ion-label> -->
+        <ion-label>{{ truncateContent(message?.content) }}</ion-label>
+
+        <!-- <ion-button
+          color="danger"
+          (click)="setIdMessage(message._id)"
+          (click)="goMessage(message._id)"
+          >Ver
+        </ion-button> -->
+      </ion-item>
+    </ion-list>
+
+    <div class="noreports" *ngIf="!messages || messages.length === 0">
+      <p>No tienes mensajes.</p>
+    </div>
+  </ion-card>
+</ion-content>

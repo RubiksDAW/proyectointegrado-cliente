@@ -68,7 +68,7 @@ export class EditEventModalComponent implements OnInit {
     const eventId = this.eventId;
     const routeId = this.eventForm.controls['rutaId'].value;
     const fecha = this.eventForm.controls['fecha'].value;
-    const ubicacion = this.eventForm.controls['ubicacion'].value;
+    const ubicacion = this.eventForm.controls['ubicacion'].value.trim();
     const maxParticipantes = this.eventForm.controls['maxParticipantes'].value;
 
     const fechaValida = await this.fechaValida();

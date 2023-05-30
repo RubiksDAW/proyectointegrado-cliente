@@ -24,10 +24,7 @@
       <ion-icon name="person-circle-outline" class="icon"></ion-icon>
       <ion-label class="info">{{ publicProfileUser.nick }}</ion-label>
     </ion-item>
-    <ion-item>
-      <ion-icon name="mail-outline" class="icon"></ion-icon>
-      <ion-label class="info">{{publicProfileUser.email}}</ion-label>
-    </ion-item>
+
     <ion-item>
       <ion-icon name="calendar-number-outline" class="icon"></ion-icon>
       <ion-label class="info">{{publicProfileUser?.age}} años</ion-label>
@@ -40,7 +37,10 @@
   <!-- <ion-item-divider></ion-item-divider> -->
 
   <ion-card>
-    <ion-button expand="block" (click)="openFavRoutes()"
+    <ion-button
+      expand="block"
+      (click)="setRecipientUser(publicProfileUser._id)"
+      (click)="openInputMessage()"
       >Enviar Mensaje</ion-button
     >
   </ion-card>

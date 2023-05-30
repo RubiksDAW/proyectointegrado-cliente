@@ -1,7 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, ModalController } from '@ionic/angular';
+import {
+  AlertController,
+  LoadingController,
+  ModalController,
+} from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { EventResponse } from 'src/app/interfaces/event.interface';
 import { AuthService } from 'src/app/services/auth.service';
@@ -41,7 +45,8 @@ export class EventListComponent implements OnInit {
     private auth: AuthService,
     private http: HttpClient,
     private alertController: AlertController,
-    private modal: ModalController
+    private modal: ModalController,
+    private loadingController: LoadingController
   ) {}
 
   ngOnInit() {
@@ -129,25 +134,27 @@ export class EventListComponent implements OnInit {
     }
   }
 
-  // searchEvents() {
-  //   this.eventService.getAllEvents(this.searchTerm).subscribe((data: any) => {
-  //     this.events = data.events;
-  //     console.log(data);
-  //   });
-
-  //   // console.log(this.events$);
-  // }
-
-  getEvents(): void {
-    this.eventService
-      .getAllEvents(this.currentPage, this.itemsPerPage)
-      .subscribe((data: any) => {
-        this.events = data.events;
-        console.log(data.events);
-        this.totalItems = data.totalEvents;
-        this.totalPages = data.totalPages;
-        console.log(data.totalPages);
+  async getEvents(): Promise<void> {
+    try {
+      const loading = await this.loadingController.create({
+        message: 'Cargando...', // Puedes personalizar el mensaje aquí
       });
+      await loading.present();
+
+      this.eventService
+        .getAllEvents(this.currentPage, this.itemsPerPage)
+        .subscribe((data: any) => {
+          this.events = data.events;
+          console.log(data.events);
+          this.totalItems = data.totalEvents;
+          this.totalPages = data.totalPages;
+          console.log(data.totalPages);
+
+          loading.dismiss(); // Ocultar el spinner cuando se obtienen los datos
+        });
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   loadMoreData(event: any): void {

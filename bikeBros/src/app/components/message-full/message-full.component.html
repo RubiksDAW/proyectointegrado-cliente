@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ autor }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <p>{{ mensajeCompleto }}</p>
+    </ion-card-content>
+  </ion-card>
+  <!-- <app-input-message></app-input-message> --><ion-button
+    (click)="goSenderProfile(senderId)"
+    expand="block"
+    >Ir perfil</ion-button
+  >
+</ion-content>

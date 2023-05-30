@@ -6,6 +6,7 @@ import { Comment } from 'src/app/interfaces/comment.interface';
 import { AuthService } from 'src/app/services/auth.service';
 import { CommentsService } from 'src/app/services/comments.service';
 // import { ReportService } from 'src/app/services/report.service';
+import { LoadingController } from '@ionic/angular';
 import { RoutesService } from 'src/app/services/routes.service';
 import { EditRouteModalComponent } from '../edit-route-modal/edit-route-modal.component';
 import { ReportRouteListComponent } from '../report-route-list/report-route-list.component';
@@ -46,7 +47,8 @@ export class RouteListComponent implements OnInit {
     private auth: AuthService,
     private alertController: AlertController,
     private comment: CommentsService,
-    private modal: ModalController
+    private modal: ModalController,
+    private loadingController: LoadingController
   ) {}
 
   ngOnInit() {
@@ -144,17 +146,29 @@ export class RouteListComponent implements OnInit {
     return await modal.present();
   }
 
-  getRoutes(): void {
-    this.routesSer
-      .getAllRoutes(this.currentPage, this.itemsPerPage)
-      .subscribe((data: any) => {
-        console.log(data);
-        this.routes = data.routes;
-        this.totalItems = data.totalRoutes;
-        this.totalPages = data.totalPages;
-        console.log(this.totalItems);
-        console.log(this.routes);
+  async getRoutes(): Promise<void> {
+    try {
+      const loading = await this.loadingController.create({
+        message: 'Cargando...', // Puedes personalizar el mensaje aquí
       });
+      await loading.present();
+
+      this.routesSer
+        .getAllRoutes(this.currentPage, this.itemsPerPage)
+        .subscribe((data: any) => {
+          console.log(data);
+          this.routes = data.routes;
+          this.totalItems = data.totalRoutes;
+          this.totalPages = data.totalPages;
+          console.log(this.totalItems);
+          console.log(this.routes);
+
+          loading.dismiss(); // Ocultar el spinner cuando se obtienen los datos
+        });
+    } catch (error) {
+      console.error(error);
+      // loading.dismiss(); // Ocultar el spinner en caso de error
+    }
   }
   async openReport() {
     const modal = await this.modal.create({
@@ -198,5 +212,13 @@ export class RouteListComponent implements OnInit {
 
   updateKmDistance() {
     console.log(this.kmDistance); // Verifica si se muestra el valor actualizado en la consola
+  }
+
+  // Para mostrar una imagen de carga mientras se muestran los datos.
+  async showSpinner() {
+    const loading = await this.loadingController.create({
+      message: 'Cargando...',
+    });
+    await loading.present();
   }
 }

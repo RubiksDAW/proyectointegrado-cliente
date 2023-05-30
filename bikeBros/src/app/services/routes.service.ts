@@ -9,8 +9,8 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class RoutesService {
-  private url = 'https://bikebrosv2.herokuapp.com';
-  // private url = 'http://localhost:3300';
+  // private url = 'https://bikebrosv2.herokuapp.com';
+  private url = 'http://localhost:3300';
 
   // Declaramos una variable para observar
   private refreshRoute$ = new Subject<void>();
@@ -20,77 +20,14 @@ export class RoutesService {
     private router: Router,
     private auth: AuthService
   ) {}
-  //Cuando la respuesta llega, se utiliza el operador map para transformar la respuesta en un objeto de tipo RoutesResponse
-  // y se selecciona el campo routes de este objeto. Finalmente, se devuelve un Observable que emite la matriz de objetos de tipo Route.
-  // getAllRoutes(): Observable<Route[]> {
-  //   const url = `${this.url}/api/route/getAll`;
-
-  //   return this.http.get<RoutesResponse>(url).pipe(map((resp) => resp.routes));
-  // }
 
   get refresh$() {
     return this.refreshRoute$;
   }
 
-  // getAllRoutes(
-  //   searchTerm?: string,
-  //   selectedDifficulty?: string
-  // ): Observable<Route[]> {
-  //   let query: any = {};
-  //   if (searchTerm) {
-  //     // Si se proporciona un término de búsqueda, filtrar las rutas por nombre o nivel de dificultad
-  //     query = {
-  //       searchTerm: searchTerm,
-  //     };
-  //   } else {
-  //     query = {};
-  //   }
-
-  //   if (selectedDifficulty) {
-  //     // Si se proporciona un nivel de dificultad seleccionado, filtrar las rutas por ese nivel
-  //     query.difficulty_level = selectedDifficulty;
-  //   }
-
-  //   return this.http
-  //     .get<Route[]>(`${this.url}/api/route/getAll`, {
-  //       params: query,
-  //     })
-  //     .pipe(map((resp) => resp));
-  // }
-
-  // getAllRoutes(
-  //   searchTerm?: string,
-  //   selectedDifficulty?: string,
-  //   page?: number,
-  //   pageSize?: number
-  // ): Observable<Route[]> {
-  //   let query: any = {
-  //     page: page ? page.toString() : undefined,
-  //     pageSize: pageSize ? pageSize.toString() : undefined,
-  //   };
-
-  //   if (searchTerm) {
-  //     query.searchTerm = searchTerm;
-  //   }
-
-  //   if (selectedDifficulty) {
-  //     query.difficulty_level = selectedDifficulty;
-  //   }
-
-  //   return this.http
-  //     .get<Route[]>(`${this.url}/api/route/getAll`, {
-  //       params: query,
-  //     })
-  //     .pipe(map((resp) => resp));
-  // }
-  // getAllRoutes(): Observable<Route[]> {
-  //   return this.http
-  //     .get<Route[]>(`${this.url}/api/route/getAll`)
-  //     .pipe(map((resp) => resp));
-  // }
-  // routes.service.ts
-
-  // routes.service.ts
+  getAllRouteNames(): Observable<any> {
+    return this.http.get<any>(`${this.url}/routes/getAll`);
+  }
 
   getAllRoutes(page?: number, pageSize?: number): Observable<any> {
     let params = new HttpParams();
@@ -127,16 +64,6 @@ export class RoutesService {
   }
 
   // Método para eliminar una ruta por ID solo si el usuario que lo llama es un admin
-  // deleteRouteById(routeId: string) {
-  //   this.http.delete(`${this.url}/route/delete/${routeId}`).subscribe(
-  //     (response) => {
-  //       console.log(response);
-  //     },
-  //     (error) => {
-  //       console.log(error);
-  //     }
-  //   );
-  // }
   deleteRouteById(routeId: string) {
     const url = `${this.url}/route/delete/${routeId}`;
     return this.http.delete(url).pipe(
@@ -215,41 +142,9 @@ export class RoutesService {
     }
   }
 
-  // getFavoriteRoutes(userId: string): Observable<any> {
-  //   const url = `${this.url}/favs/routes/${userId}`;
-  //   return this.http.get(url);
-  // }
-
-  // async getFavoriteRoutes(userId: string): Promise<Route[]> {
-  //   console.log('id: ' + userId);
-  //   try {
-  //     const res = await firstValueFrom(
-  //       this.http.get<Route[]>(`${this.url}/favs/${userId}`)
-  //     );
-  //     console.log(res);
-  //     return Promise.resolve(res);
-  //   } catch (error) {
-  //     console.error(error);
-  //     return Promise.resolve([]);
-  //   }
-  // }
-
   getFavoriteRoutes(userId: string): Observable<Route[]> {
     return this.http
       .get<Route[]>(`${this.url}/favs/${userId}`)
       .pipe(map((resp: any) => resp));
   }
-  // async getFavoriteRoutes(userId: string): Promise<Route[]> {
-  //   console.log('id: ' + userId);
-  //   try {
-  //     const res = await firstValueFrom(
-  //       this.http.get<Route[]>(`${this.url}/favs/${userId}`)
-  //     );
-  //     console.log(res);
-  //     return Promise.resolve(res);
-  //   } catch (error) {
-  //     console.error(error);
-  //     return Promise.resolve([]);
-  //   }
-  // }
 }

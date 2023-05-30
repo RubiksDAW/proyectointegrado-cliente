@@ -13,7 +13,7 @@ export class RoutesFilterPipe implements PipeTransform {
       return rutas;
     }
     console.log(searchTerm);
-    searchTerm = searchTerm.toLowerCase();
+    searchTerm = searchTerm.toLowerCase().trim();
 
     return rutas.filter((ruta) => {
       return (

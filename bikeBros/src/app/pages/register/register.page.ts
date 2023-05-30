@@ -6,7 +6,12 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AlertController, NavController } from '@ionic/angular';
+import {
+  AlertController,
+  ModalController,
+  NavController,
+} from '@ionic/angular';
+import { TermsComponent } from 'src/app/components/terms/terms.component';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -16,6 +21,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class RegisterPage implements OnInit {
   private builder = inject(FormBuilder);
+  termsAccepted = false;
   registerForm: FormGroup;
   images: File[] = [];
   constructor(
@@ -23,7 +29,8 @@ export class RegisterPage implements OnInit {
     private navCtrl: NavController,
     private router: Router,
     private auth: AuthService,
-    public alertController: AlertController
+    public alertController: AlertController,
+    private modalController: ModalController
   ) {
     this.registerForm = this.fb.group({
       nick: new FormControl('', [Validators.required, Validators.minLength(4)]),
@@ -36,6 +43,7 @@ export class RegisterPage implements OnInit {
       age: new FormControl('', Validators.required),
       description: new FormControl('', Validators.nullValidator),
       images: [null],
+      terms: new FormControl(false, [Validators.requiredTrue]),
     });
   }
 
@@ -228,5 +236,13 @@ export class RegisterPage implements OnInit {
     for (let i = 0; i < files.length; i++) {
       this.images.push(files[i]);
     }
+  }
+
+  async openTerms() {
+    const modal = await this.modalController.create({
+      component: TermsComponent,
+    });
+    // this.selectedPage = 'eventos';
+    return await modal.present();
   }
 }

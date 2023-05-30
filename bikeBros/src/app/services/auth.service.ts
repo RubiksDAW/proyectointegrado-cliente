@@ -7,8 +7,8 @@ import { Observable, Subject, map } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthService {
-  private url = 'https://bikebrosv2.herokuapp.com';
-  // private url = 'http://localhost:3300';
+  // private url = 'https://bikebrosv2.herokuapp.com';
+  private url = 'http://localhost:3300';
   // headers = new HttpHeaders().set('Content-Type', 'application/json');
   currentUser = {};
   private refreshUsers$ = new Subject<void>();
@@ -167,8 +167,8 @@ export class AuthService {
       console.error(error);
     }
   }
-
-  async getUserProfileById(userId: string | null) {
+  // Mirar por aqui a ver que pasa, este metodo es el que peta posiblemente
+  async getUserProfileById(userId: string) {
     const url = `${this.url}/user/${userId}`;
 
     try {

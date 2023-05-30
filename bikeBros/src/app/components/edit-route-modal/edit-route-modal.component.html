@@ -13,11 +13,11 @@
   <form [formGroup]="routeForm" (ngSubmit)="submitForm()">
     <ion-item>
       <ion-label position="floating">Nombre de la ruta</ion-label>
-      <ion-input formControlName="name"></ion-input>
+      <ion-input formControlName="name" required></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="floating">Nivel de dificultad</ion-label>
-      <ion-select formControlName="difficulty_level">
+      <ion-select formControlName="difficulty_level" required>
         <ion-select-option value="Bajo">Bajo</ion-select-option>
         <ion-select-option value="Intermedio">Intermedio</ion-select-option>
         <ion-select-option value="Alto">Alto</ion-select-option>
@@ -29,12 +29,12 @@
     </ion-item> -->
     <ion-item>
       <ion-label position="floating">Localidad</ion-label>
-      <ion-input type="string" formControlName="location"></ion-input>
+      <ion-input type="string" formControlName="location" required></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label position="floating">Descripción</ion-label>
-      <ion-textarea formControlName="description"></ion-textarea>
+      <ion-textarea formControlName="description" required></ion-textarea>
     </ion-item>
     <!-- <ion-item>
       <ion-label position="floating">Origen</ion-label>
@@ -50,6 +50,7 @@
         [(ngModel)]="origin"
         (ionInput)="onSearchInput()"
         formControlName="origin"
+        required
       ></ion-input>
       <ion-list *ngIf="this.originPlaces">
         <ion-item
@@ -66,6 +67,7 @@
         [(ngModel)]="destination"
         (ionInput)="onSearchDestination()"
         formControlName="destination"
+        required
       ></ion-input>
       <ion-list *ngIf="this.destinationPlaces">
         <ion-item
@@ -85,11 +87,13 @@
         id="file-upload"
         type="file"
         multiple
+        formControlName="images"
         (change)="onImageChange($event)"
         accept="image/*"
+        required
       />
     </ion-item>
-    <ion-button type="submit" expand="block"
+    <ion-button type="submit" expand="block" [disabled]="!routeForm.valid"
       >Guardar ruta modififcada</ion-button
     >
   </form>

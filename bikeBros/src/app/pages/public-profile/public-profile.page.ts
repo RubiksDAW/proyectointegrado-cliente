@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, ModalController } from '@ionic/angular';
+import { InputMessageComponent } from 'src/app/components/input-message/input-message.component';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -11,6 +12,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class PublicProfilePage implements OnInit {
   publicProfileUser: any;
+  publicId: string;
   constructor(
     private modalController: ModalController,
     private auth: AuthService,
@@ -20,17 +22,29 @@ export class PublicProfilePage implements OnInit {
   ) {}
 
   async ngOnInit() {
-    const publicId = localStorage.getItem('id-public-user');
-
-    try {
-      this.publicProfileUser = await this.auth.getUserProfileById(publicId);
+    this.publicId = localStorage.getItem('id-public-user')!;
+    console.log(this.publicId);
+    if (this.publicId !== null) {
+      this.publicProfileUser = await this.auth.getUserProfileById(
+        this.publicId
+      );
       console.log(this.publicProfileUser);
-    } catch (error) {
-      console.error(error);
+    } else {
+      console.error('El ID público del usuario no está disponible');
     }
   }
 
-  openFavRoutes() {}
+  async openInputMessage() {
+    const modal = await this.modalController.create({
+      component: InputMessageComponent,
+    });
+
+    return await modal.present();
+  }
+
+  setRecipientUser(recipientId: string) {
+    localStorage.setItem('id-recipient', recipientId);
+  }
 
   openEventsJoined() {}
 }

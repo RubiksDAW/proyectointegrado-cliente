@@ -14,7 +14,7 @@ export class EventFilterPipe implements PipeTransform {
       return events;
     }
     // console.log(searchTerm);
-    searchTerm = searchTerm.toLowerCase();
+    searchTerm = searchTerm.toLowerCase().trim();
 
     return events.filter((event) => {
       return (

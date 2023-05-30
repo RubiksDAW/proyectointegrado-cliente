@@ -37,7 +37,7 @@ export class RegisterEventModalComponent implements OnInit {
     this.eventForm = this.formBuilder.group({
       rutaId: ['', Validators.required],
       fecha: ['', Validators.required],
-      ubicacion: ['', [Validators.required, Validators.pattern(/^[^0-9]*$/)]],
+      ubicacion: ['', [Validators.required, Validators.maxLength(50)]],
       maxParticipantes: [
         '',
         [
@@ -51,6 +51,7 @@ export class RegisterEventModalComponent implements OnInit {
 
   async onSubmit() {
     const { rutaId, fecha, ubicacion, maxParticipantes } = this.eventForm.value;
+    const ubicacionTrimmed = ubicacion.trim();
     const creador = await this.auth.getProfileId();
 
     const fechaValida = await this.fechaValida();
@@ -59,7 +60,7 @@ export class RegisterEventModalComponent implements OnInit {
     }
 
     this.events
-      .register(rutaId, fecha, [], ubicacion, maxParticipantes, creador)
+      .register(rutaId, fecha, [], ubicacionTrimmed, maxParticipantes, creador)
       .subscribe({
         next: (res) => {
           console.log(res);
@@ -104,7 +105,7 @@ export class RegisterEventModalComponent implements OnInit {
   }
 
   getRoutes(): void {
-    this.routeSer.getAllRoutes().subscribe((data: any) => {
+    this.routeSer.getAllRouteNames().subscribe((data: any) => {
       this.routes = data.routes;
       console.log(this.routes);
     });

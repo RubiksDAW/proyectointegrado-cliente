@@ -134,6 +134,7 @@ export class RoutePage implements OnInit {
     (await this.routeService.addFavoriteRoute(id)).subscribe(
       (response) => {
         console.log('Respuesta del servidor:', response);
+
         // Manejar la respuesta del servidor aquí
       },
       (error) => {

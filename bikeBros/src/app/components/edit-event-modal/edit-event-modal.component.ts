@@ -36,7 +36,7 @@ export class EditEventModalComponent implements OnInit {
     this.eventForm = this.formBuilder.group({
       rutaId: ['', Validators.required],
       fecha: ['', Validators.required],
-      ubicacion: ['', [Validators.required, Validators.pattern(/^[^0-9]*$/)]],
+      ubicacion: ['', [Validators.required]],
       maxParticipantes: [
         '',
         [
@@ -69,6 +69,7 @@ export class EditEventModalComponent implements OnInit {
     const routeId = this.eventForm.controls['rutaId'].value;
     const fecha = this.eventForm.controls['fecha'].value;
     const ubicacion = this.eventForm.controls['ubicacion'].value.trim();
+    console.log(ubicacion);
     const maxParticipantes = this.eventForm.controls['maxParticipantes'].value;
 
     const fechaValida = await this.fechaValida();

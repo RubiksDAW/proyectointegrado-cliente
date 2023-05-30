@@ -40,6 +40,10 @@
 
 .main-info {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
+}
+
+.location {
+  white-space: normal;
 }

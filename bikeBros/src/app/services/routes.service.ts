@@ -9,8 +9,8 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class RoutesService {
-  // private url = 'https://bikebrosv2.herokuapp.com';
-  private url = 'http://localhost:3300';
+  private url = 'https://bikebrosv2.herokuapp.com';
+  // private url = 'http://localhost:3300';
 
   // Declaramos una variable para observar
   private refreshRoute$ = new Subject<void>();
@@ -107,6 +107,7 @@ export class RoutesService {
 
     return this.http.post(url, body).pipe(
       tap(() => {
+        // He desactivado esto porque se rayaba a la hora de la paginación del infinite-scroll
         // this.refreshRoute$.next();
       })
     );

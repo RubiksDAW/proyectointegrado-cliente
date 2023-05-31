@@ -123,7 +123,7 @@ export class RoutesService {
 
     return this.http.post(url, body).pipe(
       tap(() => {
-        this.refreshRoute$.next();
+        // this.refreshRoute$.next();
       })
     );
   }
@@ -147,5 +147,20 @@ export class RoutesService {
     return this.http
       .get<Route[]>(`${this.url}/favs/${userId}`)
       .pipe(map((resp: any) => resp));
+  }
+
+  uploadRoutePhoto(routeId: string, images: File[]): Observable<any> {
+    const URL = `${this.url}/route/updateRoutePic/${routeId}`;
+    const formData = new FormData();
+
+    for (let i = 0; i < images.length; i++) {
+      formData.append('images', images[i]);
+    }
+
+    return this.http.post(URL, formData).pipe(
+      tap(() => {
+        this.refreshRoute$.next();
+      })
+    );
   }
 }

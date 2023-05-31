@@ -7,7 +7,6 @@ import {
   ModalController,
 } from '@ionic/angular';
 import { Subscription } from 'rxjs';
-import { EventResponse } from 'src/app/interfaces/event.interface';
 import { AuthService } from 'src/app/services/auth.service';
 import { EventService } from 'src/app/services/event.service';
 import { EditEventModalComponent } from '../edit-event-modal/edit-event-modal.component';
@@ -29,15 +28,10 @@ export class EventListComponent implements OnInit {
 
   authorEventId: string;
 
-  events: EventResponse[] = [];
   startDate: Date;
   endDate: Date;
-
-  public currentPage: number = 1; // Página actual
-  public itemsPerPage: number = 5; // Cantidad de elementos por página
-  public totalItems: number = 100; // Total de elementos disponibles
-  public isLoading: boolean = false; // Variable para controlar la carga de datos
-  public totalPages: number;
+  events: any[] = [];
+  displayedEvents: any[] = [];
   subscription: Subscription;
   constructor(
     private eventService: EventService,
@@ -134,56 +128,45 @@ export class EventListComponent implements OnInit {
     }
   }
 
-  async getEvents(): Promise<void> {
-    try {
-      const loading = await this.loadingController.create({
-        message: 'Cargando...', // Puedes personalizar el mensaje aquí
-      });
-      await loading.present();
-
-      this.eventService
-        .getAllEvents(this.currentPage, this.itemsPerPage)
-        .subscribe((data: any) => {
-          this.events = data.events;
-          console.log(data.events);
-          this.totalItems = data.totalEvents;
-          this.totalPages = data.totalPages;
-          console.log(data.totalPages);
-
-          loading.dismiss(); // Ocultar el spinner cuando se obtienen los datos
-        });
-    } catch (error) {
-      console.error(error);
-    }
+  getEvents() {
+    this.eventService.getAllEvents().subscribe((data: any) => {
+      console.log(data);
+      this.events = data.events;
+      this.displayedEvents = this.events.slice(0, 5);
+      console.log(this.displayedEvents);
+    });
   }
+  // async getEvents(): Promise<void> {
+  //   try {
+  //     const loading = await this.loadingController.create({
+  //       message: 'Cargando...', // Puedes personalizar el mensaje aquí
+  //     });
+  //     await loading.present();
+
+  //     this.eventService
+  //       .getAllEvents()
+  //       .subscribe((data: any) => {
+  //         this.events = data.events;
+  //         console.log(data.events);
+  //         this.totalItems = data.totalEvents;
+  //         this.totalPages = data.totalPages;
+  //         console.log(data.totalPages);
+
+  //         loading.dismiss(); // Ocultar el spinner cuando se obtienen los datos
+  //       });
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }
 
   loadMoreData(event: any): void {
-    console.log(this.events.length);
-    console.log(this.totalItems);
-    if (!this.isLoading && this.currentPage < this.totalPages) {
-      this.isLoading = true;
-      this.currentPage++;
-
-      // Lógica para obtener más elementos, por ejemplo, haciendo otra solicitud al servicio
-      this.eventService
-        .getAllEvents(this.currentPage, this.itemsPerPage)
-        .subscribe((data: any) => {
-          if (data && data.events && data.events.length > 0) {
-            // Agregar los nuevos elementos al arreglo existente
-            this.events = this.events.concat(data.events);
-          }
-          // Agregar los nuevos elementos al arreglo existente
-          // this.events = this.events.concat(data.events);
-          console.log(this.events);
-          this.isLoading = false;
-
-          // Completar la acción de carga infinita
-          event.target.complete();
-        });
-    } else {
-      // Completar la acción de carga infinita si no hay más elementos
+    setTimeout(() => {
+      const startIndex = this.displayedEvents.length;
+      const endIndex = startIndex + 5;
+      const moreEvents = this.events.slice(startIndex, endIndex);
+      this.displayedEvents = this.displayedEvents.concat(moreEvents);
       event.target.complete();
-    }
+    }, 1000);
   }
 
   async showEventEditModal() {

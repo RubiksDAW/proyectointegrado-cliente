@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subject, map, tap } from 'rxjs';
@@ -8,8 +8,8 @@ import { EventResponse } from '../interfaces/event.interface';
   providedIn: 'root',
 })
 export class EventService {
-  private url = 'https://bikebrosv2.herokuapp.com';
-  // private url = 'http://localhost:3300';
+  // private url = 'https://bikebrosv2.herokuapp.com';
+  private url = 'http://localhost:3300';
 
   private refreshEvent$ = new Subject<void>();
 
@@ -19,18 +19,8 @@ export class EventService {
     return this.refreshEvent$;
   }
 
-  getAllEvents(page?: number, pageSize?: number): Observable<EventResponse> {
-    let params = new HttpParams();
-
-    if (page) {
-      params = params.set('page', page.toString());
-    }
-
-    if (pageSize) {
-      params = params.set('pageSize', pageSize.toString());
-    }
-
-    return this.http.get<any>(`${this.url}/api/getAllEvents`, { params });
+  getAllEvents(): Observable<EventResponse> {
+    return this.http.get<any>(`${this.url}/api/getAllEvents`);
     // .pipe(map((resp: EventResponse) => resp));
   }
 

@@ -33,12 +33,11 @@ export class RouteListComponent implements OnInit {
   selectedDifficulty: string = '';
 
   kmDistance: number = 0;
+
   public routes: any[] = []; // Arreglo para almacenar las rutas
-  public currentPage: number = 1; // Página actual
-  public itemsPerPage: number = 5; // Cantidad de elementos por página
-  public isLoading: boolean = false; // Variable para controlar la carga de datos
-  public totalItems: number;
-  public totalPages: number;
+
+  displayedRoutes: any[] = [];
+
   subscription: Subscription;
 
   constructor(
@@ -67,6 +66,7 @@ export class RouteListComponent implements OnInit {
       },
     });
     console.log(this.kmDistance);
+
     this.getRoutes();
     this.subscription = this.routesSer.refresh$.subscribe(() => {
       this.getRoutes();
@@ -146,29 +146,38 @@ export class RouteListComponent implements OnInit {
     return await modal.present();
   }
 
-  async getRoutes(): Promise<void> {
-    try {
-      const loading = await this.loadingController.create({
-        message: 'Cargando...', // Puedes personalizar el mensaje aquí
-      });
-      await loading.present();
+  // async getRoutes(): Promise<void> {
+  //   try {
+  //     const loading = await this.loadingController.create({
+  //       message: 'Cargando...', // Puedes personalizar el mensaje aquí
+  //     });
+  //     await loading.present();
 
-      this.routesSer
-        .getAllRoutes(this.currentPage, this.itemsPerPage)
-        .subscribe((data: any) => {
-          console.log(data);
-          this.routes = data.routes;
-          this.totalItems = data.totalRoutes;
-          this.totalPages = data.totalPages;
-          console.log(data.totalRoutes);
-          console.log(this.routes);
+  //     this.routesSer
+  //       .getAllRoutes(this.currentPage, this.itemsPerPage)
+  //       .subscribe((data: any) => {
+  //         console.log(data);
+  //         this.routes = data.routes;
+  //         this.totalItems = data.totalRoutes;
+  //         this.totalPages = data.totalPages;
+  //         console.log(data.totalRoutes);
+  //         console.log(this.routes);
 
-          loading.dismiss(); // Ocultar el spinner cuando se obtienen los datos
-        });
-    } catch (error) {
-      console.error(error);
-      // loading.dismiss(); // Ocultar el spinner en caso de error
-    }
+  //         loading.dismiss(); // Ocultar el spinner cuando se obtienen los datos
+  //       });
+  //   } catch (error) {
+  //     console.error(error);
+  //     // loading.dismiss(); // Ocultar el spinner en caso de error
+  //   }
+  // }
+
+  getRoutes(): void {
+    this.routesSer.getAllRoutes().subscribe((data: any) => {
+      console.log(data);
+      this.routes = data.routes;
+      this.displayedRoutes = this.routes.slice(0, 5);
+      console.log(this.displayedRoutes);
+    });
   }
 
   async openReport() {
@@ -188,27 +197,38 @@ export class RouteListComponent implements OnInit {
     return await modal.present();
   }
 
+  // loadMoreData(event: any): void {
+  //   if (!this.isLoading && this.currentPage < this.totalPages) {
+  //     this.isLoading = true;
+  //     this.currentPage++;
+  //     console.log(this.currentPage);
+
+  //     this.routesSer
+  //       .getAllRoutes(this.currentPage, this.itemsPerPage)
+  //       .subscribe((data: any) => {
+  //         // Verificar si hay datos retornados por la solicitud
+  //         if (data && data.routes && data.routes.length > 0) {
+  //           // Agregar los nuevos elementos al arreglo existente
+  //           this.routes = this.routes.concat(data.routes);
+  //         }
+
+  //         this.isLoading = false;
+  //         event.target.complete();
+  //       });
+  //   } else {
+  //     event.target.complete();
+  //   }
+  // }
+
   loadMoreData(event: any): void {
-    if (!this.isLoading && this.currentPage < this.totalPages) {
-      this.isLoading = true;
-      this.currentPage++;
-      console.log(this.currentPage);
+    setTimeout(() => {
+      const startIndex = this.displayedRoutes.length;
+      const endIndex = startIndex + 5;
+      const moreRoutes = this.routes.slice(startIndex, endIndex);
+      this.displayedRoutes = this.displayedRoutes.concat(moreRoutes);
 
-      this.routesSer
-        .getAllRoutes(this.currentPage, this.itemsPerPage)
-        .subscribe((data: any) => {
-          // Verificar si hay datos retornados por la solicitud
-          if (data && data.routes && data.routes.length > 0) {
-            // Agregar los nuevos elementos al arreglo existente
-            this.routes = this.routes.concat(data.routes);
-          }
-
-          this.isLoading = false;
-          event.target.complete();
-        });
-    } else {
       event.target.complete();
-    }
+    }, 1000);
   }
 
   updateKmDistance() {

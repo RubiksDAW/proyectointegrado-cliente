@@ -30,7 +30,7 @@
 <ion-list style="margin-top: 150px">
   <ion-card
     *ngFor="
-      let event of events
+      let event of displayedEvents
         | eventFilter : searchTerm
         | eventFilterDate : startDate : endDate
     "

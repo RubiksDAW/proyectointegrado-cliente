@@ -28,7 +28,7 @@
 <ion-list style="margin-top: 130px">
   <ion-card
     *ngFor="
-      let ruta of routes
+      let ruta of displayedRoutes
         | routesFilter : searchTerm
         | routesFilterLevel : selectedDifficulty
         | routeFilterDistance : kmDistance

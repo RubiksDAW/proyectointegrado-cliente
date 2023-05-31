@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subject, firstValueFrom, map, tap } from 'rxjs';
@@ -9,8 +9,8 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class RoutesService {
-  private url = 'https://bikebrosv2.herokuapp.com';
-  // private url = 'http://localhost:3300';
+  // private url = 'https://bikebrosv2.herokuapp.com';
+  private url = 'http://localhost:3300';
 
   // Declaramos una variable para observar
   private refreshRoute$ = new Subject<void>();
@@ -29,19 +29,22 @@ export class RoutesService {
     return this.http.get<any>(`${this.url}/routes/getAll`);
   }
 
-  getAllRoutes(page?: number, pageSize?: number): Observable<any> {
-    let params = new HttpParams();
-
-    if (page) {
-      params = params.set('page', page.toString());
-    }
-
-    if (pageSize) {
-      params = params.set('pageSize', pageSize.toString());
-    }
-
-    return this.http.get<any>(`${this.url}/api/route/getAll`, { params });
+  getAllRoutes(): Observable<any> {
+    return this.http.get<any>(`${this.url}/api/route/getAll`);
   }
+  // getAllRoutes(page?: number, pageSize?: number): Observable<any> {
+  //   let params = new HttpParams();
+
+  //   if (page) {
+  //     params = params.set('page', page.toString());
+  //   }
+
+  //   if (pageSize) {
+  //     params = params.set('pageSize', pageSize.toString());
+  //   }
+
+  //   return this.http.get<any>(`${this.url}/api/route/getAll`, { params });
+  // }
 
   getRouteById(id: string) {
     const url = `${this.url}/route/id/${id}`;

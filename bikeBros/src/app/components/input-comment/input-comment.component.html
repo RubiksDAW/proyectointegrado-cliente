@@ -1,12 +1,14 @@
-<form [formGroup]="commentForm">
-  <ion-item>
-    <ion-label position="floating">Escribe tu comentario...</ion-label>
-    <ion-input
-      formControlName="comment"
-      type="text"
-      v-model="comment"
-      placeholder="Escribe tu comentario..."
-    ></ion-input>
-  </ion-item>
-  <ion-button expand="full" (click)="onSubmit()">Enviar</ion-button>
-</form>
+<ion-accordion>
+  <form [formGroup]="commentForm">
+    <ion-item>
+      <ion-label position="floating">Escribe tu comentario...</ion-label>
+      <ion-input
+        formControlName="comment"
+        type="text"
+        v-model="comment"
+        placeholder="Escribe tu comentario..."
+      ></ion-input>
+    </ion-item>
+    <ion-button expand="full" (click)="onSubmit()">Enviar</ion-button>
+  </form>
+</ion-accordion>

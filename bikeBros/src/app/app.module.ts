@@ -9,6 +9,8 @@ import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthGuard } from './guards/auth.guard';
+import { RouteFilterDistancePipe } from './pipes/route-filter-distance.pipe';
+import { RouteFilterLevelPipe } from './pipes/route-filter-level.pipe';
 import { RoutesFilterPipe } from './pipes/routes-filter.pipe';
 // import { EventFilterPipe } from './event-filter.pipe';
 // import { ReportService } from './services/report.service';
@@ -27,6 +29,8 @@ import { RoutesFilterPipe } from './pipes/routes-filter.pipe';
     AuthGuard,
     SocialSharing,
     RoutesFilterPipe,
+    RouteFilterDistancePipe,
+    RouteFilterLevelPipe,
     // ReportService,
   ],
   bootstrap: [AppComponent],

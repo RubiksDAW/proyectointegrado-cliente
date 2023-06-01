@@ -128,12 +128,16 @@ export class EventListComponent implements OnInit {
     }
   }
 
-  getEvents() {
-    this.eventService.getAllEvents().subscribe((data: any) => {
+  async getEvents() {
+    // await this.showSpinner(); // Mostrar spinner loader
+
+    this.eventService.getAllEvents().subscribe(async (data: any) => {
       console.log(data);
       this.events = data.events;
       this.displayedEvents = this.events.slice(0, 5);
       console.log(this.displayedEvents);
+
+      // await this.hideSpinner(); // Ocultar spinner loader una vez recibidos los datos
     });
   }
   // async getEvents(): Promise<void> {
@@ -191,5 +195,16 @@ export class EventListComponent implements OnInit {
       },
     });
     return await modal.present();
+  }
+
+  async showSpinner() {
+    const loading = await this.loadingController.create({
+      message: 'Cargando...',
+    });
+    await loading.present();
+  }
+
+  async hideSpinner() {
+    await this.loadingController.dismiss(); // Ocultar spinner loader
   }
 }

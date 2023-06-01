@@ -6,6 +6,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { CreateRoutePageRoutingModule } from './create-route-routing.module';
 
+import { PipesModule } from 'src/app/pipes/pipes.module';
 import { ComponentsModule } from '../../../components/components.module';
 import { CreateRoutePage } from './create-route.page';
 @NgModule({
@@ -14,8 +15,9 @@ import { CreateRoutePage } from './create-route.page';
     FormsModule,
     IonicModule,
     CreateRoutePageRoutingModule,
-    ComponentsModule
+    ComponentsModule,
+    PipesModule,
   ],
-  declarations: [CreateRoutePage]
+  declarations: [CreateRoutePage],
 })
 export class CreateRoutePageModule {}

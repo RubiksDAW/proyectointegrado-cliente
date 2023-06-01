@@ -7,11 +7,13 @@ import { AuthService } from 'src/app/services/auth.service';
 import { CommentsService } from 'src/app/services/comments.service';
 // import { ReportService } from 'src/app/services/report.service';
 import { LoadingController } from '@ionic/angular';
+import { RouteFilterDistancePipe } from 'src/app/pipes/route-filter-distance.pipe';
+import { RouteFilterLevelPipe } from 'src/app/pipes/route-filter-level.pipe';
 import { RoutesService } from 'src/app/services/routes.service';
+import { RoutesFilterPipe } from '../../pipes/routes-filter.pipe';
 import { EditRouteModalComponent } from '../edit-route-modal/edit-route-modal.component';
 import { ReportRouteListComponent } from '../report-route-list/report-route-list.component';
 import { ReportComponent } from '../report/report.component';
-
 @Component({
   selector: 'app-route-list',
   templateUrl: './route-list.component.html',
@@ -38,7 +40,13 @@ export class RouteListComponent implements OnInit {
 
   displayedRoutes: any[] = [];
 
+  filteredRoutes: any[] = [];
+
   subscription: Subscription;
+
+  selectedDistance: number;
+  selectedLevel: string;
+  selectedSearchTerm: string;
 
   constructor(
     private routesSer: RoutesService,
@@ -47,7 +55,10 @@ export class RouteListComponent implements OnInit {
     private alertController: AlertController,
     private comment: CommentsService,
     private modal: ModalController,
-    private loadingController: LoadingController
+    private loadingController: LoadingController,
+    private routeFilterDistance: RouteFilterDistancePipe,
+    private routeFilterLevel: RouteFilterLevelPipe,
+    private routesFilter: RoutesFilterPipe
   ) {}
 
   ngOnInit() {
@@ -171,13 +182,94 @@ export class RouteListComponent implements OnInit {
   //   }
   // }
 
-  getRoutes(): void {
-    this.routesSer.getAllRoutes().subscribe((data: any) => {
+  // async getRoutes() {
+  //   await this.showSpinner(); // Mostrar spinner loader
+
+  //   this.routesSer.getAllRoutes().subscribe(async (data: any) => {
+  //     console.log(data);
+  //     this.routes = data.routes;
+  //     this.displayedRoutes = this.routes.slice(0, 5);
+  //     console.log(this.displayedRoutes);
+
+  //     await this.hideSpinner(); // Ocultar spinner loader una vez recibidos los datos
+  //   });
+  // }
+  // Método para aplicar los filtros en this.routes según las selecciones del usuario
+  applyFiltersToRoutes() {
+    // Aplica los filtros en this.routes según las selecciones del usuario
+    this.filteredRoutes = this.routes;
+    if (this.selectedDistance) {
+      this.filteredRoutes = this.routeFilterDistance.transform(
+        this.filteredRoutes,
+        this.selectedDistance
+      );
+    }
+    if (this.selectedLevel) {
+      this.filteredRoutes = this.routeFilterLevel.transform(
+        this.filteredRoutes,
+        this.selectedLevel
+      );
+    }
+    if (this.selectedSearchTerm) {
+      this.filteredRoutes = this.routesFilter.transform(
+        this.filteredRoutes,
+        this.selectedSearchTerm
+      );
+    }
+  }
+
+  // Método para aplicar los filtros en this.displayedRoutes según las selecciones del usuario
+  applyFiltersToDisplayedRoutes() {
+    // Aplica los filtros en this.displayedRoutes según las selecciones del usuario
+    this.displayedRoutes = this.routes.slice(0, 5);
+    if (this.selectedDistance) {
+      this.displayedRoutes = this.routeFilterDistance.transform(
+        this.displayedRoutes,
+        this.selectedDistance
+      );
+    }
+    if (this.selectedLevel) {
+      this.displayedRoutes = this.routeFilterLevel.transform(
+        this.displayedRoutes,
+        this.selectedLevel
+      );
+    }
+    if (this.selectedSearchTerm) {
+      this.displayedRoutes = this.routesFilter.transform(
+        this.displayedRoutes,
+        this.selectedSearchTerm
+      );
+    }
+  }
+
+  // Método para obtener las rutas
+  async getRoutes() {
+    // await this.showSpinner(); // Mostrar el cargador de espera
+
+    this.routesSer.getAllRoutes().subscribe(async (data: any) => {
       console.log(data);
       this.routes = data.routes;
-      this.displayedRoutes = this.routes.slice(0, 5);
-      console.log(this.displayedRoutes);
+
+      this.applyFiltersToRoutes(); // Aplicar filtros en this.routes
+      this.applyFiltersToDisplayedRoutes(); // Aplicar filtros en this.displayedRoutes
+
+      // await this.hideSpinner(); // Ocultar el cargador de espera una vez recibidos los datos
     });
+  }
+
+  filterRoutes(): void {
+    // Realizar el filtrado en this.routes y guardar el resultado en un nuevo array
+    const filteredRoutes = this.routes.filter((ruta) => {
+      return (
+        (ruta.name &&
+          ruta.name.toLowerCase().includes(this.searchTerm.toLowerCase())) ||
+        (ruta.location &&
+          ruta.location.toLowerCase().includes(this.searchTerm.toLowerCase()))
+      );
+    });
+
+    // Aplicar el filtrado a this.displayedRoutes
+    this.displayedRoutes = filteredRoutes.slice(0, 5);
   }
 
   async openReport() {
@@ -220,12 +312,31 @@ export class RouteListComponent implements OnInit {
   //   }
   // }
 
+  // loadMoreData(event: any): void {
+  //   setTimeout(() => {
+  //     const startIndex = this.displayedRoutes.length;
+  //     const endIndex = startIndex + 5;
+  //     const moreRoutes = this.routes.slice(startIndex, endIndex);
+  //     this.displayedRoutes = this.displayedRoutes.concat(moreRoutes);
+
+  //     event.target.complete();
+  //   }, 1000);
+  // }
   loadMoreData(event: any): void {
     setTimeout(() => {
       const startIndex = this.displayedRoutes.length;
       const endIndex = startIndex + 5;
-      const moreRoutes = this.routes.slice(startIndex, endIndex);
-      this.displayedRoutes = this.displayedRoutes.concat(moreRoutes);
+      const moreRoutes = this.filteredRoutes.slice(startIndex, endIndex);
+
+      // Aplicar los filtros correspondientes a las nuevas rutas
+      const filteredMoreRoutes = this.routeFilterDistance.transform(
+        moreRoutes,
+        this.selectedDistance
+      );
+      // Aplicar otros filtros según sea necesario
+
+      // Agregar las rutas filtradas adicionales a displayedRoutes
+      this.displayedRoutes = this.displayedRoutes.concat(filteredMoreRoutes);
 
       event.target.complete();
     }, 1000);
@@ -241,5 +352,9 @@ export class RouteListComponent implements OnInit {
       message: 'Cargando...',
     });
     await loading.present();
+  }
+
+  async hideSpinner() {
+    await this.loadingController.dismiss(); // Ocultar spinner loader
   }
 }

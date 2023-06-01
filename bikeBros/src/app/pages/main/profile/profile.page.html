@@ -49,15 +49,18 @@
     <ion-title class="title">Estadisticas de uso</ion-title>
     <ion-item>
       <ion-icon name="bicycle-outline" slot="start" class="icon"></ion-icon>
-      <ion-label>Rutas creadas: {{userStats?.totalRoutes}}</ion-label>
+      <ion-label>Rutas creadas: </ion-label>
+      <ion-badge> {{userStats?.totalRoutes}}</ion-badge>
     </ion-item>
     <ion-item>
       <ion-icon name="today-outline" slot="start" class="icon"></ion-icon>
-      <ion-label>Eventos creados: {{userStats?.totalEvents}}</ion-label>
+      <ion-label>Eventos creados:</ion-label>
+      <ion-badge> {{userStats?.totalEvents}}</ion-badge>
     </ion-item>
     <ion-item>
       <ion-icon name="mail-outline" slot="start" class="icon"></ion-icon>
-      <ion-label>Comentarios: {{userStats?.totalComments}}</ion-label>
+      <ion-label>Comentarios:</ion-label>
+      <ion-badge> {{userStats?.totalComments}}</ion-badge>
     </ion-item>
     <ion-item>
       <ion-icon
@@ -65,9 +68,8 @@
         slot="start"
         class="icon"
       ></ion-icon>
-      <ion-label
-        >Eventos pendientes: {{userStats?.totalEventsJoined}}</ion-label
-      >
+      <ion-label>Eventos pendientes: </ion-label>
+      <ion-badge>{{userStats?.totalEventsJoined}}</ion-badge>
     </ion-item>
   </ion-card>
 

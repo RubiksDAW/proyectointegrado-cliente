@@ -42,11 +42,48 @@
         </div>
       </ion-slide>
     </ion-slides>
-    <ion-card-header *ngIf="event.ruta" class="center">{{
-      event?.ruta?.name
-    }}</ion-card-header>
+    <ion-card-header *ngIf="event.ruta" class="center">
+      <ion-card-title>
+        <div class="titulo-centrado">
+          <ng-container *ngIf="event.ruta.name.length <= 20; else longName">
+            <h2>{{ event.ruta.name }}</h2>
+          </ng-container>
+          <ng-template #longName>
+            <ion-label>
+              <h2 class="titulo-completo">{{ event.ruta.name }}</h2>
+            </ion-label>
+          </ng-template>
+        </div>
+      </ion-card-title>
 
-    <ion-item>
+      <ion-item>
+        <ion-label>
+          <p>Ubicación</p>
+          <h2 class="ubicacion-completa">{{ event.ubicacion }}</h2>
+        </ion-label>
+        <!-- <ion-icon class="icon" name="stats-chart-outline"></ion-icon> -->
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <p>Fecha</p>
+          <h2>{{ event.fecha | date : "dd/MM/yyyy" }}</h2>
+        </ion-label>
+        <ion-icon name="calendar-outline" class="icon"></ion-icon>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <p>Participantes</p>
+          <h2>
+            {{ event?.participantes?.length }} / {{ event?.maxParticipantes }}
+          </h2>
+        </ion-label>
+        <ion-icon class="icon" name="people-circle-outline"></ion-icon>
+      </ion-item>
+    </ion-card-header>
+
+    <!-- <ion-item>
       <ion-icon name="navigate-circle-outline" class="icon"></ion-icon>
       <ion-label>{{ event.ubicacion }}</ion-label>
     </ion-item>
@@ -60,7 +97,7 @@
         >{{ event?.participantes?.length }} /
         {{ event?.maxParticipantes }}</ion-label
       >
-    </ion-item>
+    </ion-item> -->
 
     <div class="buttons">
       <ion-button

@@ -98,7 +98,8 @@
 
 .icon {
   font-size: 30px;
-  margin-right: 5px;
+  // border: 1px solid;
+  margin-left: 100px;
 }
 .floating-toolbar {
   position: fixed;
@@ -117,4 +118,15 @@
   position: relative;
   z-index: 1;
   margin-top: 70px;
+}
+
+.titulo-centrado {
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.titulo-completo {
+  white-space: normal;
 }

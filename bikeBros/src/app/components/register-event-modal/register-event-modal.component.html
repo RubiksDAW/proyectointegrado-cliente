@@ -11,23 +11,45 @@
 
 <ion-content>
   <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
-    <ion-item>
+    <!-- <ion-item>
       <ion-label>Ruta</ion-label>
       <ion-select formControlName="rutaId">
-        <ion-select-option *ngFor="let route of routes" [value]="route._id">
-          {{ route.name }}
+        <ion-select-option
+          *ngFor="let route of routes"
+          [value]="route._id"
+          class="nowrap"
+        >
+          <ion-label class="nowrap"> {{ route.name }}</ion-label>
         </ion-select-option>
       </ion-select>
-    </ion-item>
+    </ion-item> -->
+    <ion-list>
+      <ion-item>
+        <!-- <ion-label>Ruta</ion-label> -->
+        <ion-select
+          formControlName="rutaId"
+          aria-label="fruit"
+          placeholder="Selecciona una ruta"
+        >
+          <ion-select-option
+            *ngFor="let route of routes"
+            [value]="route._id"
+            value="apples"
+            >{{ route.name }}</ion-select-option
+          >
+        </ion-select>
+      </ion-item>
+    </ion-list>
 
     <ion-item>
-      <ion-label position="floating">Fecha</ion-label>
+      <!-- <ion-label position="floating">Fecha</ion-label> -->
       <ion-datetime
         formControlName="fecha"
         display-format="DD/MM/YYYY"
         picker-format="DD/MM/YYYY"
         locale="es"
         required
+        aria-label="fruit"
       >
       </ion-datetime>
     </ion-item>

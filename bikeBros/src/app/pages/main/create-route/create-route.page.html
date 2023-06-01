@@ -16,7 +16,7 @@
         slot="fixed"
         style="position: fixed"
       >
-        <ion-fab-button (click)="showRouteRegisterModal()">
+        <ion-fab-button color="warning" (click)="showRouteRegisterModal()">
           <ion-icon name="add"></ion-icon>
         </ion-fab-button>
       </ion-fab>
@@ -25,7 +25,7 @@
     <div *ngIf="selectedPage === 'eventos'">
       <!-- Contenido de la página de eventos -->
       <ion-fab vertical="bottom" horizontal="end" style="position: fixed">
-        <ion-fab-button (click)="showEventRegisterModal()">
+        <ion-fab-button color="warning" (click)="showEventRegisterModal()">
           <ion-icon name="add"></ion-icon>
         </ion-fab-button>
       </ion-fab>

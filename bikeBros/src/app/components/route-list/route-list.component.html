@@ -1,4 +1,4 @@
-<ion-header>
+<!-- <ion-header>
   <ion-toolbar class="floating-toolbar">
     <ion-searchbar
       animated="true"
@@ -17,6 +17,38 @@
       <ion-label slot="end">200 km</ion-label>
     </ion-range>
     <ion-select placeholder="Dificultad" [(ngModel)]="selectedDifficulty">
+      <ion-select-option value="">Todas</ion-select-option>
+      <ion-select-option value="Bajo">Bajo</ion-select-option>
+      <ion-select-option value="Intermedio">Intermedio</ion-select-option>
+      <ion-select-option value="Alto">Alto</ion-select-option>
+    </ion-select>
+  </ion-toolbar>
+</ion-header> -->
+<ion-header>
+  <ion-toolbar class="floating-toolbar">
+    <ion-searchbar
+      animated="true"
+      placeholder="Buscar rutas..."
+      [(ngModel)]="searchTerm"
+      (ionChange)="filterRoutes()"
+    ></ion-searchbar
+    ><ion-range
+      [(ngModel)]="kmDistance"
+      pin="true"
+      snaps="true"
+      min="0"
+      max="200"
+      step="1"
+      (ionChange)="filterRoutes()"
+    >
+      <ion-label slot="start">0 km</ion-label>
+      <ion-label slot="end">200 km</ion-label>
+    </ion-range>
+    <ion-select
+      placeholder="Dificultad"
+      [(ngModel)]="selectedDifficulty"
+      (ionChange)="filterRoutes()"
+    >
       <ion-select-option value="">Todas</ion-select-option>
       <ion-select-option value="Bajo">Bajo</ion-select-option>
       <ion-select-option value="Intermedio">Intermedio</ion-select-option>
@@ -43,14 +75,54 @@
     </ion-slides>
 
     <ion-card-header>
-      <ion-card-title>{{ ruta.name }}</ion-card-title>
-      <ion-card-subtitle>Ubicación: {{ ruta.location }}</ion-card-subtitle>
-      <ion-card-subtitle
-        >Dificultad: {{ ruta.difficulty_level }}</ion-card-subtitle
-      >
-      <ion-card-subtitle
-        >Distancia: {{ ruta.distance | number : ".0-0" }} km</ion-card-subtitle
-      >
+      <ion-card-title>
+        <div class="titulo-centrado">
+          <ng-container *ngIf="ruta.name.length <= 20; else longName">
+            <h2>{{ ruta.name }}</h2>
+          </ng-container>
+          <ng-template #longName>
+            <ion-label>
+              <h2 class="titulo-completo">{{ ruta.name }}</h2>
+            </ion-label>
+          </ng-template>
+        </div>
+      </ion-card-title>
+
+      <ion-item>
+        <ion-label>
+          <p>Ubicación</p>
+          <h2>{{ ruta.location }}</h2>
+        </ion-label>
+        <!-- <ion-icon class="icon" name="stats-chart-outline"></ion-icon> -->
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <p>Dificultad</p>
+          <h2>{{ ruta.difficulty_level }}</h2>
+        </ion-label>
+        <ion-icon
+          *ngIf="ruta.difficulty_level === 'Alto'"
+          class="icon"
+          name="skull-outline"
+        ></ion-icon>
+        <ion-icon
+          *ngIf="ruta.difficulty_level === 'Intermedio'"
+          name="sad-outline"
+        ></ion-icon>
+        <ion-icon
+          *ngIf="ruta.difficulty_level === 'Bajo'"
+          name="happy-outline"
+        ></ion-icon>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <p>Distancia</p>
+          <h2>{{ ruta.distance | number : ".0-0" }} km</h2>
+        </ion-label>
+        <ion-icon class="icon" name="stats-chart-outline"></ion-icon>
+      </ion-item>
     </ion-card-header>
 
     <ion-card-content>

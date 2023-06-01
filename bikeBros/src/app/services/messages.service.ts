@@ -6,8 +6,8 @@ import { Subject, map, tap } from 'rxjs';
   providedIn: 'root',
 })
 export class MessagesService {
-  // private url = 'https://bikebrosv2.herokuapp.com';
-  private url = 'http://localhost:3300';
+  private url = 'https://bikebrosv2.herokuapp.com';
+  // private url = 'http://localhost:3300';
   private refreshMessages$ = new Subject<void>();
   constructor(private http: HttpClient) {}
 

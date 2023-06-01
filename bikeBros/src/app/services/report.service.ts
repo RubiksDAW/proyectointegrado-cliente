@@ -5,8 +5,8 @@ import { Observable, Subject, map, tap } from 'rxjs';
   providedIn: 'root',
 })
 export class ReportService {
-  // private url = 'https://bikebrosv2.herokuapp.com';
-  private url = 'http://localhost:3300';
+  private url = 'https://bikebrosv2.herokuapp.com';
+  // private url = 'http://localhost:3300';
 
   private refreshReports$ = new Subject<void>();
 

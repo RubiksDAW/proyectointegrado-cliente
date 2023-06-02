@@ -35,14 +35,23 @@
         | eventFilterDate : startDate : endDate
     "
   >
-    <ion-slides>
-      <ion-slide *ngFor="let imageURL of event.ruta?.images">
-        <div class="image-container">
-          <img class="img" src="{{ imageURL }}" />
-        </div>
-      </ion-slide>
-    </ion-slides>
-    <ion-card-header *ngIf="event.ruta" class="center">
+    <ng-container *ngIf="event.ruta?.images && event.ruta.images.length > 1">
+      <ion-slides pager>
+        <ion-slide *ngFor="let imageURL of event.ruta.images">
+          <div class="image-container">
+            <img class="img" src="{{ imageURL }}" />
+          </div>
+        </ion-slide>
+      </ion-slides>
+    </ng-container>
+
+    <ng-container *ngIf="event.ruta?.images && event.ruta.images.length <= 1">
+      <div class="image-container">
+        <img class="img single-image" src="{{ event.ruta.images[0] }}" />
+      </div>
+    </ng-container>
+
+    <ion-card-content *ngIf="event.ruta" class="center">
       <ion-card-title>
         <div class="titulo-centrado">
           <ng-container *ngIf="event.ruta.name.length <= 20; else longName">
@@ -81,9 +90,8 @@
         </ion-label>
         <ion-icon class="icon" name="people-circle-outline"></ion-icon>
       </ion-item>
-    </ion-card-header>
 
-    <!-- <ion-item>
+      <!-- <ion-item>
       <ion-icon name="navigate-circle-outline" class="icon"></ion-icon>
       <ion-label>{{ event.ubicacion }}</ion-label>
     </ion-item>
@@ -99,44 +107,45 @@
       >
     </ion-item> -->
 
-    <div class="buttons">
-      <ion-button
-        color="success"
-        (click)="setIdEvent(event._id); checkEvent(event._id)"
-        ><ion-icon name="eye-outline"></ion-icon
-      ></ion-button>
+      <div class="buttons">
+        <ion-button
+          color="success"
+          (click)="setIdEvent(event._id); checkEvent(event._id)"
+          ><ion-icon name="eye-outline"></ion-icon
+        ></ion-button>
 
-      <ion-button
-        color="warning"
-        *ngIf="
-          event.creador == currentUser?.id || roles?.includes('ROLE_ADMIN')
-        "
-        (click)="setIdEvent(event._id); showEventEditModal()"
-      >
-        <ion-icon name="create-outline"></ion-icon>
-      </ion-button>
-      <ion-button
-        color="danger"
-        (click)="setIdEvent(event._id)"
-        (click)="openReport()"
-        ><ion-icon name="alert-circle-outline"></ion-icon
-      ></ion-button>
-      <ion-button
-        color="warning"
-        *ngIf="roles?.includes('ROLE_ADMIN')"
-        (click)="openReportList(event._id)"
-        ><ion-icon name="receipt-outline"></ion-icon
-      ></ion-button>
-      <ion-button
-        color="danger"
-        *ngIf="
-          event.creador == currentUser?.id || roles?.includes('ROLE_ADMIN')
-        "
-        (click)="deleteEvent(event._id)"
-      >
-        <ion-icon name="trash-outline"></ion-icon>
-      </ion-button>
-    </div>
+        <ion-button
+          color="warning"
+          *ngIf="
+            event.creador == currentUser?.id || roles?.includes('ROLE_ADMIN')
+          "
+          (click)="setIdEvent(event._id); showEventEditModal()"
+        >
+          <ion-icon name="create-outline"></ion-icon>
+        </ion-button>
+        <ion-button
+          color="danger"
+          (click)="setIdEvent(event._id)"
+          (click)="openReport()"
+          ><ion-icon name="alert-circle-outline"></ion-icon
+        ></ion-button>
+        <ion-button
+          color="warning"
+          *ngIf="roles?.includes('ROLE_ADMIN')"
+          (click)="openReportList(event._id)"
+          ><ion-icon name="receipt-outline"></ion-icon
+        ></ion-button>
+        <ion-button
+          color="danger"
+          *ngIf="
+            event.creador == currentUser?.id || roles?.includes('ROLE_ADMIN')
+          "
+          (click)="deleteEvent(event._id)"
+        >
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-button>
+      </div>
+    </ion-card-content>
   </ion-card>
 </ion-list>
 <ion-infinite-scroll (ionInfinite)="loadMoreData($event)">

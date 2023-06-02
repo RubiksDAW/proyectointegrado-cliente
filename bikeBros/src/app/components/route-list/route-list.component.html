@@ -66,13 +66,21 @@
         | routeFilterDistance : kmDistance
     "
   >
-    <ion-slides>
-      <ion-slide *ngFor="let imageURL of ruta.images">
-        <div class="image-container">
-          <img class="img" src="{{ imageURL }}" />
-        </div>
-      </ion-slide>
-    </ion-slides>
+    <ng-container *ngIf="ruta.images && ruta.images.length > 1">
+      <ion-slides pager>
+        <ion-slide *ngFor="let imageURL of ruta.images">
+          <div class="image-container">
+            <img class="img" src="{{ imageURL }}" />
+          </div>
+        </ion-slide>
+      </ion-slides>
+    </ng-container>
+
+    <ng-container *ngIf="ruta.images && ruta.images.length <= 1">
+      <div class="image-container">
+        <img class="img single-image" src="{{ ruta.images[0] }}" />
+      </div>
+    </ng-container>
 
     <ion-card-header>
       <ion-card-title>

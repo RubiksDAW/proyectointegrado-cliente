@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Geolocation } from '@capacitor/geolocation';
 
 // const API_URL = environment.API_URL;
 // const API_KEY = environment.API_KEY;
@@ -18,20 +19,30 @@ export class WeatherPage implements OnInit {
     this.loadData();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.loadData();
+  }
 
-  loadData() {
-    this.http
-      // .get(`${API_URL}weather?q=${'Sevilla'}&appid=${API_KEY}`)
-      .get(
-        `https://api.openweathermap.org/data/2.5/weather?q=London&APPID=c330fa705916dcb621befdf137ccaf76`
-      )
-      .subscribe((response) => {
-        this.weatherDetails = response;
-        this.icon = `https://openweathermap.org/img/wn/${this.weatherDetails.weather[0].icon}@4x.png`;
+  async loadData() {
+    try {
+      const position = await Geolocation.getCurrentPosition();
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
 
-        console.log(response);
-      });
+      // Realiza la consulta a la API utilizando la ubicación del usuario
+      this.http
+        .get(
+          `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&APPID=c330fa705916dcb621befdf137ccaf76`
+        )
+        .subscribe((response) => {
+          this.weatherDetails = response;
+          this.icon = `https://openweathermap.org/img/wn/${this.weatherDetails.weather[0].icon}@4x.png`;
+
+          console.log(response);
+        });
+    } catch (error) {
+      console.error('Error al obtener la ubicación del usuario:', error);
+    }
   }
 
   search() {

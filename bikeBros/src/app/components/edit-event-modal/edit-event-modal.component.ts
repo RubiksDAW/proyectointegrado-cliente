@@ -52,7 +52,9 @@ export class EditEventModalComponent implements OnInit {
     if (idEvent !== null) {
       this.eventId = idEvent;
     }
-
+    // Actualiza los valores de los controles del formulario eventForm utilizando
+    // el método patchValue. Los valores se obtienen del evento recibido y se asignan
+    // a los campos correspondientes del formulario.
     this.events.getEventById(this.eventId).subscribe((event) => {
       console.log(event);
       this.eventForm.patchValue({
@@ -63,7 +65,7 @@ export class EditEventModalComponent implements OnInit {
       });
     });
   }
-
+  // Recogemos la información a enviar del formulario
   async onSubmit() {
     const eventId = this.eventId;
     const routeId = this.eventForm.controls['rutaId'].value;
@@ -88,12 +90,10 @@ export class EditEventModalComponent implements OnInit {
     this.events.editEvent(eventData, eventId).subscribe(
       (res) => {
         console.log(res);
-        // Realiza las acciones necesarias después de editar la ruta exitosamente
         this.closeModal();
       },
       (err) => {
         console.error(err);
-        // Realiza las acciones necesarias en caso de error
       }
     );
   }

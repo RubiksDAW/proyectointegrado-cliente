@@ -13,7 +13,11 @@
   <form [formGroup]="routeForm" (ngSubmit)="submitForm()">
     <ion-item>
       <ion-label position="floating">Nombre de la ruta</ion-label>
-      <ion-input formControlName="name" maxlength="50"></ion-input>
+      <ion-input
+        formControlName="name"
+        maxlength="50"
+        placeholder="Nombre de la ruta..."
+      ></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="floating">Nivel de dificultad</ion-label>
@@ -30,6 +34,7 @@
         type="string"
         formControlName="location"
         maxlength="30"
+        placeholder="Localidad..."
       ></ion-input>
     </ion-item>
 
@@ -38,6 +43,7 @@
       <ion-textarea
         formControlName="description"
         maxlength="200"
+        placeholder="Descripción de la ruta..."
       ></ion-textarea>
     </ion-item>
     <ion-item>
@@ -46,6 +52,7 @@
         [(ngModel)]="origin"
         (ionInput)="onSearchInput()"
         [ngModelOptions]="{ standalone: true }"
+        placeholder="Origen..."
       ></ion-input>
       <ion-list *ngIf="this.originPlaces">
         <ion-item
@@ -62,6 +69,7 @@
         [(ngModel)]="destination"
         (ionInput)="onSearchDestination()"
         [ngModelOptions]="{ standalone: true }"
+        placeholder="Destino..."
       ></ion-input>
       <ion-list *ngIf="this.destinationPlaces">
         <ion-item

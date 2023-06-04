@@ -9,16 +9,21 @@
 <ion-content>
   <!-- <ion-item-divider></ion-item-divider> -->
   <ion-card *ngIf="publicProfileUser">
-    <div class="img-container">
-      <img
-        *ngIf="publicProfileUser.imageURL; else defaultImage"
-        src="{{publicProfileUser.imageURL}}"
-      />
+    <ion-item class="img-container" lines="none">
+      <ion-avatar>
+        <img
+          class="ion-avatar"
+          *ngIf="publicProfileUser?.imageURL?.length === 1; else defaultImage"
+          [src]="publicProfileUser?.imageURL[0]"
+        />
+        <ng-template #defaultImage>
+          <img
+            src="https://icon-library.com/images/default-user-icon/default-user-icon-13.jpg"
+          />
+        </ng-template>
+      </ion-avatar>
+    </ion-item>
 
-      <ng-template #defaultImage>
-        <img src="../../../assets/icon/user (1).png" />
-      </ng-template>
-    </div>
     <ion-title class="title">Información personal</ion-title>
     <ion-item>
       <ion-icon name="person-circle-outline" class="icon"></ion-icon>

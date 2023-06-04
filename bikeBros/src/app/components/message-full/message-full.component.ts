@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 import { MessagesService } from 'src/app/services/messages.service';
 
 @Component({
@@ -12,19 +13,34 @@ export class MessageFullComponent implements OnInit {
   mensajeCompleto: any;
   autor: string | null;
   senderId: string;
-  constructor(private message: MessagesService, private router: Router) {}
+  recipientId: string;
+  mensajes: any[];
+  loggedUser: string;
+  constructor(
+    private message: MessagesService,
+    private router: Router,
+    private auth: AuthService
+  ) {}
 
   async ngOnInit() {
-    this.mensajeId = localStorage.getItem('message-id');
-
+    this.loggedUser = await this.auth.getProfileId();
+    this.mensajeId = localStorage.getItem('message-id') || '';
+    this.senderId = localStorage.getItem('sender-id') || '';
+    this.recipientId = localStorage.getItem('recipient-id') || '';
     this.message.getMessageById(this.mensajeId).subscribe((data: any) => {
       console.log(data);
       this.autor = data.sender.nick;
-      this.mensajeCompleto = data.content;
-      this.senderId = data.sender._id;
     });
+    console.log(this.loggedUser);
+    this.message
+      .getMessagesBeetwenUsers(this.recipientId, this.senderId)
+      .subscribe((data) => {
+        this.mensajes = data;
+        console.log(data);
+      });
 
-    console.log(this.mensajeCompleto);
+    console.log(this.senderId);
+    console.log(this.recipientId);
   }
 
   goSenderProfile(senderId: string) {

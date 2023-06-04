@@ -4,7 +4,7 @@
       <!-- //Aqui al pulsar deberia redirigirnos a Inicio, no a inicio de registro -->
       <ion-back-button defaultHref="/main"></ion-back-button>
     </ion-buttons>
-    <ion-title>Info</ion-title>
+    <ion-title>Información</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -15,11 +15,13 @@
         <ion-avatar>
           <img
             class="ion-avatar"
-            *ngIf="profileUser.imageURL; else defaultImage"
-            [src]="profileUser.imageURL"
+            *ngIf="profileUser?.imageURL?.length === 1; else defaultImage"
+            [src]="profileUser?.imageURL[0]"
           />
           <ng-template #defaultImage>
-            <img src="../../../assets/icon/user (1).png" />
+            <img
+              src="https://icon-library.com/images/default-user-icon/default-user-icon-13.jpg"
+            />
           </ng-template>
         </ion-avatar>
       </ion-item>

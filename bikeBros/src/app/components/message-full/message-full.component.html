@@ -3,17 +3,21 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>{{ autor }}</ion-title>
+    <ion-title>Mensajes</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-card>
-    <ion-card-content>
-      <p>{{ mensajeCompleto }}</p>
+  <ion-card *ngFor="let mensaje of mensajes">
+    <ion-card-content [class.mine]="mensaje.sender === loggedUser">
+      <p class="date">{{ mensaje.createdAt | date : "dd/MM/yyyy HH:mm" }}</p>
+      <p>{{ mensaje.content }}</p>
+      <div class="badge" *ngIf="mensaje.sender === loggedUser">Tú</div>
     </ion-card-content>
   </ion-card>
+
   <!-- <app-input-message></app-input-message> -->
+  <!-- <app-message-input></app-message-input> -->
   <ion-button (click)="goSenderProfile(senderId)" expand="block"
     >Ir perfil</ion-button
   >

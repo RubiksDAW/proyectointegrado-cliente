@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoadingController, ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
@@ -10,10 +10,13 @@ import { MessagesService } from 'src/app/services/messages.service';
   templateUrl: './box-messages.component.html',
   styleUrls: ['./box-messages.component.scss'],
 })
-export class BoxMessagesComponent implements OnInit {
+export class BoxMessagesComponent implements OnInit, OnDestroy {
   userId: string;
   messages: any[] = [];
+  mensajesAgrupados: any[] = [];
   subscription: Subscription;
+  userNick: string;
+
   constructor(
     private messageSer: MessagesService,
     private modalController: ModalController,
@@ -24,6 +27,7 @@ export class BoxMessagesComponent implements OnInit {
 
   async ngOnInit() {
     this.userId = await this.auth.getProfileId();
+
     this.getMessages();
     this.subscription = this.messageSer.refresh$.subscribe(() => {
       this.getMessages();
@@ -31,21 +35,38 @@ export class BoxMessagesComponent implements OnInit {
     console.log(this.userId);
   }
 
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
   async getMessages(): Promise<void> {
     try {
       const loading = await this.loadingController.create({
-        message: 'Cargando...', // Puedes personalizar el mensaje aquí
+        message: 'Cargando...',
       });
       await loading.present();
 
       this.messageSer.getMessages(this.userId).subscribe((data: any) => {
         console.log(data);
         this.messages = data;
+        this.agruparMensajes();
 
         loading.dismiss(); // Ocultar el spinner cuando se obtienen los datos
       });
     } catch (error) {
       console.error(error);
+    }
+  }
+
+  agruparMensajes() {
+    const usuariosAgregados: string[] = [];
+    this.mensajesAgrupados = [];
+    // Construimos un array en el cual solo figurará un usuario por mesnajes
+    for (const mensaje of this.messages) {
+      if (!usuariosAgregados.includes(mensaje.sender._id)) {
+        this.mensajesAgrupados.push(mensaje);
+        usuariosAgregados.push(mensaje.sender._id);
+      }
     }
   }
 
@@ -71,10 +92,21 @@ export class BoxMessagesComponent implements OnInit {
       return content;
     }
   }
+
   openMessage(messageId: string) {
     localStorage.setItem('message-id', messageId);
     this.closeModal();
     // Redirigir a la página de visualización del mensaje completo
-    this.router.navigate([`/message/${messageId}`]); // Reemplaza '/mensaje' con la ruta correspondiente a tu página de visualización del mensaje
+    this.router.navigate([`/message/${messageId}`]);
+  }
+
+  openMessageList(recipientId: string, senderId: string, messageId: string) {
+    console.log(senderId);
+    console.log(recipientId);
+    localStorage.setItem('recipient-id', recipientId);
+    localStorage.setItem('sender-id', senderId);
+    this.closeModal();
+    // Redirigir a la página de visualización del mensaje completo
+    this.router.navigate([`/message/${messageId}`]);
   }
 }

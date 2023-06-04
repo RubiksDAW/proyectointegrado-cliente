@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Geolocation } from '@capacitor/geolocation';
+import { environment } from 'src/environments/environment';
 
-// const API_URL = environment.API_URL;
+const API_WEATHER = environment.API_KEY_WEATHER;
 // const API_KEY = environment.API_KEY;
 @Component({
   selector: 'app-weather',
@@ -32,7 +33,7 @@ export class WeatherPage implements OnInit {
       // Realiza la consulta a la API utilizando la ubicación del usuario
       this.http
         .get(
-          `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&APPID=c330fa705916dcb621befdf137ccaf76`
+          `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&APPID=${API_WEATHER}`
         )
         .subscribe((response) => {
           this.weatherDetails = response;
@@ -49,7 +50,7 @@ export class WeatherPage implements OnInit {
     if (this.searchQuery.trim() !== '') {
       this.http
         .get(
-          `https://api.openweathermap.org/data/2.5/weather?q=${this.searchQuery}&APPID=c330fa705916dcb621befdf137ccaf76`
+          `https://api.openweathermap.org/data/2.5/weather?q=${this.searchQuery}&&APPID=${API_WEATHER}`
         )
         .subscribe((response) => {
           this.weatherDetails = response;

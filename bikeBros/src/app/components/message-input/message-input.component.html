@@ -1,0 +1,8 @@
+<form (ngSubmit)="sendMessage()">
+  <ion-textarea
+    [(ngModel)]="messageContent"
+    name="messageContent"
+    placeholder="Escribe tu mensaje"
+  ></ion-textarea>
+  <ion-button type="submit" expand="block">Enviar</ion-button>
+</form>

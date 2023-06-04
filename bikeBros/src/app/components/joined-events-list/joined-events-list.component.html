@@ -12,11 +12,19 @@
   <ion-content *ngIf="events.length > 0; else noEventsMessage">
     <ion-card *ngFor="let event of events">
       <ion-slides>
+        <!-- Verifica si hay imágenes de la ruta del evento -->
         <ion-slide *ngFor="let imageURL of event.ruta?.images">
           <div class="image-container">
             <img class="img" src="{{ imageURL }}" />
           </div>
         </ion-slide>
+
+        <!-- Verifica si no hay imágenes de la ruta del evento -->
+        <ng-container *ngIf="!event.ruta?.images">
+          <ion-slide>
+            <div color="warning" class="cancelled-event">Evento cancelado</div>
+          </ion-slide>
+        </ng-container>
       </ion-slides>
 
       <ion-card-header *ngIf="event.ruta" class="center">{{
@@ -25,7 +33,7 @@
 
       <ion-card-content>
         <ion-item>
-          <ion-icon name="locate-outline" class="icon"></ion-icon>
+          <ion-icon name="navigate-circle-outline" class="icon"></ion-icon>
           {{ event.ubicacion }}
         </ion-item>
         <ion-item>
@@ -41,9 +49,8 @@
           <ion-button
             style="width: 100%"
             (click)="closeModal(); setIdEvent(event._id); checkEvent(event._id)"
-            >Ir al Evento
-
-            <ion-icon name="eye-outline"></ion-icon>
+          >
+            <ion-label>Ir al Evento </ion-label>
           </ion-button>
 
           <!-- <ion-button

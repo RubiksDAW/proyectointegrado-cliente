@@ -179,15 +179,15 @@
       <div class="buttons">
         <ion-button
           style="width: 100%"
-          color="warning"
+          color="danger"
           *ngIf="roles?.includes('ROLE_ADMIN')"
           (click)="openReportList(ruta._id)"
           >Revisar Reportes</ion-button
         >
       </div>
       <div id="comment" [hidden]="!commentStatus[ruta._id]">
-        <app-input-comment [routeId]="ruta._id"></app-input-comment>
         <app-box-comments [routeId]="ruta._id"></app-box-comments>
+        <app-input-comment [routeId]="ruta._id"></app-input-comment>
       </div>
     </ion-card-content>
   </ion-card>

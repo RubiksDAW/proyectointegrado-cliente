@@ -113,7 +113,7 @@ export class EditRouteModalComponent implements OnInit {
       this.query(this.origin, true);
     }
   }
-  // Metodo que establece
+  // Metodo para seleccionar las sugerencía de la API de Google Places
   onPlaceSelect(place: any) {
     this.select(place, true);
   }

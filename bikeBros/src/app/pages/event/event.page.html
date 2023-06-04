@@ -15,6 +15,10 @@
           <img class="image" [src]="imageURL" alt="Imagen de la ruta" />
         </div>
       </ion-slide>
+
+      <ion-slide *ngIf="!currentEvent?.ruta?.images" class="cancelled-event">
+        Evento cancelado
+      </ion-slide>
     </ion-slides>
 
     <ion-card-title class="title" aria-label="fruit">

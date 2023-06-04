@@ -14,6 +14,7 @@ import { InputCommentComponent } from './input-comment/input-comment.component';
 import { InputMessageComponent } from './input-message/input-message.component';
 import { JoinedEventsListComponent } from './joined-events-list/joined-events-list.component';
 import { MessageFullComponent } from './message-full/message-full.component';
+import { MessageInputComponent } from './message-input/message-input.component';
 import { RegisterEventModalComponent } from './register-event-modal/register-event-modal.component';
 import { RegisterRouteModalComponent } from './register-route-modal/register-route-modal.component';
 import { ReportEventListComponent } from './report-event-list/report-event-list.component';
@@ -46,6 +47,7 @@ import { TermsComponent } from './terms/terms.component';
     BoxMessagesComponent,
     MessageFullComponent,
     TermsComponent,
+    MessageInputComponent,
   ],
   imports: [
     CommonModule,
@@ -75,6 +77,7 @@ import { TermsComponent } from './terms/terms.component';
     BoxMessagesComponent,
     MessageFullComponent,
     TermsComponent,
+    MessageInputComponent,
   ],
 })
 export class ComponentsModule {}

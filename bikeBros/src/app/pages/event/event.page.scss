@@ -1,11 +1,11 @@
 .image-container {
   width: 100%;
-  // padding-bottom: 75%; /* Establece una proporción de 4:3 para las imágenes */
+  padding-bottom: 75%; /* Establece una proporción de 4:3 para las imágenes */
   position: relative;
   overflow: hidden;
 }
 
-.img {
+.image {
   position: absolute;
   top: 0;
   left: 0;
@@ -46,4 +46,15 @@
 
 .location {
   white-space: normal;
+}
+
+.cancelled-event {
+  padding-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  font-size: 40px;
+  font-weight: bold;
+  color: #e0ac08;
 }

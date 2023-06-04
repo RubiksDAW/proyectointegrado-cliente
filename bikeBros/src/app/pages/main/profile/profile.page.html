@@ -14,12 +14,14 @@
     <ion-item *ngIf="profileUser">
       <ion-avatar slot="end">
         <img
-          *ngIf="profileUser.imageURL; else defaultImage"
-          src="{{profileUser.imageURL}}"
+          *ngIf="profileUser?.imageURL?.length === 1; else defaultImage"
+          [src]="profileUser?.imageURL[0]"
         />
 
         <ng-template #defaultImage>
-          <img src="../../../assets/icon/user (1).png" />
+          <img
+            src="https://icon-library.com/images/default-user-icon/default-user-icon-13.jpg"
+          />
         </ng-template>
       </ion-avatar>
       <ion-label>
@@ -31,7 +33,9 @@
   <!-- <ion-item-divider></ion-item-divider> -->
 
   <ion-card>
-    <ion-button expand="block" (click)="openFavRoutes()"> Favoritas</ion-button>
+    <ion-button expand="block" (click)="openFavRoutes()">
+      Rutas favoritas</ion-button
+    >
   </ion-card>
   <ion-card>
     <ion-button expand="block" (click)="openEventsJoined()">

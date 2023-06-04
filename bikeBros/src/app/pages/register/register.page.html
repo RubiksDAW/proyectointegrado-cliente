@@ -16,6 +16,12 @@
     <ion-item lines="full">
       <ion-label position="floating">Email</ion-label>
       <ion-input type="text" formControlName="email" required></ion-input>
+      <div
+        *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid"
+        style="color: red"
+      >
+        Formato incorrecto
+      </div>
     </ion-item>
 
     <ion-item lines="full">

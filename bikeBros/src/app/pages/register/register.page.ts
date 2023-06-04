@@ -131,11 +131,11 @@ export class RegisterPage implements OnInit {
       return;
     }
 
-    if (email === '' || null) {
+    if (!email || !email.match(/^\S+@\S+\.\S+$/)) {
       const alert = await this.alertController.create({
         header: 'Error de registro',
         cssClass: 'custom-alert',
-        message: 'El email es obligatorio',
+        message: 'El email es obligatorio y debe tener un formato válido',
         buttons: [
           {
             text: 'Aceptar',
